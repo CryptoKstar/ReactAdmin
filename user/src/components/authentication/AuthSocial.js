@@ -17,6 +17,7 @@ export default function AuthSocial() {
     console.log(response);
     if (response['googleId']) {
       alert("success")
+      // sessionStorage.userI
       navigate('/app', { replace: true });
     }
     else {

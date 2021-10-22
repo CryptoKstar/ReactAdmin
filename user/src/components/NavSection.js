@@ -16,6 +16,30 @@ const ListItemStyle = styled((props) => <ListItemButton disableGutters {...props
     height: 48,
     position: 'relative',
     textTransform: 'capitalize',
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(2.5),
+    color: theme.palette.text.secondary,
+    '&:before': {
+      top: 0,
+      right: 0,
+      width: 3,
+      bottom: 0,
+      content: "''",
+      display: 'none',
+      position: 'absolute',
+      borderTopLeftRadius: 4,
+      borderBottomLeftRadius: 4,
+      backgroundColor: theme.palette.primary.main
+    }
+  })
+);
+
+const ListSubtyle = styled((props) => <ListItemButton disableGutters {...props} />)(
+  ({ theme }) => ({
+    ...theme.typography.body2,
+    height: 48,
+    position: 'relative',
+    textTransform: 'capitalize',
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(2.5),
     color: theme.palette.text.secondary,
@@ -65,11 +89,17 @@ function NavItem({ item, active }) {
     bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
     '&:before': { display: 'block' }
   };
-
   const activeSubStyle = {
-    color: 'text.primary',
-    fontWeight: 'fontWeightMedium'
+    color: 'primary.main',
+    fontWeight: 'fontWeightMedium',
+    bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+    '&:before': { display: 'block' }
   };
+
+  // const activeSubStyle = {
+  //   color: 'text.primary',
+  //   fontWeight: 'fontWeightMedium'
+  // };
 
   if (children) {
     return (
@@ -93,11 +123,11 @@ function NavItem({ item, active }) {
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {children.map((item) => {
-              const { title, path } = item;
+              const { title, path, icon } = item;
               const isActiveSub = active(path);
 
               return (
-                <ListItemStyle
+                <ListSubtyle
                   key={title}
                   component={RouterLink}
                   to={path}
@@ -105,27 +135,9 @@ function NavItem({ item, active }) {
                     ...(isActiveSub && activeSubStyle)
                   }}
                 >
-                  <ListItemIconStyle>
-                    <Box
-                      component="span"
-                      sx={{
-                        width: 4,
-                        height: 4,
-                        display: 'flex',
-                        borderRadius: '50%',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        bgcolor: 'text.disabled',
-                        transition: (theme) => theme.transitions.create('transform'),
-                        ...(isActiveSub && {
-                          transform: 'scale(2)',
-                          bgcolor: 'primary.main'
-                        })
-                      }}
-                    />
-                  </ListItemIconStyle>
+                  <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
                   <ListItemText disableTypography primary={title} />
-                </ListItemStyle>
+                </ListSubtyle>
               );
             })}
           </List>

@@ -9,6 +9,13 @@ import DashboardApp from './pages/DashboardApp';
 import Products from './pages/Products';
 import Blog from './pages/Blog';
 import User from './pages/User';
+import Company from './pages/Company';
+import Help from './pages/Help';
+import Platform from './pages/Platform';
+import Sites from './pages/Sites';
+import Subscriptions from './pages/Subscriptions';
+import Tickets from './pages/Tickets';
+import Transactions from './pages/Transactions';
 import NotFound from './pages/Page404';
 
 // ----------------------------------------------------------------------
@@ -27,6 +34,13 @@ export default function Router() {
       children: [
         { element: <Navigate to="/app" replace /> },
         { path: 'app', element: <DashboardApp /> },
+        { path: 'company', element: <Company /> },
+        { path: 'help', element: <Help /> },
+        { path: 'tickets', element: <Tickets /> },
+        { path: 'transactions', element: <Transactions /> },
+        { path: 'platform', element: <Platform /> },
+        { path: 'sites', element: <Sites /> },
+        { path: 'subscriptions', element: <Subscriptions /> },
         { path: 'user', element: <User /> },
         { path: 'products', element: <Products /> },
         { path: 'blog', element: <Blog /> }

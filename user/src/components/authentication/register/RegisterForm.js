@@ -1,21 +1,20 @@
 import * as Yup from 'yup';
+import axios from 'axios'
 import { useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
 import { useNavigate } from 'react-router-dom';
-// material
 import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-
-// ----------------------------------------------------------------------
 
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showconfirmpassword, setshowconfirmpassword] = useState(false);
-
+  
+  let API = 'http://localhost:4080/';
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Too Short!')
@@ -36,19 +35,30 @@ export default function RegisterForm() {
       confirmpassword: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: (values) => {
-      if(values.password !== values.confirmpassword){
+    onSubmit: async (values, e) => {
+      if (values.password !== values.confirmpassword) {
         console.log(values);
         alert("Don't match password!!!");
         navigate('/register', { replace: true });
       }
-      else{
-        navigate('/app', { replace: true });
+      else {
+        await axios.post(API + 'register', {
+          Name: values.firstName + values.lastName,
+          Email: values.email,
+          Password: values.password
+        })
+          .then(response => {
+            console.log(response);
+          })
+          .catch(error => {
+            alert('There was an error!', error);
+          });
+        // navigate('/app', { replace: true });
       }
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, getFieldProps } = formik;
 
   return (
     <FormikProvider value={formik}>
@@ -127,7 +137,7 @@ export default function RegisterForm() {
             size="large"
             type="submit"
             variant="contained"
-            loading={isSubmitting}
+          // loading={isSubmitting}
           >
             Register
           </LoadingButton>

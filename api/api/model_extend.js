@@ -21,6 +21,7 @@ module.exports = function(models){
 	
 	models.User.prototype.authorize = async function () {
 		//const { AuthToken } = sequelize.models;
+		console.log("=================================")
 		const user = this.get();
 		const authToken = await models.UserAuthToken.generateUserToken(user.id);
 		await this.addUserAuthToken(authToken);
@@ -43,6 +44,14 @@ module.exports = function(models){
 			return false;
 	};
 	
+	models.User.emailexist = async function(Email) {
+		const user = await models.User.findOne({ where: { Email } });
+		if (user) {
+		    return true;
+		}else
+			return false;
+	};
+
 	models.User.logoutToken = async function (token) {
 		models.UserAuthToken.destroy({ where: { token } });
 	};

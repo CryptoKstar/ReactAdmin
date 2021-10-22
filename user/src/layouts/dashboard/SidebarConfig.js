@@ -1,51 +1,62 @@
-import { Icon } from '@iconify/react';
-import pieChart2Fill from '@iconify/icons-eva/pie-chart-2-fill';
-import peopleFill from '@iconify/icons-eva/people-fill';
-import shoppingBagFill from '@iconify/icons-eva/shopping-bag-fill';
-import fileTextFill from '@iconify/icons-eva/file-text-fill';
-import lockFill from '@iconify/icons-eva/lock-fill';
-import personAddFill from '@iconify/icons-eva/person-add-fill';
-import alertTriangleFill from '@iconify/icons-eva/alert-triangle-fill';
-
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import BusinessIcon from '@mui/icons-material/Business';
+import LanguageIcon from '@mui/icons-material/Language';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 // ----------------------------------------------------------------------
 
-const getIcon = (name) => <Icon icon={name} width={22} height={22} />;
 
 const sidebarConfig = [
   {
-    title: 'dashboard',
+    title: 'DASHBOARD',
     path: '/app',
-    icon: getIcon(pieChart2Fill)
+    icon: <DashboardIcon/>
   },
   {
-    title: 'user',
+    title: 'COMPANY',
+    path: '/company',
+    icon: <BusinessIcon/>,
+    children:[
+      {
+        title: 'SITES',
+        path: '/sites',
+        icon: <LanguageIcon/>,
+      },
+      {
+        title:"TRANSACTIONS",
+        path: '/transactions',
+        icon: <AccountBalanceIcon/>
+      },
+      {
+        title:"SUBSCRIPTIONS",
+        path: '/subscriptions',
+        icon: <SubscriptionsIcon/>
+      }
+    ]
+  },
+  {
+    title: 'PLATFORM MODULES',
+    path: '/platform',
+    icon: <ViewModuleIcon/>
+  },
+  {
+    title: 'USER',
     path: '/user',
-    icon: getIcon(peopleFill)
+    icon: <PeopleOutlineIcon/>
   },
   {
-    title: 'product',
-    path: '/products',
-    icon: getIcon(shoppingBagFill)
+    title: 'TICKETS',
+    path: '/tickets',
+    icon: <AirplaneTicketIcon/>
   },
   {
-    title: 'blog',
-    path: '/blog',
-    icon: getIcon(fileTextFill)
-  },
-  {
-    title: 'login',
-    path: '/login',
-    icon: getIcon(lockFill)
-  },
-  {
-    title: 'register',
-    path: '/register',
-    icon: getIcon(personAddFill)
-  },
-  {
-    title: 'Not found',
-    path: '/404',
-    icon: getIcon(alertTriangleFill)
+    title: 'HELP',
+    path: '/help',
+    icon: <LiveHelpIcon/>
   }
 ];
 

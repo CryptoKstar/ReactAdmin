@@ -9,7 +9,6 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-sequelize-crud": "^6.1.5",
-    "i": "^0.3.7",
     "mysql2": "^2.3.0",
     "react": "^17.0.2",
     "react-admin": "^3.18.3",
