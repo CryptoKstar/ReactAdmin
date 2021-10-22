@@ -1,0 +1,19 @@
+.metro{
+    width: 100%!important;
+    justify-content: center;
+    padding: revert!important;
+    font-size:x-small!important;
+    height: 35px!important;
+    text-transform: unset!important;
+}
+.GoogleLogin{
+    width: 100%!important;
+    justify-content: center;
+    height: 35px!important;
+    text-transform: unset!important;
+    padding: revert!important;
+}
+.GoogleLogin span{
+    font-size:x-small!important;
+    font-weight: bolder!important;
+}

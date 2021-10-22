@@ -14,6 +14,7 @@ import { LoadingButton } from '@mui/lab';
 export default function RegisterForm() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [showconfirmpassword, setshowconfirmpassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -22,7 +23,8 @@ export default function RegisterForm() {
       .required('First name required'),
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required')
+    password: Yup.string().required('Password is required'),
+    confirmpassword: Yup.string().required('ConfrimPassword is required')
   });
 
   const formik = useFormik({
@@ -30,11 +32,19 @@ export default function RegisterForm() {
       firstName: '',
       lastName: '',
       email: '',
-      password: ''
+      password: '',
+      confirmpassword: ''
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+    onSubmit: (values) => {
+      if(values.password !== values.confirmpassword){
+        console.log(values);
+        alert("Don't match password!!!");
+        navigate('/register', { replace: true });
+      }
+      else{
+        navigate('/app', { replace: true });
+      }
     }
   });
 
@@ -77,6 +87,7 @@ export default function RegisterForm() {
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
             label="Password"
+            // onChange={(e) => setpassword(e.target.value)}
             {...getFieldProps('password')}
             InputProps={{
               endAdornment: (
@@ -89,6 +100,26 @@ export default function RegisterForm() {
             }}
             error={Boolean(touched.password && errors.password)}
             helperText={touched.password && errors.password}
+          />
+
+          <TextField
+            fullWidth
+            autoComplete="current-confirmpassword"
+            type={showconfirmpassword ? 'text' : 'password'}
+            label="Password"
+            // onChange={(e) => setconfirmpassword(e.target.value)}
+            {...getFieldProps('confirmpassword')}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton edge="end" onClick={() => setshowconfirmpassword((prev) => !prev)}>
+                    <Icon icon={showPassword ? eyeFill : eyeOffFill} />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+            error={Boolean(touched.confirmpassword && errors.confirmpassword)}
+            helperText={touched.confirmpassword && errors.confirmpassword}
           />
 
           <LoadingButton

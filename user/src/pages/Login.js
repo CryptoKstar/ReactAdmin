@@ -62,9 +62,9 @@ export default function Login() {
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Sign in to Minimal
+              Welcome to you!!!
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+            {/* <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography> */}
           </Stack>
           <AuthSocial />
 
