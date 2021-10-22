@@ -1,8 +1,8 @@
 // ----------------------------------------------------------------------
 
 const account = {
-  displayName: 'Jaydon Frankie',
-  email: 'demo@minimals.cc',
+  // displayName: JSON.parse(sessionStorage.UserData).Name,
+  // email: JSON.parse(sessionStorage.UserData).Email,
   photoURL: '/static/mock-images/avatars/avatar_default.jpg'
 };
 

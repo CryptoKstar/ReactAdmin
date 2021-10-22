@@ -28,7 +28,6 @@ const authentication = async (req, res, next) => {
 const createUser = async (req, res) => {
 	// try {
 	const flag = await User.emailexist(req.body.Email);
-	console.log(flag);
 	if (flag) {
 		return false;
 	}
@@ -47,20 +46,23 @@ const createUser = async (req, res) => {
 
 const register = async (req, res) => {
 	// try {
-	const hash = bcrypt.hashSync(req.body.Password, 16);
-	req.body = Object.assign(req.body, { Password: hash });
-	const user = await createUser(req, res);
-	console.log(user);
-	if(!user){
-		console.log("============================");
-	    return res.status(201).json({ status: "exist" })
+	if(req.body.Confirmpassword != req.body.Password){
+	    return res.status(201).json({ status: "Password is not matched!" })
 	}
 	else{
-		let authorization = await user.authorize();
-		res.cookie("auth_token", authorization.authToken.get().Token);
-		return new Promise(function (resolve, reject) {
-			resolve(res.status(201).json(authorization));
-		})
+		const hash = bcrypt.hashSync(req.body.Password, 16);
+		req.body = Object.assign(req.body, { Password: hash });
+		const user = await createUser(req, res);
+		if(!user){
+			return res.status(201).json({ status: "Same Email is exist!" })
+		}
+		else{
+			let authorization = await user.authorize();
+			res.cookie("auth_token", authorization.authToken.get().Token);
+			return new Promise(function (resolve, reject) {
+				resolve(res.status(201).json(authorization));
+			})
+		}
 	}
 	// }catch (error) {
 	    // return res.status(201).json({ error: error.message })
@@ -71,7 +73,7 @@ const login = async (req, res) => {
 	try {
 		const { Email, Password } = req.body;
 		if (!Email || !Password) {
-			return res.status(400).json({ error: "Request missing Email or Password param", request_body: JSON.stringify(req.body) });
+			return res.status(201).json({ error: "Request missing Email or Password param", request_body: JSON.stringify(req.body) });
 		}
 		let user = await User.authenticate(Email, Password);
 		if (user) {
@@ -81,10 +83,10 @@ const login = async (req, res) => {
 
 			return res.status(201).json(authorization);
 		} else {
-			return res.status(400).json({ error: "Invalid Email or Password" });
+			return res.status(201).json({ error: "Invalid Email or Password" });
 		}
 	} catch (error) {
-		return res.status(500).json({ error: error.message })
+		return res.status(201).json({ error: error.message })
 	}
 };
 

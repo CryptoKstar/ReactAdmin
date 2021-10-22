@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import axios from 'axios'
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -16,6 +17,7 @@ import {
   FormControlLabel
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import configData from "../../../config.json";
 
 // ----------------------------------------------------------------------
 
@@ -35,8 +37,28 @@ export default function LoginForm() {
       remember: true
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
-      navigate('/app', { replace: true });
+    onSubmit: async (values) => {
+      await axios.post(configData.API_URL + 'login', {
+        Email: values.email,
+        Password: values.password
+      })
+        .then(response => {
+          console.log(response);
+          if (response.data.error) {
+            alert(response.data.error)
+          }
+          else{
+            // console.log(response.data.user,99999);
+            const user_data = response.data.user;
+            const authToken = response.data.authToken;
+            sessionStorage.UserData = JSON.stringify(user_data);
+            sessionStorage.AccessToken = JSON.stringify(authToken);
+            navigate('/app', { replace: true });
+          }
+        })
+        .catch(error => {
+          console.log('There was an error!', error);
+        });
     }
   });
 
