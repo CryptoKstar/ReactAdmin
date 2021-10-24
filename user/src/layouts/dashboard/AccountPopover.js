@@ -15,7 +15,7 @@ const MENU_OPTIONS = [
   {
     label: 'Home',
     icon: homeFill,
-    linkTo: '/'
+    linkTo: '/app'
   },
   {
     label: 'Profile',

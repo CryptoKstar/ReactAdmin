@@ -105,6 +105,8 @@ function NavItem({ item, active }) {
     return (
       <>
         <ListItemStyle
+          component={RouterLink}
+          to={path}
           onClick={handleOpen}
           sx={{
             ...(isActiveRoot && activeRootStyle)

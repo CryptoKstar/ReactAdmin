@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\21\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-Toaster
+  C:\Program Files\nodejs\node.exe C:\Users\21\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @material-ui/core/Button
 
 PATH: 
-  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;C:\Users\21\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\PuTTY\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\flutter\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\21\AppData\Local\Programs\Python\Python39-32\Scripts\;C:\Users\21\AppData\Local\Programs\Python\Python39-32\;C:\Users\21\AppData\Local\Microsoft\WindowsApps;C:\Users\21\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\21\AppData\Local\GitHubDesktop\bin;C:\Users\21\AppData\Local\Android\Sdk\platform-tools;C:\Users\21\AppData\Local\Turbo\Cmd\;C:\Users\21\AppData\Roaming\Composer\vendor\bin;C:\Users\21\AppData\Roaming\npm;C:\ffmpeg-N-102553-gf53414a038-win64-lgpl\bin;C:\flutter\bin;
+  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;C:\Users\21\AppData\Local\Android\Sdk\platform-tools;C:\Program Files\PuTTY\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\flutter\bin;C:\Program Files\mysql-8.0.27-winx64\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\21\AppData\Local\Programs\Python\Python39-32\Scripts\;C:\Users\21\AppData\Local\Programs\Python\Python39-32\;C:\Users\21\AppData\Local\Microsoft\WindowsApps;C:\Users\21\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\21\AppData\Local\GitHubDesktop\bin;C:\Users\21\AppData\Local\Android\Sdk\platform-tools;C:\Users\21\AppData\Local\Turbo\Cmd\;C:\Users\21\AppData\Roaming\Composer\vendor\bin;C:\Users\21\AppData\Roaming\npm;C:\ffmpeg-N-102553-gf53414a038-win64-lgpl\bin;C:\flutter\bin;
 
 Yarn version: 
   1.22.10
@@ -14,8 +14,8 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/react-Toaster: Not found
-      at Request.params.callback [as _callback] (C:\Users\21\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
+  Error: https://registry.yarnpkg.com/@material-ui%2fcore/Button: Request "https://registry.yarnpkg.com/@material-ui%2fcore/Button" returned a 405
+      at Request.params.callback [as _callback] (C:\Users\21\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66997:18)
       at Request.self.callback (C:\Users\21\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
       at Request.emit (events.js:400:28)
       at Request.<anonymous> (C:\Users\21\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141634:10)
@@ -71,11 +71,13 @@ npm manifest:
       "@iconify/icons-eva": "^1.1.0",
       "@iconify/icons-ic": "^1.1.10",
       "@iconify/react": "^3.0.1",
+      "@mui/icons-material": "^5.0.4",
       "@mui/lab": "^5.0.0-alpha.47",
       "@mui/material": "^5.0.0",
       "@mui/utils": "^5.0.0",
       "@testing-library/jest-dom": "^5.14.1",
       "apexcharts": "^3.28.3",
+      "axios": "^0.23.0",
       "change-case": "^4.1.2",
       "date-fns": "^2.24.0",
       "faker": "^5.5.3",
@@ -84,16 +86,22 @@ npm manifest:
       "history": "^5.0.1",
       "i": "^0.3.7",
       "lodash": "^4.17.21",
+      "material-ui-dropzone": "^3.5.0",
       "numeral": "^2.0.6",
       "prop-types": "^15.7.2",
       "react": "^17.0.2",
       "react-apexcharts": "^1.3.9",
       "react-dom": "^17.0.2",
+      "react-facebook-login": "^4.1.1",
+      "react-google-login": "^5.2.2",
       "react-helmet-async": "^1.1.2",
+      "react-hooks-toaster": "^0.1.6",
+      "react-icons": "^4.3.1",
       "react-redux": "^7.2.5",
       "react-redux-toastr": "^7.6.5",
       "react-router-dom": "^6.0.0-beta.4",
       "react-scripts": "^4.0.1",
+      "react-social-login-buttons": "^3.6.0",
       "simplebar": "^5.3.5",
       "simplebar-react": "^2.3.5",
       "web-vitals": "^2.1.0",
@@ -1289,7 +1297,7 @@ Lockfile:
     dependencies:
       regenerator-runtime "^0.13.4"
   
-  "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.15.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
+  "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.15.4", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.7.6", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
     version "7.15.4"
     resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.15.4.tgz#fd17d16bfdf878e6dd02d19753a39fa8a8d9c84a"
     integrity sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==
@@ -1797,6 +1805,13 @@ Lockfile:
       clsx "^1.1.1"
       prop-types "^15.7.2"
       react-is "^17.0.2"
+  
+  "@mui/icons-material@^5.0.4":
+    version "5.0.4"
+    resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.0.4.tgz#2d1e69c323695a1c6e26be3abcc532818dd442d2"
+    integrity sha512-pW/2bjRGnBZujoLdtH/C+ghT0Tmlk9HmZHF6HuALuVOnRiHF9VwrcNrx0FLHYT0aMARZR4dBA15nU/53R1YNeQ==
+    dependencies:
+      "@babel/runtime" "^7.15.4"
   
   "@mui/lab@^5.0.0-alpha.47":
     version "5.0.0-alpha.51"
@@ -3012,6 +3027,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
     integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
   
+  attr-accept@^2.0.0:
+    version "2.2.2"
+    resolved "https://registry.yarnpkg.com/attr-accept/-/attr-accept-2.2.2.tgz#646613809660110749e92f2c10833b70968d929b"
+    integrity sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==
+  
   autoprefixer@^9.6.1:
     version "9.8.8"
     resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-9.8.8.tgz#fd4bd4595385fa6f06599de749a4d5f7a474957a"
@@ -3029,6 +3049,13 @@ Lockfile:
     version "4.3.3"
     resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.3.3.tgz#b55cd8e8ddf659fe89b064680e1c6a4dceab0325"
     integrity sha512-/lqqLAmuIPi79WYfRpy2i8z+x+vxU3zX2uAm0gs1q52qTuKwolOj1P8XbufpXcsydrpKx2yGn2wzAnxCMV86QA==
+  
+  axios@^0.23.0:
+    version "0.23.0"
+    resolved "https://registry.yarnpkg.com/axios/-/axios-0.23.0.tgz#b0fa5d0948a8d1d75e3d5635238b6c4625b05149"
+    integrity sha512-NmvAE4i0YAv5cKq8zlDoPd1VLKAqX5oLuZKs8xkJa4qi6RGn0uhCYFjWtHHC9EM/MwOwYWOs53W+V0aqEXq1sg==
+    dependencies:
+      follow-redirects "^1.14.4"
   
   axobject-query@^2.2.0:
     version "2.2.0"
@@ -3786,7 +3813,7 @@ Lockfile:
       isobject "^3.0.0"
       static-extend "^0.1.1"
   
-  classnames@^2.2.3:
+  classnames@^2.2.3, classnames@^2.2.6:
     version "2.3.1"
     resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
     integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
@@ -3821,7 +3848,7 @@ Lockfile:
       strip-ansi "^6.0.0"
       wrap-ansi "^6.2.0"
   
-  clsx@^1.1.1:
+  clsx@^1.0.2, clsx@^1.1.1:
     version "1.1.1"
     resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
     integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
@@ -4691,6 +4718,13 @@ Lockfile:
     dependencies:
       utila "~0.4"
   
+  dom-helpers@^3.4.0:
+    version "3.4.0"
+    resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.4.0.tgz#e9b369700f959f62ecde5a6babde4bccd9169af8"
+    integrity sha512-LnuPJ+dwqKDIyotW1VzmOZ5TONUN7CwkCR5hrgawTUbkBGYdeoNLZo6nNfGkCrjtE1nXXaj7iMMpDa8/d9WoIA==
+    dependencies:
+      "@babel/runtime" "^7.1.2"
+  
   dom-helpers@^5.0.1:
     version "5.2.1"
     resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-5.2.1.tgz#d9400536b2bf8225ad98fe052e029451ac40e902"
@@ -5555,6 +5589,13 @@ Lockfile:
       loader-utils "^2.0.0"
       schema-utils "^3.0.0"
   
+  file-selector@^0.1.12:
+    version "0.1.19"
+    resolved "https://registry.yarnpkg.com/file-selector/-/file-selector-0.1.19.tgz#8ecc9d069a6f544f2e4a096b64a8052e70ec8abf"
+    integrity sha512-kCWw3+Aai8Uox+5tHCNgMFaUdgidxvMnLWO6fM5sZ0hA2wlHP5/DHGF0ECe84BiB95qdJbKNEJhWKVDvMN+JDQ==
+    dependencies:
+      tslib "^2.0.1"
+  
   file-uri-to-path@1.0.0:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
@@ -5666,7 +5707,7 @@ Lockfile:
       inherits "^2.0.3"
       readable-stream "^2.3.6"
   
-  follow-redirects@^1.0.0:
+  follow-redirects@^1.0.0, follow-redirects@^1.14.4:
     version "1.14.4"
     resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.4.tgz#838fdf48a8bbdd79e52ee51fb1c94e3ed98b9379"
     integrity sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==
@@ -7773,6 +7814,15 @@ Lockfile:
     dependencies:
       object-visit "^1.0.0"
   
+  material-ui-dropzone@^3.5.0:
+    version "3.5.0"
+    resolved "https://registry.yarnpkg.com/material-ui-dropzone/-/material-ui-dropzone-3.5.0.tgz#2d7f36032db96c24ce97b42e4d0053f94e91a9fc"
+    integrity sha512-3BC6mz/4OEM4ZpbqMfuMN065JQyqfEbifT6/VzIua7Zj4b0DaR5YPCgpN+fL/e8yBgTs9MGBZJQY06p5pfKwvw==
+    dependencies:
+      "@babel/runtime" "^7.4.4"
+      clsx "^1.0.2"
+      react-dropzone "^10.2.1"
+  
   md5.js@^1.3.4:
     version "1.3.5"
     resolved "https://registry.yarnpkg.com/md5.js/-/md5.js-1.3.5.tgz#b5d07b8e3216e3e27cd728d72f70d1e6a342005f"
@@ -9580,7 +9630,7 @@ Lockfile:
       kleur "^3.0.3"
       sisteransi "^1.0.5"
   
-  prop-types@^15.5.7, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+  prop-types@^15.5.7, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
     version "15.7.2"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
     integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -9802,10 +9852,24 @@ Lockfile:
       object-assign "^4.1.1"
       scheduler "^0.20.2"
   
+  react-dropzone@^10.2.1:
+    version "10.2.2"
+    resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-10.2.2.tgz#67b4db7459589a42c3b891a82eaf9ade7650b815"
+    integrity sha512-U5EKckXVt6IrEyhMMsgmHQiWTGLudhajPPG77KFSvgsMqNEHSyGpqWvOMc5+DhEah/vH4E1n+J5weBNLd5VtyA==
+    dependencies:
+      attr-accept "^2.0.0"
+      file-selector "^0.1.12"
+      prop-types "^15.7.2"
+  
   react-error-overlay@^6.0.9:
     version "6.0.9"
     resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
     integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
+  
+  react-facebook-login@^4.1.1:
+    version "4.1.1"
+    resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-4.1.1.tgz#005121236a6ac0dee02099976fb1a3265f9d633e"
+    integrity sha512-COnHEHlYGTKipz4963safFAK9PaNTcCiXfPXMS/yxo8El+/AJL5ye8kMJf23lKSSGGPgqFQuInskIHVqGqTvSw==
   
   react-fast-compare@^2.0.1:
     version "2.0.4"
@@ -9816,6 +9880,14 @@ Lockfile:
     version "3.2.0"
     resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
     integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
+  
+  react-google-login@^5.2.2:
+    version "5.2.2"
+    resolved "https://registry.yarnpkg.com/react-google-login/-/react-google-login-5.2.2.tgz#a20b46440c6c1610175ef75baf427118ff0e9859"
+    integrity sha512-JUngfvaSMcOuV0lFff7+SzJ2qviuNMQdqlsDJkUM145xkGPVIfqWXq9Ui+2Dr6jdJWH5KYdynz9+4CzKjI5u6g==
+    dependencies:
+      "@types/react" "*"
+      prop-types "^15.6.0"
   
   react-helmet-async@^1.1.2:
     version "1.1.2"
@@ -9828,6 +9900,21 @@ Lockfile:
       react-fast-compare "^3.2.0"
       shallowequal "^1.1.0"
   
+  react-hooks-toaster@^0.1.6:
+    version "0.1.6"
+    resolved "https://registry.yarnpkg.com/react-hooks-toaster/-/react-hooks-toaster-0.1.6.tgz#da39b25f09fa46cf5fc18db5a64232efb930360d"
+    integrity sha512-aCbeUHH/RTpZchp0NZZRkF41UcbNPHWQEX3NzpINHJkVzVHE8eVm33Kio8UzEGap+cq2BX+/Gf8u5FIq/eYLaA==
+    dependencies:
+      classnames "^2.2.6"
+      prop-types "^15.7.2"
+      react-transition-group "^2.9.0"
+      uuid "^3.3.2"
+  
+  react-icons@^4.3.1:
+    version "4.3.1"
+    resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.3.1.tgz#2fa92aebbbc71f43d2db2ed1aed07361124e91ca"
+    integrity sha512-cB10MXLTs3gVuXimblAdI71jrJx8njrJZmNMEMC+sQu5B/BIOmlsAjskdqpn81y8UBVEGuHODd7/ci5DvoSzTQ==
+  
   react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
     version "16.13.1"
     resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -9837,6 +9924,11 @@ Lockfile:
     version "17.0.2"
     resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
     integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+  
+  react-lifecycles-compat@^3.0.4:
+    version "3.0.4"
+    resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+    integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
   
   react-redux-toastr@^7.6.5:
     version "7.6.5"
@@ -9940,6 +10032,21 @@ Lockfile:
       workbox-webpack-plugin "5.1.4"
     optionalDependencies:
       fsevents "^2.1.3"
+  
+  react-social-login-buttons@^3.6.0:
+    version "3.6.0"
+    resolved "https://registry.yarnpkg.com/react-social-login-buttons/-/react-social-login-buttons-3.6.0.tgz#2be1cb114d8c0200581ba1c8ec5ea74e89cf7701"
+    integrity sha512-m5E72jHWgC4VBxRziZYQC5kQIzooGRF+dDE97K5JgSlcDPXkNxCjCzP+Qp9fNhNujG7APvPx2Qhzi1BO2xi17Q==
+  
+  react-transition-group@^2.9.0:
+    version "2.9.0"
+    resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"
+    integrity sha512-+HzNTCHpeQyl4MJ/bdE0u6XRMe9+XG/+aL4mCxVN4DnPBQ0/5bfHWPDuOZUzYdMj94daZaZdCCc1Dzt9R/xSSg==
+    dependencies:
+      dom-helpers "^3.4.0"
+      loose-envify "^1.4.0"
+      prop-types "^15.6.2"
+      react-lifecycles-compat "^3.0.4"
   
   react-transition-group@^4.4.2:
     version "4.4.2"
@@ -11513,7 +11620,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
     integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
   
-  tslib@^2.0.3, tslib@^2.1.0:
+  tslib@^2.0.1, tslib@^2.0.3, tslib@^2.1.0:
     version "2.3.1"
     resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
     integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==

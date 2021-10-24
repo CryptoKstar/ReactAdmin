@@ -15,6 +15,7 @@ import Platform from './pages/Platform';
 import Sites from './pages/Sites';
 import Subscriptions from './pages/Subscriptions';
 import Tickets from './pages/Tickets';
+import CreateCompany from './pages/CreateCompany';
 import Transactions from './pages/Transactions';
 import NotFound from './pages/Page404';
 
@@ -35,6 +36,7 @@ export default function Router() {
         { element: <Navigate to="/app" replace /> },
         { path: 'app', element: <DashboardApp /> },
         { path: 'company', element: <Company /> },
+        { path: 'newcompany', element: <CreateCompany /> },
         { path: 'help', element: <Help /> },
         { path: 'tickets', element: <Tickets /> },
         { path: 'transactions', element: <Transactions /> },
@@ -43,7 +45,8 @@ export default function Router() {
         { path: 'subscriptions', element: <Subscriptions /> },
         { path: 'user', element: <User /> },
         { path: 'products', element: <Products /> },
-        { path: 'blog', element: <Blog /> }
+        { path: 'blog', element: <Blog /> },
+        
       ]
     },
     {
