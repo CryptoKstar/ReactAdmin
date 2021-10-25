@@ -1,16 +1,12 @@
+import Iframe from 'react-iframe'
 import { Link as RouterLink } from 'react-router-dom';
-// material
 import { styled } from '@mui/material/styles';
 import { Card, Stack, Link, Container, Typography } from '@mui/material';
-// layouts
 import AuthLayout from '../layouts/AuthLayout';
-// components
 import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { LoginForm } from '../components/authentication/login';
 import AuthSocialLogin from '../components/authentication/AuthSocialLogin';
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -37,8 +33,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(12, 0)
 }));
 
-// ----------------------------------------------------------------------
-
 export default function Login() {
   return (
     <RootStyle title="Login | Minimal-UI">
@@ -61,14 +55,12 @@ export default function Login() {
       <Container maxWidth="sm">
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
-            <Typography variant="h4" gutterBottom>
-              Welcome to you!!!
-            </Typography>
-            {/* <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography> */}
+            <Iframe height="90px" overflow = "hidden" frameBorder = "0" url="./static/landing_top.html" />
           </Stack>
           <AuthSocialLogin />
 
           <LoginForm />
+          <Iframe height="90px" overflow = "hidden" frameBorder = "0" url="./static/landing_bottom.html" />
 
           <MHidden width="smUp">
             <Typography variant="body2" align="center" sx={{ mt: 3 }}>

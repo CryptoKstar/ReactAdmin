@@ -56,6 +56,26 @@ UserCompany.addScope("userscope", function(user){
 	}
 });
 
+
+UserAuthToken.userscope = {};
+UserAuthToken.addScope("userscope", function(user){
+	if(!user){
+		return {
+			where:{
+			}
+		}
+	}else{
+		return {
+			where:{
+				UserId: user.get().id
+			},
+			include:[
+				{model: CompanySite, as: "CompanySite"},
+			]
+		}
+	}
+});
+
 Company.userscope = {};
 Company.addScope("userscope", function(user){
 	if(!user){
@@ -250,6 +270,7 @@ function createCRUD(model, readonly){
 
 
 router.uses = [
+	secure(crud('/api/company_site_create', createCRUD(UserAuthToken))),
 	secure(crud('/api/user_companies', createCRUD(UserCompany))),
 	secure(crud('/api/companies', createCRUD(Company))),
 	secure(crud('/api/company_sites', createCRUD(CompanySite))),

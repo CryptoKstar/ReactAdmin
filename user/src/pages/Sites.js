@@ -153,8 +153,8 @@ export default function User() {
     dataProvider.delete("company_sites", { id: Id })
       .then(res => {
         console.log(res);
-        alert("Success");
         setIsOpen(false)
+        alert("Success");
         loadData();
 
       })
@@ -176,12 +176,14 @@ export default function User() {
         const token_id = JSON.parse(sessionStorage.AccessToken).id;
         const user_token = JSON.parse(sessionStorage.AccessToken).Token;
         const Token = user_token.substr(10, 10);
-        console.log(company_id)
-        console.log(company_site_id)
-        console.log(token_id)
-        console.log(Token)
         const Site_Token = md5(company_id + company_site_id + token_id + Token);
         console.log(Site_Token);
+        dataProvider.create("company_site_create", { data: { UserId: JSON.parse(sessionStorage.UserData).id, CompanySiteId: res.data.id, Token: Site_Token, RestrictTo: null, ExpiresAt: null } })
+          .then(res => {
+          })
+          .catch(err => {
+
+          })
         alert("Site is added in the company")
       })
   }
@@ -275,7 +277,6 @@ export default function User() {
               />
 
               <TextField
-                autoFocus
                 margin="dense"
                 label="Site urls!"
                 type="text"
@@ -333,7 +334,7 @@ export default function User() {
                               onChange={(event) => handleClick(event, siteurl)}
                             />
                           </TableCell>
-                          <TableCell component="th" scope="row" padding="none">
+                          <TableCell padding="checkbox" component="th" scope="row" padding="none">
                             <Typography variant="subtitle2" noWrap>
                               {siteurl}
                             </Typography>

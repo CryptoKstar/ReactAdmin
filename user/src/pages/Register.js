@@ -1,16 +1,12 @@
 import { Link as RouterLink } from 'react-router-dom';
-// material
+import Iframe from 'react-iframe'
 import { styled } from '@mui/material/styles';
 import { Box, Card, Link, Container, Typography } from '@mui/material';
-// layouts
 import AuthLayout from '../layouts/AuthLayout';
-// components
 import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { RegisterForm } from '../components/authentication/register';
 import AuthSocialRegister from '../components/authentication/AuthSocialRegister';
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -37,8 +33,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(12, 0)
 }));
 
-// ----------------------------------------------------------------------
-
 export default function Register() {
   return (
     <RootStyle title="Register | Minimal-UI">
@@ -61,19 +55,12 @@ export default function Register() {
       <Container>
         <ContentStyle>
           <Box sx={{ mb: 5 }}>
-            <Typography variant="h4" gutterBottom>
-              Welcome to you!!!
-            </Typography>
-            {/* <Typography sx={{ color: 'text.secondary' }}>
-              Free forever. No credit card needed.
-            </Typography> */}
+            <Iframe height="90px" overflow="hidden" frameBorder="0" url="./static/landing_top.html" />
           </Box>
-
           <AuthSocialRegister />
-
           <RegisterForm />
-
-          <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
+          <Iframe height="90px" overflow="hidden" frameBorder="0" url="./static/landing_bottom.html" />
+          {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;
             <Link underline="always" sx={{ color: 'text.primary' }}>
               Terms of Service
@@ -83,7 +70,7 @@ export default function Register() {
               Privacy Policy
             </Link>
             .
-          </Typography>
+          </Typography> */}
 
           <MHidden width="smUp">
             <Typography variant="subtitle2" sx={{ mt: 3, textAlign: 'center' }}>

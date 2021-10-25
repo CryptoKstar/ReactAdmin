@@ -4,7 +4,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+// import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 // ----------------------------------------------------------------------
@@ -43,11 +43,11 @@ const sidebarConfig = [
     path: '/platform',
     icon: <ViewModuleIcon/>
   },
-  {
-    title: 'USER',
-    path: '/user',
-    icon: <PeopleOutlineIcon/>
-  },
+  // {
+  //   title: 'USER',
+  //   path: '/user',
+  //   icon: <PeopleOutlineIcon/>
+  // },
   {
     title: 'TICKETS',
     path: '/tickets',

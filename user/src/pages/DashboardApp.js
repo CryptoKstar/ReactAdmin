@@ -1,32 +1,30 @@
-// material
-import { Box, Grid, Container, Typography } from '@mui/material';
-// components
+import { Box, Container, Typography } from '@mui/material';
 import Page from '../components/Page';
-import {
-  AppTasks,
-  AppNewUsers,
-  AppBugReports,
-  AppItemOrders,
-  AppNewsUpdate,
-  AppWeeklySales,
-  AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
-  AppTrafficBySite,
-  AppCurrentSubject,
-  AppConversionRates
-} from '../components/_dashboard/app';
-
-// ----------------------------------------------------------------------
+import Iframe from 'react-iframe'
+// import {
+//   AppTasks,
+//   AppNewUsers,
+//   AppBugReports,
+//   AppItemOrders,
+//   AppNewsUpdate,
+//   AppWeeklySales,
+//   AppOrderTimeline,
+//   AppCurrentVisits,
+//   AppWebsiteVisits,
+//   AppTrafficBySite,
+//   AppCurrentSubject,
+//   AppConversionRates
+// } from '../components/_dashboard/app';
 
 export default function DashboardApp() {
   return (
     <Page title="Dashboard | Minimal-UI">
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
-          <Typography variant="h4">Hi, Welcome back</Typography>
+          <Typography variant="h4">DashBoard</Typography>
         </Box>
-        <Grid container spacing={3}>
+        <Iframe height="100%" overflow="hidden" frameBorder="0" url="./static/DashBoard.html" />
+        {/* <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
             <AppWeeklySales />
           </Grid>
@@ -71,7 +69,7 @@ export default function DashboardApp() {
           <Grid item xs={12} md={6} lg={8}>
             <AppTasks />
           </Grid>
-        </Grid>
+        </Grid> */}
       </Container>
     </Page>
   );
