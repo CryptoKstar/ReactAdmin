@@ -138,14 +138,6 @@ export default function User() {
           <Typography variant="h4" gutterBottom>
             Transactions
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="#"
-            startIcon={<Icon icon={plusFill} />}
-          >
-            New Transactions
-          </Button>
         </Stack>
 
         <Card>

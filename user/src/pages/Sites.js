@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import { useEffect, useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
-import {Card, Table, Stack, Button, Checkbox, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
+import { Card, Table, Stack, Button, Checkbox, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -19,6 +19,7 @@ import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import SelectSite from './SelectSite'
+var md5 = require('md5');
 
 const TABLE_HEAD = [
   { id: 'siteurl', label: 'Site Url', alignRight: false },
@@ -155,6 +156,7 @@ export default function User() {
         alert("Success");
         setIsOpen(false)
         loadData();
+
       })
   }
 
@@ -167,8 +169,19 @@ export default function User() {
     setOpen(false);
     dataProvider.create("company_sites", { data: { Url: siteurl, Urls: siteurls, CompanyId: JSON.parse(sessionStorage.CurrentCompany).id } })
       .then(res => {
-        // console.log(res);
+        console.log(res);
         loadData();
+        const company_id = res.data.CompanyId;
+        const company_site_id = res.data.id;
+        const token_id = JSON.parse(sessionStorage.AccessToken).id;
+        const user_token = JSON.parse(sessionStorage.AccessToken).Token;
+        const Token = user_token.substr(10, 10);
+        console.log(company_id)
+        console.log(company_site_id)
+        console.log(token_id)
+        console.log(Token)
+        const Site_Token = md5(company_id + company_site_id + token_id + Token);
+        console.log(Site_Token);
         alert("Site is added in the company")
       })
   }
@@ -229,9 +242,7 @@ export default function User() {
           <Dialog open={opensite} onClose={handleClose} fullWidth={true} maxWidth="md">
             <DialogTitle>Please select Site</DialogTitle>
             <DialogContent>
-              <DialogContentText>
-                <SelectSite sites={sites} />
-              </DialogContentText>
+              <SelectSite sites={sites} />
             </DialogContent>
           </Dialog>
 

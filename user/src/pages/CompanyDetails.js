@@ -57,7 +57,8 @@ export default function CompanyDetails() {
     }
 
     const Update = (params) => {
-        dataProvider.update('companies', { id: UpdateId, data: { name: Name, Address: Address, RegNo: Reg, TaxNo: Tax } })
+        console.log(Name);
+        dataProvider.update('companies', { id: UpdateId, data: { Name: Name, Address: Address, RegNo: Reg, TaxNo: Tax } })
             .then(response => {
                 console.log(response.data);
                 alert("Success")

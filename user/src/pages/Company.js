@@ -135,44 +135,6 @@ export default function EcommerceShop() {
 
   return (
     <Page title="Company | Holest">
-      {/* <Modal
-        keepMounted
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="keep-mounted-modal-title"
-        aria-describedby="keep-mounted-modal-description"
-      >
-        <Box sx={style}>
-          <Card>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="200"
-                image="/static/default.png"
-                alt="green iguana"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div" >
-                  {Item.Name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Label variant="ghost" color={'success'}>Address</Label>
-                  <Label variant="ghost" color={'success'}>{Item.Address}</Label>
-                </Typography>
-                <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Label variant="ghost" color={'error'}>RegNo</Label>
-                  <Label variant="ghost" color={'error'}>{Item.RegNo}</Label>
-                </Typography>
-                <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Label variant="ghost" color={'info'}>TaxNo</Label>
-                  <Label variant="ghost" color={'info'}>{Item.TaxNo}</Label>
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Box>
-      </Modal> */}
-
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -193,9 +155,7 @@ export default function EcommerceShop() {
           <Dialog open={opencompany} onClose={handleClose} fullWidth={true} maxWidth="md">
             <DialogTitle>Please select Company</DialogTitle>
             <DialogContent>
-              <DialogContentText>
-                <SelecetCompany USERLIST={Companydata} handleOpenSelect={handleOpenSelect} />
-              </DialogContentText>
+              <SelecetCompany USERLIST={Companydata} handleOpenSelect={handleOpenSelect} />
             </DialogContent>
           </Dialog>
 
@@ -248,7 +208,7 @@ export default function EcommerceShop() {
                   </Label>
 
                   <Card>
-                    <CardActionArea onClick={(e) => details(item  )}>
+                    <CardActionArea onClick={(e) => details(item)}>
                       <CardMedia
                         component="img"
                         height="200"

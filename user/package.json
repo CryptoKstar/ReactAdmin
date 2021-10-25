@@ -60,6 +60,7 @@
     "i": "^0.3.7",
     "lodash": "^4.17.21",
     "material-ui-dropzone": "^3.5.0",
+    "md5": "^2.3.0",
     "numeral": "^2.0.6",
     "prop-types": "^15.7.2",
     "ra-data-json-server": "^3.19.0",
