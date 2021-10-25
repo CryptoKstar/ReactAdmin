@@ -7,43 +7,50 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    payment_method_id: {
+    PaymentMethodId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'hp_payment_method',
         key: 'id'
-      }
+      },
+      field: 'payment_method_id'
     },
-    company_site_id: {
+    CompanySiteId: {
       type: DataTypes.BIGINT,
       allowNull: true,
       references: {
         model: 'company_site',
         key: 'id'
-      }
+      },
+      field: 'company_site_id'
     },
-    enabled: {
+    Enabled: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'enabled'
     },
-    data: {
+    Data: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
+      field: 'data'
     },
-    deleted: {
+    Deleted: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'deleted'
     },
-    updated_at: {
+    UpdatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'updated_at'
     },
-    created_at: {
+    CreatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'created_at'
     }
   }, {
     sequelize,

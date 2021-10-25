@@ -7,27 +7,27 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    name: {
+    Name: {
       type: DataTypes.STRING(1024),
-      allowNull: false
+      allowNull: false,
+      field: 'name'
     },
-    data: {
+    Data: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
+      field: 'data'
     },
-    enabled: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    updated_at: {
+    UpdatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'updated_at'
     },
-    created_at: {
+    CreatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'created_at'
     }
   }, {
     sequelize,

@@ -7,55 +7,66 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    main_user_id: {
+    MainUserId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'user',
         key: 'id'
-      }
+      },
+      field: 'main_user_id'
     },
-    name: {
+    Name: {
       type: DataTypes.STRING(256),
-      allowNull: false
+      allowNull: false,
+      field: 'name'
     },
-    address: {
+    Country: {
+      type: DataTypes.STRING(256),
+      allowNull: false,
+      field: 'country'
+    },
+    Address: {
       type: DataTypes.STRING(1024),
-      allowNull: true
+      allowNull: true,
+      field: 'address'
     },
-    reg_no: {
+    RegNo: {
       type: DataTypes.STRING(128),
-      allowNull: true
+      allowNull: true,
+      field: 'reg_no'
     },
-    tax_no: {
+    TaxNo: {
       type: DataTypes.STRING(128),
-      allowNull: true
+      allowNull: true,
+      field: 'tax_no'
     },
-    country: {
-      type: DataTypes.STRING(256),
-      allowNull: true
-    },
-    suspended: {
+    Suspended: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'suspended'
     },
-    data: {
+    Data: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
+      field: 'data'
     },
-    deleted: {
+    Deleted: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'deleted'
     },
-    updated_at: {
+    UpdatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'updated_at'
     },
-    created_at: {
+    CreatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'created_at'
     }
   }, {
     sequelize,

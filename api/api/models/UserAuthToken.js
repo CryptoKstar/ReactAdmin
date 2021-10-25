@@ -7,43 +7,50 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    user_id: {
+    UserId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'user',
         key: 'id'
-      }
+      },
+      field: 'user_id'
     },
-    company_site_id: {
+    CompanySiteId: {
       type: DataTypes.BIGINT,
       allowNull: true,
       references: {
         model: 'company_site',
         key: 'id'
-      }
+      },
+      field: 'company_site_id'
     },
-    token: {
+    Token: {
       type: DataTypes.STRING(4096),
-      allowNull: false
+      allowNull: false,
+      field: 'token'
     },
-    restrict_to: {
+    RestrictTo: {
       type: DataTypes.STRING(1024),
-      allowNull: true
+      allowNull: true,
+      field: 'restrict_to'
     },
-    expires_at: {
+    ExpiresAt: {
       type: DataTypes.DATE,
-      allowNull: true
+      allowNull: true,
+      field: 'expires_at'
     },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    created_at: {
+    UpdatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'updated_at'
+    },
+    CreatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'created_at'
     }
   }, {
     sequelize,

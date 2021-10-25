@@ -7,44 +7,53 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    email: {
+    Email: {
       type: DataTypes.STRING(256),
-      allowNull: false
+      allowNull: false,
+      field: 'email'
     },
-    password: {
+    Password: {
       type: DataTypes.STRING(1024),
-      allowNull: false
+      allowNull: false,
+      field: 'password'
     },
-    name: {
+    Name: {
       type: DataTypes.STRING(512),
       allowNull: true,
-      defaultValue: ""
+      defaultValue: "",
+      field: 'name'
     },
-    tel: {
+    Tel: {
       type: DataTypes.STRING(128),
-      allowNull: true
+      allowNull: true,
+      field: 'tel'
     },
-    data: {
+    Data: {
       type: DataTypes.TEXT,
-      allowNull: true
+      allowNull: true,
+      field: 'data'
     },
-    suspended: {
+    Suspended: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'suspended'
     },
-    deleted: {
+    Deleted: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'deleted'
     },
-    updated_at: {
+    UpdatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'updated_at'
     },
-    created_at: {
+    CreatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'created_at'
     }
   }, {
     sequelize,

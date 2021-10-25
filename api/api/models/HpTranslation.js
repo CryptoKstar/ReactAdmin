@@ -7,17 +7,20 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    language: {
+    Language: {
       type: DataTypes.STRING(64),
-      allowNull: false
+      allowNull: false,
+      field: 'language'
     },
-    text: {
+    Text: {
       type: DataTypes.STRING(2048),
-      allowNull: false
+      allowNull: false,
+      field: 'text'
     },
-    translation: {
+    Translation: {
       type: DataTypes.STRING(2048),
-      allowNull: false
+      allowNull: false,
+      field: 'translation'
     }
   }, {
     sequelize,

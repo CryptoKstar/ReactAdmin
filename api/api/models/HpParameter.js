@@ -1,18 +1,20 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('HpParameter', {
-    name: {
+    Name: {
       type: DataTypes.STRING(64),
       allowNull: false,
       primaryKey: true
     },
-    value: {
+    Value: {
       type: DataTypes.STRING(4096),
-      allowNull: false
+      allowNull: false,
+      field: 'value'
     },
-    description: {
+    Description: {
       type: DataTypes.STRING(4096),
-      allowNull: false
+      allowNull: false,
+      field: 'description'
     }
   }, {
     sequelize,

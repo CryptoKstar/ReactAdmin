@@ -44,7 +44,7 @@ export default function CompanyDetails() {
                 const item = response.data;
                 setUpdateId(item.id)
                 setName(item.Name)
-                setCountry(item.Name)
+                setCountry(item.Country)
                 setAddress(item.Address)
                 setReg(item.RegNo)
                 setTax(item.TaxNo)
@@ -55,7 +55,7 @@ export default function CompanyDetails() {
     }
 
     const Update = (params) => {
-        dataProvider.update('companies', { id: UpdateId, data: { Name: Name, Address: Address, RegNo: Reg, TaxNo: Tax } })
+        dataProvider.update('companies', { id: UpdateId, data: { Name: Name, Address: Address, Country: Country, RegNo: Reg, TaxNo: Tax } })
             .then(response => {
                 alert("Success")
             })

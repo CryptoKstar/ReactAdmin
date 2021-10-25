@@ -6,48 +6,56 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    ticket_id: {
+    TicketId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'ticket',
         key: 'id'
-      }
+      },
+      field: 'ticket_id'
     },
-    writer_id: {
+    WriterId: {
       type: DataTypes.BIGINT,
       allowNull: true,
       references: {
         model: 'user',
         key: 'id'
-      }
+      },
+      field: 'writer_id'
     },
-    content: {
+    Content: {
       type: DataTypes.STRING(4096),
       allowNull: false,
-      defaultValue: ""
+      defaultValue: "",
+      field: 'content'
     },
-    mail_sent_user: {
+    MailSentUser: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'mail_sent_user'
     },
-    mail_sent_support: {
+    MailSentSupport: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'mail_sent_support'
     },
-    deleted: {
+    Deleted: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'deleted'
     },
-    updated_at: {
+    UpdatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'updated_at'
     },
-    created_at: {
+    CreatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'created_at'
     }
   }, {
     sequelize,

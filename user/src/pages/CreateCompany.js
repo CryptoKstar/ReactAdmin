@@ -52,7 +52,7 @@ export default function CreateCompany() {
         },
         validationSchema: RegisterSchema,
         onSubmit: async (values, e) => {
-            dataProvider.create('companies', { data: { Name: values.name, Address: values.address, TaxNo: values.taxnumber, RegNo: values.regnumber, MainUserId: MainUserId } })
+            dataProvider.create('companies', { data: { Name: values.name, Address: values.address, Country : values.country, TaxNo: values.taxnumber, RegNo: values.regnumber, MainUserId: MainUserId } })
                 .then(response => {
                     dataProvider.create('user_companies', { data: { UserId: MainUserId, CompanyId: response.data.id, Role: "admin" } })
                         .then(response => {

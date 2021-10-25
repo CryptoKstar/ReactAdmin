@@ -7,43 +7,50 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    user_id: {
+    UserId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'user',
         key: 'id'
-      }
+      },
+      field: 'user_id'
     },
-    company_id: {
+    CompanyId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'company',
         key: 'id'
-      }
+      },
+      field: 'company_id'
     },
-    role: {
+    Role: {
       type: DataTypes.STRING(128),
-      allowNull: false
+      allowNull: false,
+      field: 'role'
     },
-    disable: {
+    Disable: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'disable'
     },
-    deleted: {
+    Deleted: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'deleted'
     },
-    updated_at: {
+    UpdatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'updated_at'
     },
-    created_at: {
+    CreatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'created_at'
     }
   }, {
     sequelize,

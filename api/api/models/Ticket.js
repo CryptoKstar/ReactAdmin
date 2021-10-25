@@ -6,60 +6,70 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    user_id: {
+    UserId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'user',
         key: 'id'
-      }
+      },
+      field: 'user_id'
     },
-    company_site_id: {
+    CompanySiteId: {
       type: DataTypes.BIGINT,
       allowNull: true,
       references: {
         model: 'company_site',
         key: 'id'
-      }
+      },
+      field: 'company_site_id'
     },
-    company_site_payment_method_id: {
+    CompanySitePaymentMethodId: {
       type: DataTypes.BIGINT,
       allowNull: true,
       references: {
         model: 'company_site_payment_method',
         key: 'id'
-      }
+      },
+      field: 'company_site_payment_method_id'
     },
-    alt_email: {
+    AltEmail: {
       type: DataTypes.STRING(1024),
-      allowNull: true
+      allowNull: true,
+      field: 'alt_email'
     },
-    title: {
+    Title: {
       type: DataTypes.STRING(1024),
       allowNull: false,
-      defaultValue: ""
+      defaultValue: "",
+      field: 'title'
     },
-    closed: {
+    Closed: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'closed'
     },
-    disable: {
+    Disable: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'disable'
     },
-    deleted: {
+    Deleted: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      field: 'deleted'
     },
-    updated_at: {
+    UpdatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'updated_at'
     },
-    created_at: {
+    CreatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
+      field: 'created_at'
     }
   }, {
     sequelize,
