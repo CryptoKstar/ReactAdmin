@@ -65,7 +65,6 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
-    console.log(property)
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
@@ -80,7 +79,6 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
     setSelected([]);
   };
   const manage = (params) => {
-    console.log(selected)
     if (selected.length > 1) {
       alert("Please select one company!")
     }

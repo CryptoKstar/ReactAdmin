@@ -42,7 +42,6 @@ export default function AccountPopover() {
   const logout = async (params) => {
     await axios.post(configData.API_URL + 'logout')
       .then(response => {
-        // console.log(response);
         sessionStorage.clear();
         history.push('/login', { replace: true });
       })

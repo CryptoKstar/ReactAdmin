@@ -7,82 +7,69 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    Uid: {
+    uid: {
       type: DataTypes.STRING(64),
-      allowNull: false,
-      field: 'uid'
+      allowNull: false
     },
-    CompanySiteId: {
+    company_site_id: {
       type: DataTypes.BIGINT,
       allowNull: true,
       references: {
         model: 'company_site',
         key: 'id'
-      },
-      field: 'company_site_id'
+      }
     },
-    ReplaceId: {
+    replace_id: {
       type: DataTypes.BIGINT,
       allowNull: true,
       references: {
         model: 'company_site_subscription',
         key: 'id'
-      },
-      field: 'replace_id'
+      }
     },
-    Name: {
+    name: {
       type: DataTypes.STRING(1024),
-      allowNull: true,
-      field: 'name'
+      allowNull: true
     },
-    Amount: {
+    amount: {
       type: DataTypes.FLOAT,
       allowNull: false,
-      defaultValue: 0,
-      field: 'amount'
+      defaultValue: 0
     },
-    FirstChargeAt: {
+    first_charge_at: {
       type: DataTypes.DATE,
-      allowNull: true,
-      field: 'first_charge_at'
+      allowNull: true
     },
-    LastChargeAt: {
+    last_charge_at: {
       type: DataTypes.DATE,
-      allowNull: true,
-      field: 'last_charge_at'
+      allowNull: true
     },
-    Charges: {
+    charges: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0,
-      field: 'charges'
+      defaultValue: 0
     },
-    Pause: {
+    pause: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
-      field: 'pause'
+      allowNull: true
     },
-    Data: {
+    data: {
       type: DataTypes.TEXT,
-      allowNull: true,
-      field: 'data'
+      allowNull: true
     },
-    Deleted: {
+    deleted: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
-      field: 'deleted'
+      allowNull: true
     },
-    UpdatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
-      field: 'updated_at'
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
-    CreatedAt: {
+    created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
-      field: 'created_at'
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,

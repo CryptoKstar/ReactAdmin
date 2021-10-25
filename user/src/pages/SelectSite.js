@@ -97,7 +97,6 @@ export default function User() {
   };
 
   const manage = (params) => {
-    console.log(selected)
     if (selected.length > 1) {
       alert("Please select one company!")
     }
@@ -156,10 +155,8 @@ export default function User() {
 
   const loadData = (params) => {
     if (sessionStorage.CurrentCompany) {
-      console.log(JSON.parse(sessionStorage.CurrentCompany).id)
       dataProvider.getList("company_sites", { pagination: { page: 1, perPage: 10 }, sort: { field: 'url', order: 'ASC' }, filter: { CompanyId: JSON.parse(sessionStorage.CurrentCompany).id } })
         .then(res => {
-          console.log(res);
           const data = res.data;
           const res_data = [];
           for (let i = 0; i < data.length; i++) {
@@ -174,7 +171,6 @@ export default function User() {
             }
           }
           setsites(res_data);
-          console.log(res_data);
         })
     }
     else {

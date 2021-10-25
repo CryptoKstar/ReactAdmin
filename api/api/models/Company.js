@@ -7,61 +7,55 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    MainUserId: {
+    main_user_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'user',
         key: 'id'
-      },
-      field: 'main_user_id'
+      }
     },
-    Name: {
+    name: {
       type: DataTypes.STRING(256),
-      allowNull: false,
-      field: 'name'
+      allowNull: false
     },
-    Address: {
+    address: {
       type: DataTypes.STRING(1024),
-      allowNull: true,
-      field: 'address'
+      allowNull: true
     },
-    RegNo: {
+    reg_no: {
       type: DataTypes.STRING(128),
-      allowNull: true,
-      field: 'reg_no'
+      allowNull: true
     },
-    TaxNo: {
+    tax_no: {
       type: DataTypes.STRING(128),
-      allowNull: true,
-      field: 'tax_no'
+      allowNull: true
     },
-    Suspended: {
+    country: {
+      type: DataTypes.STRING(256),
+      allowNull: true
+    },
+    suspended: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
-      field: 'suspended'
+      allowNull: true
     },
-    Data: {
+    data: {
       type: DataTypes.TEXT,
-      allowNull: true,
-      field: 'data'
+      allowNull: true
     },
-    Deleted: {
+    deleted: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
-      field: 'deleted'
+      allowNull: true
     },
-    UpdatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
-      field: 'updated_at'
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
-    CreatedAt: {
+    created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
-      field: 'created_at'
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,

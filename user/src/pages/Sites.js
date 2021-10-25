@@ -19,6 +19,7 @@ import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import SelectSite from './SelectSite'
+import { useHistory } from 'react-router-dom';
 var md5 = require('md5');
 
 const TABLE_HEAD = [
@@ -73,6 +74,7 @@ export default function User() {
   const [sites, setsites] = useState([]);
   // eslint-disable-next-line
   const [isOpen, setIsOpen] = useState(false);
+  const history = useHistory();
 
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -152,7 +154,6 @@ export default function User() {
   const siteDelete = (Id) => {
     dataProvider.delete("company_sites", { id: Id })
       .then(res => {
-        console.log(res);
         setIsOpen(false)
         alert("Success");
         loadData();
@@ -161,7 +162,8 @@ export default function User() {
   }
 
   const siteEdit = (Id) => {
-
+    const url = `/sitedetails/${Id}`;
+    history.push(url);
   }
 
 
@@ -169,7 +171,6 @@ export default function User() {
     setOpen(false);
     dataProvider.create("company_sites", { data: { Url: siteurl, Urls: siteurls, CompanyId: JSON.parse(sessionStorage.CurrentCompany).id } })
       .then(res => {
-        console.log(res);
         loadData();
         const company_id = res.data.CompanyId;
         const company_site_id = res.data.id;
@@ -177,7 +178,6 @@ export default function User() {
         const user_token = JSON.parse(sessionStorage.AccessToken).Token;
         const Token = user_token.substr(10, 10);
         const Site_Token = md5(company_id + company_site_id + token_id + Token);
-        console.log(Site_Token);
         dataProvider.create("company_site_create", { data: { UserId: JSON.parse(sessionStorage.UserData).id, CompanySiteId: res.data.id, Token: Site_Token, RestrictTo: null, ExpiresAt: null } })
           .then(res => {
           })
@@ -190,10 +190,8 @@ export default function User() {
 
   const loadData = (params) => {
     if (sessionStorage.CurrentCompany) {
-      console.log(JSON.parse(sessionStorage.CurrentCompany).id)
       dataProvider.getList("company_sites", { pagination: { page: 1, perPage: 10 }, sort: { field: 'url', order: 'ASC' }, filter: { CompanyId: JSON.parse(sessionStorage.CurrentCompany).id } })
         .then(res => {
-          console.log(res);
           const data = res.data;
           const res_data = [];
           for (let i = 0; i < data.length; i++) {
@@ -208,7 +206,6 @@ export default function User() {
             }
           }
           setsites(res_data);
-          console.log(res_data);
         })
     }
     else {
@@ -327,6 +324,7 @@ export default function User() {
                           role="checkbox"
                           selected={isItemSelected}
                           aria-checked={isItemSelected}
+
                         >
                           <TableCell padding="checkbox">
                             <Checkbox
@@ -334,14 +332,14 @@ export default function User() {
                               onChange={(event) => handleClick(event, siteurl)}
                             />
                           </TableCell>
-                          <TableCell padding="checkbox" component="th" scope="row" padding="none">
+                          <TableCell onClick={(e) => siteEdit(Id)} padding="checkbox" component="th" scope="row">
                             <Typography variant="subtitle2" noWrap>
                               {siteurl}
                             </Typography>
                           </TableCell>
-                          <TableCell align="left">{siteurls}</TableCell>
-                          <TableCell align="left">{companyname}</TableCell>
-                          <TableCell align="left">{date}</TableCell>
+                          <TableCell onClick={(e) => siteEdit(Id)} align="left">{siteurls}</TableCell>
+                          <TableCell align="left" onClick={(e) => siteEdit(Id)}> {companyname}</TableCell>
+                          <TableCell align="left" onClick={(e) => siteEdit(Id)}>{date}</TableCell>
                           <TableCell align="right">
                             <SiteMore Id={Id} siteDelete={siteDelete} siteEdit={siteEdit} />
                           </TableCell>

@@ -54,10 +54,8 @@ export default function CreateCompany() {
         onSubmit: async (values, e) => {
             dataProvider.create('companies', { data: { Name: values.name, Address: values.address, TaxNo: values.taxnumber, RegNo: values.regnumber, MainUserId: MainUserId } })
                 .then(response => {
-                    console.log(response.data);
                     dataProvider.create('user_companies', { data: { UserId: MainUserId, CompanyId: response.data.id, Role: "admin" } })
                         .then(response => {
-                            console.log(response);
                             history.push('/company')
                         })
                         .catch(error => {

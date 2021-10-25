@@ -10,19 +10,16 @@ export default function AuthSocialRegister() {
   const history = useHistory();
 
   const responseGoogle = async (response) => {
-    console.log(response);
     if (response['googleId']) {
       const user_data = response.profileObj;
       const Email = user_data.email;
       const Name = user_data.givenName + user_data.familyName;
       const GoogleID = user_data.googleId;
-      console.log(Name);
-      console.log(GoogleID);
       await axios.post(configData.API_URL + 'register', {
-        Name: Name,
-        Email: Email,
-        Password: GoogleID,
-        Confirmpassword: GoogleID
+        name: Name,
+        email: Email,
+        password: GoogleID,
+        confirmpassword: GoogleID
       })
         .then(response => {
           if (response.statusText === "Created") {

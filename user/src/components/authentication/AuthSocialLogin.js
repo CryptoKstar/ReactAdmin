@@ -10,14 +10,10 @@ export default function AuthSocialLogin() {
   const history = useHistory();
 
   const responseGoogle = async (response) => {
-    console.log(response);
     if (response['googleId']) {
       const user_data = response.profileObj;
       const Email = user_data.email;
-      const Name = user_data.givenName + user_data.familyName;
       const GoogleID = user_data.googleId;
-      console.log(Name);
-      console.log(GoogleID);
       await axios.post(configData.API_URL + 'login', {
         Email: Email,
         Password: GoogleID,

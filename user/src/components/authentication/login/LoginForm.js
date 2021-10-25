@@ -43,12 +43,10 @@ export default function LoginForm() {
         Password: values.password
       })
         .then(response => {
-          console.log(response);
           if (response.data.error) {
             alert(response.data.error)
           }
           else{
-            // console.log(response.data.user,99999);
             const user_data = response.data.user;
             const authToken = response.data.authToken;
             sessionStorage.UserData = JSON.stringify(user_data);

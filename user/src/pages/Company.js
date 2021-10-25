@@ -32,7 +32,6 @@ export default function EcommerceShop() {
   const [open_select, setOpenSelect] = useState(false);
   const [opencompany, setopencompany] = useState(false);
   const details = (item) => {
-    console.log(item);
     History.push(`/companydetails?id=${item.Id}`);
   }
 
@@ -85,7 +84,6 @@ export default function EcommerceShop() {
       id: ID
     })
       .then(response => {
-        console.log(response);
         loadData("delete");
       })
       .catch(error => {
@@ -102,7 +100,6 @@ export default function EcommerceShop() {
       filter: { MainUserId: MainUserId }
     })
       .then(response => {
-        console.log(response);
         const data = response.data;
         for (let i = 0; i < data.length; i++) {
           res_data.push({

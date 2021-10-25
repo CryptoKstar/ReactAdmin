@@ -27,7 +27,7 @@ const authentication = async (req, res, next) => {
 
 const createUser = async (req, res) => {
 	// try {
-	const flag = await User.emailexist(req.body.Email);
+	const flag = await User.emailexist(req.body.email);
 	if (flag) {
 		return false;
 	}
@@ -46,12 +46,12 @@ const createUser = async (req, res) => {
 
 const register = async (req, res) => {
 	// try {
-	if(req.body.Confirmpassword != req.body.Password){
+	if(req.body.confirmpassword != req.body.password){
 	    return res.status(201).json({ status: "Password is not matched!" })
 	}
 	else{
-		const hash = bcrypt.hashSync(req.body.Password, 16);
-		req.body = Object.assign(req.body, { Password: hash });
+		const hash = bcrypt.hashSync(req.body.password, 16);
+		req.body = Object.assign(req.body, { password: hash });
 		const user = await createUser(req, res);
 		if(!user){
 			return res.status(201).json({ status: "Same Email is exist!" })

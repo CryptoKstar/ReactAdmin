@@ -36,16 +36,16 @@ module.exports = function(models){
 		return { user: this, authToken };
 	};
 	
-	models.User.authenticate = async function(Email, Password) {
-		const user = await models.User.findOne({ where: { Email } });
-		if (user && bcrypt.compareSync(Password, user.get().Password)) {
+	models.User.authenticate = async function(email, password) {
+		const user = await models.User.findOne({ where: { email } });
+		if (user && bcrypt.compareSync(password, user.get().password)) {
 		    return user;
 		}else
 			return false;
 	};
 	
-	models.User.emailexist = async function(Email) {
-		const user = await models.User.findOne({ where: { Email } });
+	models.User.emailexist = async function(email) {
+		const user = await models.User.findOne({ where: { email } });
 		if (user) {
 		    return true;
 		}else

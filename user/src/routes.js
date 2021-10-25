@@ -18,6 +18,7 @@ import Tickets from './pages/Tickets';
 import CreateCompany from './pages/CreateCompany';
 import Transactions from './pages/Transactions';
 import CompanyDetails from './pages/CompanyDetails';
+import SiteDetails from './pages/SiteDetails';
 // import NotFound from './pages/Page404';
 
 export default function Router() {
@@ -41,6 +42,7 @@ export default function Router() {
         <Route path="/user" component={User} exact />
         <Route path="/products" component={Products} exact />
         <Route path="/blog" component={Blog} exact />
+        <Route path="/sitedetails/:id" component={SiteDetails} exact />
         {/* <Route path="*" component={NotFound} /> */}
       </DashboardLayout>
     </Switch>

@@ -13,41 +13,60 @@ import SendIcon from '@mui/icons-material/Send';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
-import querystring from "query-string"
-export default function CompanyDetails() {
+// import querystring from "query-string";
+import { useParams } from 'react-router';
+
+export default function SiteDetails() {
     const history = useHistory();
+    // eslint-disable-next-line
+    const params = useParams();
     // eslint-disable-next-line
     const [details, setdetails] = useState([]);
     const [UpdateId, setUpdateId] = useState("");
-    const [Name, setName] = useState("");
-    const [Country, setCountry] = useState("");
-    const [Address, setAddress] = useState("");
-    const [Reg, setReg] = useState("");
-    const [Tax, setTax] = useState("");
+    const [Url, setUrl] = useState("");
+    const [Urls, setUrls] = useState("");
+    const [CompanyName, setCompanyName] = useState("");
+    // eslint-disable-next-line
+    const [Date, setDate] = useState("");
+    const [SiteKey, setSiteKey] = useState("");
+    const token = JSON.parse(sessionStorage.AccessToken).Token;
 
     const httpClient = (url, options = {}) => {
         if (!options.headers) {
             options.headers = new Headers({ Accept: 'application/json' });
         }
-        const token = JSON.parse(sessionStorage.AccessToken).Token;
         options.headers.set('Authorization', `${token}`);
         return fetchUtils.fetchJson(url, options);
     };
 
     const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
-    const load = (params) => {
-        const query = querystring.parse(history.location.search);
-        const Id = query.id;
-        dataProvider.getOne('companies', { id: Id })
+    const load = () => {
+        const Id = params.id;
+        dataProvider.getOne('company_sites', { id: Id })
             .then(response => {
                 setdetails(response.data);
                 const item = response.data;
                 setUpdateId(item.id)
-                setName(item.Name)
-                setCountry(item.Name)
-                setAddress(item.Address)
-                setReg(item.RegNo)
-                setTax(item.TaxNo)
+                setUrl(item.Url)
+                setUrls(item.Urls)
+                setCompanyName(JSON.parse(sessionStorage.CurrentCompany).name)
+                setDate(item.date)
+                dataProvider.getList("company_site_create", {
+                    pagination: { page: 1, perPage: 5 },
+                    sort: { field: 'id', order: 'ASC' },
+                    filter: { CompanySiteId: Id },
+                })
+                    .then(res => {
+                        const data = res.data;
+                        for (let i = 0; i < data.length; i++) {
+                            if (data[i].CompanySiteId === item.id) {
+                                setSiteKey(data[i].Token);
+                            }
+                        }
+                    })
+                    .catch(err => {
+
+                    })
             })
             .catch(error => {
                 console.log(error)
@@ -55,7 +74,7 @@ export default function CompanyDetails() {
     }
 
     const Update = (params) => {
-        dataProvider.update('companies', { id: UpdateId, data: { Name: Name, Address: Address, RegNo: Reg, TaxNo: Tax } })
+        dataProvider.update('company_sites', { id: UpdateId, data: { Url: Url, Urls: Urls, CompanyId: JSON.parse(sessionStorage.CurrentCompany).id } })
             .then(response => {
                 alert("Success")
             })
@@ -65,11 +84,11 @@ export default function CompanyDetails() {
     }
 
     const ItemDelete = () => {
-        dataProvider.delete('companies', {
+        dataProvider.delete('company_sites', {
             id: UpdateId
         })
             .then(response => {
-                history.push('/company')
+                history.push('/sites')
             })
             .catch(error => {
                 console.log(error)
@@ -78,7 +97,7 @@ export default function CompanyDetails() {
     }
 
     const back = (params) => {
-        history.push('/company')
+        history.push('/sites')
     }
 
     useEffect(() => {
@@ -97,7 +116,7 @@ export default function CompanyDetails() {
                         onClick={(e) => back()}
                         startIcon={<Icon icon={plusFill} />}
                     >
-                        Go Company
+                        Go Sites
                     </Button>
                 </Stack>
             </Container>
@@ -118,37 +137,48 @@ export default function CompanyDetails() {
                                 <TextField
                                     fullWidth
                                     label="Company Name"
-                                    value={Name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    value={CompanyName}
+                                    disabled
+                                    onChange={(e) => setCompanyName(e.target.value)}
                                 />
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}>
                                     <TextField
                                         fullWidth
-                                        label="Conutry"
-                                        value={Country}
-                                        onChange={(e) => setCountry(e.target.value)}
+                                        label="Site Url"
+                                        value={Url}
+                                        onChange={(e) => setUrl(e.target.value)}
                                     />
                                     <TextField
                                         fullWidth
-                                        label="Address"
-                                        value={Address}
-                                        onChange={(e) => setAddress(e.target.value)}
+                                        label="Site Urls"
+                                        value={Urls}
+                                        onChange={(e) => setUrls(e.target.value)}
                                     />
                                 </Stack>
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}>
                                     <TextField
+                                        disabled
                                         fullWidth
-                                        label="Reg Number"
-                                        value={Reg}
-                                        onChange={(e) => setReg(e.target.value)}
+                                        label="Site Secret"
+                                        value={token}
                                     />
 
                                     <TextField
+                                        disabled
                                         fullWidth
-                                        label="Tax Number"
-                                        value={Tax}
-                                        onChange={(e) => setTax(e.target.value)}
+                                        label="Site Key"
+                                        value={SiteKey}
                                     />
+                                    <LoadingButton
+                                        fullWidth
+                                        size="large"
+                                        type="submit"
+                                        endIcon={<SendIcon />}
+                                        variant="outlined"
+                                        onClick={(e) => Update()}
+                                    >
+                                        ReGenerate
+                                    </LoadingButton>
                                 </Stack>
 
 

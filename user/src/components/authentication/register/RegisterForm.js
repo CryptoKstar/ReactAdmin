@@ -37,10 +37,10 @@ export default function RegisterForm() {
     validationSchema: RegisterSchema,
     onSubmit: async (values, e) => {
       await axios.post(configData.API_URL + 'register', {
-        Name: values.firstName + values.lastName,
-        Email: values.email,
-        Password: values.password,
-        Confirmpassword: values.confirmpassword
+        name: values.firstName + values.lastName,
+        email: values.email,
+        password: values.password,
+        confirmpassword: values.confirmpassword
       })
         .then(response => {
           if (response.statusText === "Created") {

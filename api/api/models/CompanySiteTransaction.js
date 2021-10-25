@@ -7,47 +7,47 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    CompanySiteId: {
+    company_site_id: {
+      type: DataTypes.BIGINT,
+      allowNull: true
+    },
+    company_site_payment_method_id: {
+      type: DataTypes.BIGINT,
+      allowNull: true
+    },
+    company_site_subscription_id: {
       type: DataTypes.BIGINT,
       allowNull: true,
-      field: 'company_site_id'
+      references: {
+        model: 'company_site_subscription',
+        key: 'id'
+      }
     },
-    CompanySitePaymentMethodId: {
-      type: DataTypes.BIGINT,
-      allowNull: true,
-      field: 'company_site_payment_method_id'
-    },
-    Type: {
+    type: {
       type: DataTypes.STRING(128),
-      allowNull: true,
-      field: 'type'
+      allowNull: true
     },
-    Status: {
+    status: {
       type: DataTypes.STRING(1024),
-      allowNull: true,
-      field: 'status'
+      allowNull: true
     },
-    Data: {
+    data: {
       type: DataTypes.TEXT,
-      allowNull: true,
-      field: 'data'
+      allowNull: true
     },
-    Deleted: {
+    deleted: {
       type: DataTypes.BOOLEAN,
-      allowNull: true,
-      field: 'deleted'
+      allowNull: true
     },
-    UpdatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
-      field: 'updated_at'
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     },
-    CreatedAt: {
+    created_at: {
       type: DataTypes.DATE,
       allowNull: false,
-      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP'),
-      field: 'created_at'
+      defaultValue: Sequelize.Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
     sequelize,
@@ -74,6 +74,13 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "company_site_payment_method_id" },
+        ]
+      },
+      {
+        name: "subscription_ref",
+        using: "BTREE",
+        fields: [
+          { name: "company_site_subscription_id" },
         ]
       },
     ]
