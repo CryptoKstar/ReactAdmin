@@ -1,24 +1,43 @@
-// import { Icon } from '@iconify/react';
-// import googleFill from '@iconify/icons-eva/google-fill';
-// import twitterFill from '@iconify/icons-eva/twitter-fill';
-// import facebookFill from '@iconify/icons-eva/facebook-fill';
-// material
 import { Stack, Divider, Typography } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
 import { FacebookLoginButton, GoogleLoginButton } from "react-social-login-buttons";
-// ----------------------------------------------------------------------
+import configData from "../../config.json";
+import axios from 'axios'
 
-export default function AuthSocial() {
-  const Histroy = useHistory();
+export default function AuthSocialLogin() {
+  const history = useHistory();
 
-  const responseGoogle = (response) => {
+  const responseGoogle = async (response) => {
     console.log(response);
     if (response['googleId']) {
-      alert("success")
-      // sessionStorage.userI
-      Histroy.push('/app');
+      const user_data = response.profileObj;
+      const Email = user_data.email;
+      const Name = user_data.givenName + user_data.familyName;
+      const GoogleID = user_data.googleId;
+      console.log(Name);
+      console.log(GoogleID);
+      await axios.post(configData.API_URL + 'login', {
+        Email: Email,
+        Password: GoogleID,
+      })
+        .then(response => {
+          if (response.data.error) {
+            alert(response.data.status)
+          }
+          else {
+            alert("success");
+            const user_data = response.data.user;
+            const authToken = response.data.authToken;
+            sessionStorage.UserData = JSON.stringify(user_data);
+            sessionStorage.AccessToken = JSON.stringify(authToken);
+            history.push('/app');
+          }
+        })
+        .catch(error => {
+          console.log('There was an error!', error);
+        });
     }
     else {
       alert("failed")

@@ -30,7 +30,7 @@ const MENU_OPTIONS = [
 ];
 export default function AccountPopover() {
   const anchorRef = useRef(null);
-  const History = useHistory();
+  const history = useHistory();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -44,7 +44,7 @@ export default function AccountPopover() {
       .then(response => {
         // console.log(response);
         sessionStorage.clear();
-        History.push('/login', { replace: true });
+        history.push('/login', { replace: true });
       })
       .catch(error => {
 

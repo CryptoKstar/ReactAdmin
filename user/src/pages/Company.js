@@ -25,6 +25,7 @@ export default function EcommerceShop() {
   // eslint-disable-next-line
   const [openFilter, setOpenFilter] = useState(false);
   const [Companydata, setCompanydata] = useState([]);
+  const History = useHistory();
   // eslint-disable-next-line
   const [open, setOpen] = useState(false);
   // eslint-disable-next-line
@@ -32,6 +33,7 @@ export default function EcommerceShop() {
   const [opencompany, setopencompany] = useState(false);
   const details = (item) => {
     console.log(item);
+    History.push(`/companydetails?id=${item.Id}`);
   }
 
   const handleOpenSelect = (item) => {
@@ -49,7 +51,6 @@ export default function EcommerceShop() {
     setopencompany(false);
   };
 
-  const History = useHistory();
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
       options.headers = new Headers({ Accept: 'application/json' });
@@ -75,19 +76,6 @@ export default function EcommerceShop() {
   });
   // eslint-disable-next-line
   const { resetForm, handleSubmit } = formik;
-
-  // const handleOpenFilter = () => {
-  //   setOpenFilter(true);
-  // };
-
-  // const handleCloseFilter = () => {
-  //   setOpenFilter(false);
-  // };
-
-  // const handleResetFilter = () => {
-  //   handleSubmit();
-  //   resetForm();
-  // };
   const NewCompany = (params) => {
     History.push('/newcompany');
   }

@@ -96,6 +96,7 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
         }
       }
       sessionStorage.CurrentCompany = JSON.stringify({ id: selected[0], name: name })
+      sessionStorage.removeItem('CurrentSite');
       handleOpenSelect()
     }
   }
