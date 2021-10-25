@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import homeFill from '@iconify/icons-eva/home-fill';
 import personFill from '@iconify/icons-eva/person-fill';
 import settings2Fill from '@iconify/icons-eva/settings-2-fill';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material';
 import MenuPopover from '../../components/MenuPopover';
@@ -30,7 +30,7 @@ const MENU_OPTIONS = [
 ];
 export default function AccountPopover() {
   const anchorRef = useRef(null);
-  const navigate = useNavigate();
+  const History = useHistory();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -44,7 +44,7 @@ export default function AccountPopover() {
       .then(response => {
         // console.log(response);
         sessionStorage.clear();
-        navigate('/login', { replace: true });
+        History.push('/login', { replace: true });
       })
       .catch(error => {
 

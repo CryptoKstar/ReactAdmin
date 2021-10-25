@@ -5,7 +5,7 @@ import Page from '../components/Page';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { ProductSort } from '../components/_dashboard/products';
 import { Button, Container, Stack, Typography, CardActionArea, CardActions } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
@@ -49,7 +49,7 @@ export default function EcommerceShop() {
     setopencompany(false);
   };
 
-  const navigate = useNavigate();
+  const History = useHistory();
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
       options.headers = new Headers({ Accept: 'application/json' });
@@ -89,7 +89,7 @@ export default function EcommerceShop() {
   //   resetForm();
   // };
   const NewCompany = (params) => {
-    navigate('/newcompany', { replace: true });
+    History.push('/newcompany');
   }
 
   const ItemDelete = (ID) => {

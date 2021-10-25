@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import axios from 'axios'
 import { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Icon } from '@iconify/react';
 import eyeFill from '@iconify/icons-eva/eye-fill';
@@ -22,7 +22,7 @@ import configData from "../../../config.json";
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
-  const navigate = useNavigate();
+  const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
@@ -53,7 +53,7 @@ export default function LoginForm() {
             const authToken = response.data.authToken;
             sessionStorage.UserData = JSON.stringify(user_data);
             sessionStorage.AccessToken = JSON.stringify(authToken);
-            navigate('/app', { replace: true });
+            history.push('/app');
           }
         })
         .catch(error => {

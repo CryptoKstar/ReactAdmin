@@ -1,7 +1,7 @@
 // import { useState } from 'react';
 import Page from '../components/Page';
 import { Container, Stack, Typography, CardActionArea, TextField } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
@@ -16,7 +16,7 @@ import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
 export default function CreateCompany() {
-    const navigate = useNavigate();
+    const history = useHistory();
     const RegisterSchema = Yup.object().shape({
         name: Yup.string()
             .min(2, 'Too Short!')
@@ -58,7 +58,7 @@ export default function CreateCompany() {
                     dataProvider.create('user_companies', { data: { UserId: MainUserId, CompanyId: response.data.id, Role: "admin" } })
                         .then(response => {
                             console.log(response);
-                            navigate('/company', { replace: true })
+                            history.push('/company')
                         })
                         .catch(error => {
                             console.log(error)

@@ -4,21 +4,21 @@
 // import facebookFill from '@iconify/icons-eva/facebook-fill';
 // material
 import { Stack, Divider, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
 import { FacebookLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 // ----------------------------------------------------------------------
 
 export default function AuthSocial() {
-  const navigate = useNavigate();
+  const Histroy = useHistory();
 
   const responseGoogle = (response) => {
     console.log(response);
     if (response['googleId']) {
       alert("success")
       // sessionStorage.userI
-      navigate('/app', { replace: true });
+      Histroy.push('/app');
     }
     else {
       alert("failed")

@@ -1,7 +1,9 @@
-import { Navigate, useRoutes } from 'react-router-dom';
+
+
+import { Switch, Route } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
-import LogoOnlyLayout from './layouts/LogoOnlyLayout';
+// import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 //
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -17,49 +19,71 @@ import Subscriptions from './pages/Subscriptions';
 import Tickets from './pages/Tickets';
 import CreateCompany from './pages/CreateCompany';
 import Transactions from './pages/Transactions';
-import NotFound from './pages/Page404';
+// import NotFound from './pages/Page404';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  return useRoutes([
-    {
-      path: '/',
-      element: <Login />,
-      children: [
-      ]
-    },
-    {
-      path: '/',
-      element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to="/app" replace /> },
-        { path: 'app', element: <DashboardApp /> },
-        { path: 'company', element: <Company /> },
-        { path: 'newcompany', element: <CreateCompany /> },
-        { path: 'help', element: <Help /> },
-        { path: 'tickets', element: <Tickets /> },
-        { path: 'transactions', element: <Transactions /> },
-        { path: 'platform', element: <Platform /> },
-        { path: 'sites', element: <Sites /> },
-        { path: 'subscriptions', element: <Subscriptions /> },
-        { path: 'user', element: <User /> },
-        { path: 'products', element: <Products /> },
-        { path: 'blog', element: <Blog /> },
-        
-      ]
-    },
-    {
-      path: '/',
-      element: <LogoOnlyLayout />,
-      children: [
-        { path: 'login', element: <Login /> },
-        { path: 'register', element: <Register /> },
-        { path: '404', element: <NotFound /> },
-        { path: '/', element: <Navigate to="/dashboard" /> },
-        { path: '*', element: <Navigate to="/404" /> }
-      ]
-    },
-    { path: '*', element: <Navigate to="/404" replace /> }
-  ]);
+  // return useRoutes([
+  //   {
+  //     path: '/',
+  //     element: <Login />,
+  //     children: [
+  //     ]
+  //   },
+  //   {
+  //     path: '/',
+  //     element: <DashboardLayout />,
+  //     children: [
+  //       // { element: <Navigate to="/app" replace /> },
+  //       { path: 'app', element: <DashboardApp /> },
+  //       { path: 'company', element: <Company /> },
+  //       { path: 'newcompany', element: <CreateCompany /> },
+  //       { path: 'help', element: <Help /> },
+  //       { path: 'tickets', element: <Tickets /> },
+  //       { path: 'transactions', element: <Transactions /> },
+  //       { path: 'platform', element: <Platform /> },
+  //       { path: 'sites', element: <Sites /> },
+  //       { path: 'subscriptions', element: <Subscriptions /> },
+  //       { path: 'user', element: <User /> },
+  //       { path: 'products', element: <Products /> },
+  //       { path: 'blog', element: <Blog /> }
+  //     ]
+  //   },
+  //   // {
+  //   //   path: '/',
+  //   //   element: <LogoOnlyLayout />,
+  //   //   children: [
+  //   //     { path: 'login', element: <Login /> },
+  //   //     { path: 'register', element: <Register /> },
+  //   //     { path: '404', element: <NotFound /> },
+  //   //     // { path: '/', element: <Navigate to="/dashboard" /> },
+  //   //     // { path: '*', element: <Navigate to="/404" /> }
+  //   //   ]
+  //   // },
+  //   // { path: '*', element: <Navigate to="/404" replace /> }
+  // ]);
+  return (
+    // <BrowserRouter>
+    <Switch>
+      <Route path="/" component={Login} exact />
+      <DashboardLayout>
+        <Route path="/app" component={DashboardApp} exact />
+        <Route path="/company" component={Company} exact />
+        <Route path="/newcompany" component={CreateCompany} exact />
+        <Route path="/help" component={Help} exact />
+        <Route path="/tickets" component={Tickets} exact />
+        <Route path="/transactions" component={Transactions} exact />
+        <Route path="/platform" component={Platform} exact />
+        <Route path="/sites" component={Sites} exact />
+        <Route path="/subscriptions" component={Subscriptions} exact />
+        <Route path="/user" component={User} exact />
+        <Route path="/products" component={Products} exact />
+        <Route path="/blog" component={Blog} exact />
+        <Route path="/register" component={Register} exact />
+        {/* <Route path="*" component={NotFound} /> */}
+      </DashboardLayout>
+    </Switch>
+    // </BrowserRouter>
+  )
 }
