@@ -1,53 +1,79 @@
-import { useEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import { Icon } from '@iconify/react';
-import Page from '../components/Page';
+import { filter } from 'lodash';
+import { forwardRef, useEffect, useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { ProductSort } from '../components/_dashboard/products';
-import { Button, Container, Stack, Typography, CardActionArea, CardActions } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { Card, Button, Table, Stack, Checkbox, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
+import Page from '../components/Page';
+import Scrollbar from '../components/Scrollbar';
+import SearchNotFound from '../components/SearchNotFound';
+import { UserListHead, UserListToolbar } from '../components/_dashboard/user';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Grid from '@mui/material/Grid';
-import { Box } from '@mui/material';
-import Label from '../components/Label';
-import SelecetCompany from './SelecetCompany';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import { useHistory } from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { Icon } from '@iconify/react';
 
-export default function PaymentMethods() {
-  // eslint-disable-next-line
-  const [openFilter, setOpenFilter] = useState(false);
-  const [Companydata, setCompanydata] = useState([]);
-  const History = useHistory();
-  // eslint-disable-next-line
-  const [open, setOpen] = useState(false);
-  // eslint-disable-next-line
-  const [open_select, setOpenSelect] = useState(false);
-  const [opencompany, setopencompany] = useState(false);
-  const details = (item) => {
-    History.push(`/companydetails?id=${item.Id}`);
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+const TABLE_HEAD = [
+  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'amount', label: 'Amount', alignRight: false },
+  { id: 'uid', label: 'UID', alignRight: false },
+  { id: 'date', label: 'Date', alignRight: false },
+];
+
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
   }
-
-  const handleOpenSelect = (item) => {
-    setOpenSelect(true);
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
   }
+  return 0;
+}
 
-  const dialogCompany = (params) => {
-    setopencompany(true);
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function applySortFilter(array, comparator, query) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  if (query) {
+    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
+  return stabilizedThis.map((el) => el[0]);
+}
 
+export default function User() {
+  const [page, setPage] = useState(0);
+  const [order, setOrder] = useState('asc');
+  const [selected, setSelected] = useState([]);
+  const [orderBy, setOrderBy] = useState('name');
+  const [filterName, setFilterName] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sites, setsites] = useState([]);
+  // eslint-disable-next-line
+  const [isOpen, setIsOpen] = useState(false);
+  const history = useHistory();
+  const [AlertMessage, setAlertMessage] = useState("success");
+  const [AlertType, setAlertType] = useState("success");
+  const [AlertOpen, setAlertOpen] = useState(false);
 
-  const handleClose = () => {
-    setOpen(false)
-    setOpenSelect(false)
-    setopencompany(false);
+  const AlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlertOpen(false);
   };
 
   const httpClient = (url, options = {}) => {
@@ -59,191 +85,205 @@ export default function PaymentMethods() {
     return fetchUtils.fetchJson(url, options);
   };
   const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
-  const MainUserId = JSON.parse(sessionStorage.AccessToken).UserId
+  // const MainUserId = JSON.parse(sessionStorage.AccessToken).UserId
 
-  const formik = useFormik({
-    initialValues: {
-      gender: '',
-      category: '',
-      colors: '',
-      priceRange: '',
-      rating: ''
-    },
-    onSubmit: () => {
-      setOpenFilter(false);
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = sites.map((n) => n.siteurl);
+      setSelected(newSelecteds);
+      return;
     }
-  });
-  // eslint-disable-next-line
-  const { resetForm, handleSubmit } = formik;
-  const NewCompany = (params) => {
-    History.push('/newcompany');
+    setSelected([]);
+  };
+
+  const handleClick = (event, siteurl) => {
+    const selectedIndex = selected.indexOf(siteurl);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, siteurl);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+    setSelected(newSelected);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleFilterByName = (event) => {
+    setFilterName(event.target.value);
+  };
+
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - sites.length) : 0;
+
+  const filteredUsers = applySortFilter(sites, getComparator(order, orderBy), filterName);
+
+  const isUserNotFound = filteredUsers.length === 0;
+  const siteEdit = (Id) => {
+    const url = `/subscriptionsdetails/${Id}`;
+    history.push(url);
   }
 
-  const ItemDelete = (ID) => {
-    dataProvider.delete('companies', {
-      id: ID
-    })
-      .then(response => {
-        loadData("delete");
-      })
-      .catch(error => {
-        console.log(error)
-      });
-
+  const createpayment = (params) => {
+    history.push('/newpayment');
   }
+  
+  const loadData = (params) => {
+    if (sessionStorage.CurrentCompany) {
+      dataProvider.getList("company_site_subscriptions", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: { CompanySiteId: 1 } })
+        .then(res => {
+          const data = res.data;
+          const res_data = [];
+          for (let i = 0; i < data.length; i++) {
+            res_data.push({
+              Id: data[i].id,
+              name: data[i].Name,
+              amount: data[i].Amount,
+              UID: data[i].Uid,
+              date: data[i].FirstChargeAt,
+            })
+          }
+          setsites(res_data);
+        })
+    }
+    else {
+      setAlertMessage("Please Select Company");
+      setAlertType("error");
+      setAlertOpen(true);
 
-  const loadData = (param) => {
-    const res_data = [];
-    dataProvider.getList('companies', {
-      pagination: { page: 1, perPage: 5 },
-      sort: { field: 'name', order: 'ASC' },
-      filter: { MainUserId: MainUserId }
-    })
-      .then(response => {
-        const data = response.data;
-        for (let i = 0; i < data.length; i++) {
-          res_data.push({
-            Id: data[i].id,
-            Name: data[i].Name,
-            RegNo: data[i].RegNo,
-            TaxNo: data[i].TaxNo,
-            Address: data[i].Address
-          })
-        }
-        if (res_data.length === 0) {
-          alert("Please create New Company")
-        }
-        else if (param === "delete") {
-          sessionStorage.CurrentCompany = JSON.stringify({ id: res_data[0].Id, name: res_data[0].Name })
-        }
-        else if (res_data.length === 1) {
-          sessionStorage.CurrentCompany = JSON.stringify({ id: res_data[0].Id, name: res_data[0].Name })
-        }
-        setCompanydata(res_data)
-      })
-      .catch(error => {
-        console.log(error)
-      });
+    }
   }
   useEffect(() => {
-    loadData("defalut");
-    // eslint-disable-next-line  
+    loadData();
+    // eslint-disable-next-line
   }, [])
 
   return (
-    <Page title="PaymentMethods | Holest">
+    <Page title="Sites | Holest">
+
+      <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
+        <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+          {AlertMessage}
+        </Alert>
+      </Snackbar>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Payment Methods
           </Typography>
-          <Typography variant="h5" gutterBottom>
-            Current Company : {sessionStorage.CurrentCompany ? JSON.parse(sessionStorage.CurrentCompany).name : "No selected"}
-          </Typography>
-
           <Button
             variant="outlined"
-            onClick={(e) => dialogCompany()}
+            onClick={(e) => createpayment()}
             startIcon={<Icon icon={plusFill} />}
           >
-            Select Company
+            Create PaymentMethod
           </Button>
-
-          <Dialog open={opencompany} onClose={handleClose} fullWidth={true} maxWidth="md">
-            <DialogTitle>Please select Company</DialogTitle>
-            <DialogContent>
-              <SelecetCompany USERLIST={Companydata} handleOpenSelect={handleOpenSelect} />
-            </DialogContent>
-          </Dialog>
-
-          <Button
-            variant="contained"
-            onClick={(e) => NewCompany(e)}
-            startIcon={<Icon icon={plusFill} />}
-          >
-            New Payment Methods
-          </Button>
-
         </Stack>
-        <Stack
-          direction="row"
-          flexWrap="wrap-reverse"
-          alignItems="center"
-          justifyContent="flex-end"
-          sx={{ mb: 5 }}
-        >
-          <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-            {/* <ProductFilterSidebar
-              formik={formik}
-              isOpenFilter={openFilter}
-              onResetFilter={handleResetFilter}
-              onOpenFilter={handleOpenFilter}
-              onCloseFilter={handleCloseFilter}
-            /> */}
-            <ProductSort />
-          </Stack>
-        </Stack>
-        {/* <CustomCompany products={Companydata} /> */}
-        <Grid container spacing={2}>
 
-          {
-            Companydata.map((item, key) => (
-              <Grid xs={4} paddingRight={2} paddingBottom={5} key={key}>
-                <Box sx={{ position: 'relative' }}>
-                  <Label
-                    variant="filled"
-                    color={'info'}
-                    sx={{
-                      zIndex: 9,
-                      top: 16,
-                      right: 16,
-                      position: 'absolute',
-                      textTransform: 'uppercase'
-                    }}
-                  >
-                    Company
-                  </Label>
+        <Card>
+          <UserListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+          />
 
-                  <Card>
-                    <CardActionArea onClick={(e) => details(item)}>
-                      <CardMedia
-                        component="img"
-                        height="200"
-                        image="/static/default.png"
-                        alt="green iguana"
-                      />
-                      <CardContent>
-                        <Typography gutterBottom variant="h5" component="div" >
-                          {item.Name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Label variant="ghost" color={'success'}>Address</Label>
-                          <Label variant="ghost" color={'success'}>{item.Address}</Label>
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Label variant="ghost" color={'error'}>RegNo</Label>
-                          <Label variant="ghost" color={'error'}>{item.RegNo}</Label>
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Label variant="ghost" color={'info'}>TaxNo</Label>
-                          <Label variant="ghost" color={'info'}>{item.TaxNo}</Label>
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                    <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Button size="small" color="primary" onClick={(e) => details(item)}>
-                        Manage
-                      </Button>
-                      <Button size="small" color="primary" onClick={(e) => ItemDelete(item.Id)}>
-                        Delete
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Box>
-              </Grid>
-            ))
-          }
-        </Grid>
+          <Scrollbar>
+            <TableContainer sx={{ minWidth: 800 }}>
+              <Table>
+                <UserListHead
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={sites.length}
+                  numSelected={selected.length}
+                  onRequestSort={handleRequestSort}
+                  onSelectAllClick={handleSelectAllClick}
+                />
+                <TableBody>
+                  {filteredUsers
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, key) => {
+                      const { Id, name, amount, UID, date } = row;
+                      const isItemSelected = selected.indexOf(Id) !== -1;
+
+                      return (
+                        <TableRow
+                          hover
+                          key={key}
+                          tabIndex={-1}
+                          role="checkbox"
+                          selected={isItemSelected}
+                          aria-checked={isItemSelected}
+
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={isItemSelected}
+                              onChange={(event) => handleClick(event, Id)}
+                            />
+                          </TableCell>
+                          <TableCell onClick={(e) => siteEdit(Id)} component="th" scope="row">
+                            <Typography variant="subtitle2" noWrap>
+                              {name}
+                            </Typography>
+                          </TableCell>
+                          <TableCell onClick={(e) => siteEdit(Id)} align="left">{amount}</TableCell>
+                          <TableCell align="left" onClick={(e) => siteEdit(Id)}> {UID}</TableCell>
+                          <TableCell align="left" onClick={(e) => siteEdit(Id)}>{date}</TableCell>
+                          {/* <TableCell align="right">
+                            <SiteMore Id={Id} siteEdit={siteEdit} />
+                          </TableCell> */}
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
+                  )}
+                </TableBody>
+                {isUserNotFound && (
+                  <TableBody>
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <SearchNotFound searchQuery={filterName} />
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+              </Table>
+            </TableContainer>
+          </Scrollbar>
+
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={sites.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Card>
       </Container>
     </Page>
   );

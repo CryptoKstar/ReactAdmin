@@ -5,9 +5,25 @@ import FacebookLogin from 'react-facebook-login';
 import { FacebookLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import configData from "../../config.json";
 import axios from 'axios'
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { forwardRef, useState } from 'react';
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function AuthSocialRegister() {
   const history = useHistory();
+  const [AlertMessage, setAlertMessage] = useState("success");
+  const [AlertType, setAlertType] = useState("success");
+  const [open, setOpen] = useState(false);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const responseGoogle = async (response) => {
     if (response['googleId']) {
@@ -15,6 +31,8 @@ export default function AuthSocialRegister() {
       const Email = user_data.email;
       const Name = user_data.givenName + user_data.familyName;
       const GoogleID = user_data.googleId;
+
+
       await axios.post(configData.API_URL + 'register', {
         Name: Name,
         Email: Email,
@@ -24,10 +42,12 @@ export default function AuthSocialRegister() {
         .then(response => {
           if (response.statusText === "Created") {
             if (response.data.status) {
-              alert(response.data.status)
+              // response.data.status)
+              setAlertMessage(response.data.status);
+              setAlertType("error");
+              setOpen(true);
             }
             else {
-              alert("success");
               history.push('/login');
             }
           }
@@ -37,7 +57,9 @@ export default function AuthSocialRegister() {
         });
     }
     else {
-      alert("failed")
+      setAlertMessage("Users closed Google Register Window!");
+      setAlertType("error");
+      setOpen(true);
     }
   }
 
@@ -49,6 +71,11 @@ export default function AuthSocialRegister() {
   return (
     <>
       <Stack direction="row" spacing={4}>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity={AlertType} sx={{ width: '100%' }}>
+            {AlertMessage}
+          </Alert>
+        </Snackbar>
         <GoogleLoginButton>
           <GoogleLogin
             className="GoogleLogin"

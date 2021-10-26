@@ -1,6 +1,6 @@
 import { filter } from 'lodash';
 import { Icon } from '@iconify/react';
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Table, Stack, Button, Checkbox, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
@@ -20,7 +20,13 @@ import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import SelectSite from './SelectSite'
 import { useHistory } from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 var md5 = require('md5');
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const TABLE_HEAD = [
   { id: 'siteurl', label: 'Site Url', alignRight: false },
@@ -75,7 +81,16 @@ export default function User() {
   // eslint-disable-next-line
   const [isOpen, setIsOpen] = useState(false);
   const history = useHistory();
+  const [AlertMessage, setAlertMessage] = useState("success");
+  const [AlertType, setAlertType] = useState("success");
+  const [AlertOpen, setAlertOpen] = useState(false);
 
+  const AlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlertOpen(false);
+  };
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
       options.headers = new Headers({ Accept: 'application/json' });
@@ -155,7 +170,9 @@ export default function User() {
     dataProvider.delete("company_sites", { id: Id })
       .then(res => {
         setIsOpen(false)
-        alert("Success");
+        setAlertMessage("Selected site is deleted correctly!");
+        setAlertType("success");
+        setAlertOpen(true);
         loadData();
 
       })
@@ -184,7 +201,9 @@ export default function User() {
           .catch(err => {
 
           })
-        alert("Site is added in the company")
+        setAlertMessage("Site is added in the company");
+        setAlertType("success");
+        setAlertOpen(true);
       })
   }
 
@@ -205,11 +224,25 @@ export default function User() {
               })
             }
           }
+          if(res_data.length === 0){
+            setAlertMessage("Please create Sites!");
+            setAlertType("info");
+            setAlertOpen(true);
+          }
+          else{
+            if(!sessionStorage.CurrentSite){
+              setAlertMessage("Please select sites!");
+              setAlertType("info");
+              setAlertOpen(true);
+            }
+          }
           setsites(res_data);
         })
     }
     else {
-      alert("Please Select Company")
+      setAlertMessage("Please Select Company");
+      setAlertType("info");
+      setAlertOpen(true);
     }
   }
   useEffect(() => {
@@ -219,6 +252,11 @@ export default function User() {
 
   return (
     <Page title="Sites | Holest">
+      <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
+        <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+          {AlertMessage}
+        </Alert>
+      </Snackbar>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>

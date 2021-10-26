@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import axios from 'axios'
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import eyeFill from '@iconify/icons-eva/eye-fill';
@@ -9,11 +9,25 @@ import { useHistory } from 'react-router-dom';
 import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import configData from "../../../config.json";
-
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 export default function RegisterForm() {
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const [showconfirmpassword, setshowconfirmpassword] = useState(false);
+  const [AlertMessage, setAlertMessage] = useState("success");
+  const [AlertType, setAlertType] = useState("success");
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -45,10 +59,12 @@ export default function RegisterForm() {
         .then(response => {
           if (response.statusText === "Created") {
             if (response.data.status) {
-              alert(response.data.status)
+              setAlertMessage(response.data.status);
+              setAlertType("error");
+              setOpen(true);
             }
             else {
-              alert("success");
+              // alert("success");
               history.push('/login', { replace: true });
             }
           }
@@ -63,6 +79,11 @@ export default function RegisterForm() {
 
   return (
     <FormikProvider value={formik}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={AlertType} sx={{ width: '100%' }}>
+          {AlertMessage}
+        </Alert>
+      </Snackbar>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>

@@ -1,5 +1,5 @@
 import { filter } from 'lodash';
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 // material
 import {
   Card,
@@ -18,11 +18,17 @@ import {
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
-import NavSection from '../components/NavSection';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 
 const TABLE_HEAD = [
   { id: 'Id', label: 'ID', alignRight: false },
@@ -71,6 +77,17 @@ export default function User() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sites, setsites] = useState([]);
+  const [AlertMessage, setAlertMessage] = useState("success");
+  const [AlertType, setAlertType] = useState("success");
+  const [AlertOpen, setAlertOpen] = useState(false);
+
+  const AlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlertOpen(false);
+  };
+
 
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -99,13 +116,19 @@ export default function User() {
 
   const manage = (params) => {
     if (selected.length > 1) {
-      alert("Please select one company!")
+      setAlertMessage("Please select one company!");
+      setAlertType("error");
+      setAlertOpen(true);
     }
     else if (selected.length === 0) {
-      alert("Please select one comapny!")
+      setAlertMessage("Please select one company!");
+      setAlertType("error");
+      setAlertOpen(true);
     }
     else {
-      alert("The company is selected!")
+      setAlertMessage("The site is selected!");
+      setAlertType("success");
+      setAlertOpen(true);
       let name = "";
       for (let i = 0; i < sites.length; i++) {
         if (sites[i].Id === selected[0]) {
@@ -163,7 +186,7 @@ export default function User() {
           for (let i = 0; i < data.length; i++) {
             if (data[i].CompanyId === JSON.parse(sessionStorage.CurrentCompany).id) {
               res_data.push({
-                Id : data[i].id,
+                Id: data[i].id,
                 siteurl: data[i].Url,
                 siteurls: data[i].Urls,
                 companyname: JSON.parse(sessionStorage.CurrentCompany).name,
@@ -175,7 +198,9 @@ export default function User() {
         })
     }
     else {
-      alert("Please Select Company")
+      setAlertMessage("Please Select Company");
+      setAlertType("info");
+      setAlertOpen(true);
     }
   }
   useEffect(() => {
@@ -185,6 +210,11 @@ export default function User() {
 
   return (
     <Page title="Sites | Holest">
+      <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
+        <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+          {AlertMessage}
+        </Alert>
+      </Snackbar>
       <Container>
         <Card>
           <UserListToolbar

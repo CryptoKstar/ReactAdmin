@@ -22,6 +22,7 @@ import SiteDetails from './pages/SiteDetails';
 import SubscriptionsDetails from './pages/SubscriptionsDetails';
 import TransactionsDetails from './pages/TransactionsDetails';
 import PaymentMethods from './pages/PaymentMethods';
+import CreatePayment from './pages/CreatePayment';
 
 // import NotFound from './pages/Page404';
 
@@ -36,6 +37,7 @@ export default function Router() {
         <Route path="/companydetails" component={CompanyDetails} exact />
         <Route path="/company" component={Company} exact />
         <Route path="/newcompany" component={CreateCompany} exact />
+        <Route path="/newpayment" component={CreatePayment} exact />
         <Route path="/help" component={Help} exact />
         <Route path="/tickets" component={Tickets} exact />
         <Route path="/transactions" component={Transactions} exact />

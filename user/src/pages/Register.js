@@ -55,11 +55,11 @@ export default function Register() {
       <Container>
         <ContentStyle>
           <Box sx={{ mb: 5 }}>
-            <Iframe height="90px" overflow="hidden" frameBorder="0" url="./static/landing_top.html" />
+            <Iframe height="50px" overflow="hidden" frameBorder="0" url="./static/landing_top.html" />
           </Box>
           <AuthSocialRegister />
           <RegisterForm />
-          <Iframe height="90px" overflow="hidden" frameBorder="0" url="./static/landing_bottom.html" />
+          <Iframe height="50px" overflow="hidden" frameBorder="0" url="./static/landing_bottom.html" />
           {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;
             <Link underline="always" sx={{ color: 'text.primary' }}>

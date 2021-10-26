@@ -4,11 +4,8 @@ import { Icon } from '@iconify/react';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
-// material
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
-
-// ----------------------------------------------------------------------
 
 const ListItemStyle = styled((props) => <ListItemButton disableGutters {...props} />)(
   ({ theme }) => ({
@@ -66,8 +63,6 @@ const ListItemIconStyle = styled(ListItemIcon)({
   justifyContent: 'center'
 });
 
-// ----------------------------------------------------------------------
-
 NavItem.propTypes = {
   item: PropTypes.object,
   active: PropTypes.func
@@ -78,6 +73,7 @@ function NavItem({ item, active }) {
   const isActiveRoot = active(item.path);
   const { title, path, icon, info, children } = item;
   const [open, setOpen] = useState(isActiveRoot);
+   // eslint-disable-next-line
   const [display, setdisplay] = useState("display : none");
 
   const handleOpen = () => {
@@ -90,17 +86,6 @@ function NavItem({ item, active }) {
     bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
     '&:before': { display: 'block' }
   };
-  const activeSubStyle = {
-    color: 'primary.main',
-    fontWeight: 'fontWeightMedium',
-    bgcolor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-    '&:before': { display: 'block' }
-  };
-
-  // const activeSubStyle = {
-  //   color: 'text.primary',
-  //   fontWeight: 'fontWeightMedium'
-  // };
 
   if (children) {
     return (
@@ -128,7 +113,7 @@ function NavItem({ item, active }) {
             {children.map((item) => {
 
               const { title, path, icon } = item;
-              const isActiveSub = active(path);
+              // const isActiveSub = active(path);
               if (path === "/paymentmethods") {
                 return (
                   <ListSubtyle

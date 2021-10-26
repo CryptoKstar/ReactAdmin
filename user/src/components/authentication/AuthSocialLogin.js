@@ -5,9 +5,25 @@ import FacebookLogin from 'react-facebook-login';
 import { FacebookLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import configData from "../../config.json";
 import axios from 'axios'
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { forwardRef, useState } from 'react';
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function AuthSocialLogin() {
   const history = useHistory();
+  const [AlertMessage, setAlertMessage] = useState("success");
+  const [AlertType, setAlertType] = useState("success");
+  const [open, setOpen] = useState(false);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const responseGoogle = async (response) => {
     if (response['googleId']) {
@@ -20,10 +36,11 @@ export default function AuthSocialLogin() {
       })
         .then(response => {
           if (response.data.error) {
-            alert(response.data.status)
+            setAlertMessage(response.data.status);
+            setAlertType("error");
+            setOpen(true);
           }
           else {
-            alert("success");
             const user_data = response.data.user;
             const authToken = response.data.authToken;
             sessionStorage.UserData = JSON.stringify(user_data);
@@ -36,7 +53,10 @@ export default function AuthSocialLogin() {
         });
     }
     else {
-      alert("failed")
+      setAlertMessage("Users closed Google Register Window!");
+      setAlertType("error");
+      setOpen(true);
+
     }
   }
 
@@ -48,11 +68,17 @@ export default function AuthSocialLogin() {
   return (
     <>
       <Stack direction="row" spacing={4}>
-        <GoogleLoginButton>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity={AlertType} sx={{ width: '100%' }}>
+            {AlertMessage}
+          </Alert>
+        </Snackbar>
+        <GoogleLoginButton className = "GoogleLoginButton">
           <GoogleLogin
             className="GoogleLogin"
             clientId={Google_clientId}
             buttonText="Sign In Google"
+            style = {{backgroundColor : "rgb(33 43 54)"}}
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
             icon={false}

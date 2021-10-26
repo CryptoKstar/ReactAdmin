@@ -55,12 +55,12 @@ export default function Login() {
       <Container maxWidth="sm">
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
-            <Iframe height="90px" overflow = "hidden" frameBorder = "0" url="./static/landing_top.html" />
+            <Iframe height="50px" overflow = "hidden" frameBorder = "0" url="./static/landing_top.html" />
           </Stack>
           <AuthSocialLogin />
 
           <LoginForm />
-          <Iframe height="90px" overflow = "hidden" frameBorder = "0" url="./static/landing_bottom.html" />
+          <Iframe height="50px" overflow = "hidden" frameBorder = "0" url="./static/landing_bottom.html" />
 
           <MHidden width="smUp">
             <Typography variant="body2" align="center" sx={{ mt: 3 }}>

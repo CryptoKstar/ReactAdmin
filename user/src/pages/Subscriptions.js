@@ -1,15 +1,21 @@
 import { filter } from 'lodash';
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { Card, Table, Stack, Checkbox, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar } from '../components/_dashboard/user';
-import SiteMore from './sitesbuttons'
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import { useHistory } from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'amount', label: 'Amount', alignRight: false },
@@ -58,6 +64,16 @@ export default function User() {
   // eslint-disable-next-line
   const [isOpen, setIsOpen] = useState(false);
   const history = useHistory();
+  const [AlertMessage, setAlertMessage] = useState("success");
+  const [AlertType, setAlertType] = useState("success");
+  const [AlertOpen, setAlertOpen] = useState(false);
+
+  const AlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlertOpen(false);
+  };
 
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -144,7 +160,10 @@ export default function User() {
         })
     }
     else {
-      alert("Please Select Company")
+      setAlertMessage("Please Select Company");
+      setAlertType("error");
+      setAlertOpen(true);
+
     }
   }
   useEffect(() => {
@@ -154,6 +173,12 @@ export default function User() {
 
   return (
     <Page title="Sites | Holest">
+
+      <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
+        <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+          {AlertMessage}
+        </Alert>
+      </Snackbar>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>

@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import axios from 'axios'
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Icon } from '@iconify/react';
@@ -18,12 +18,25 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import configData from "../../../config.json";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
-// ----------------------------------------------------------------------
-
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 export default function LoginForm() {
   const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
+  const [AlertMessage, setAlertMessage] = useState("success");
+  const [AlertType, setAlertType] = useState("success");
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -44,9 +57,12 @@ export default function LoginForm() {
       })
         .then(response => {
           if (response.data.error) {
-            alert(response.data.error)
+            setAlertMessage(response.data.error);
+            setAlertType("error");
+            setOpen(true);
+
           }
-          else{
+          else {
             const user_data = response.data.user;
             const authToken = response.data.authToken;
             sessionStorage.UserData = JSON.stringify(user_data);
@@ -68,12 +84,18 @@ export default function LoginForm() {
 
   return (
     <FormikProvider value={formik}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={AlertType} sx={{ width: '100%' }}>
+          {AlertMessage}
+        </Alert>
+      </Snackbar>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
           <TextField
             fullWidth
             autoComplete="username"
             type="email"
+            style = {{back : 'white'}}
             label="Email address"
             {...getFieldProps('email')}
             error={Boolean(touched.email && errors.email)}

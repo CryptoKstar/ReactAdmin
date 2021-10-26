@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import Page from '../components/Page';
 import { Container, Stack, Typography, CardActionArea, TextField, Button } from '@mui/material';
 import { useHistory } from 'react-router-dom';
@@ -15,6 +15,12 @@ import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 // import querystring from "query-string";
 import { useParams } from 'react-router';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export default function SiteDetails() {
     const history = useHistory();
@@ -30,7 +36,16 @@ export default function SiteDetails() {
     const [Date, setDate] = useState("");
     const [SiteKey, setSiteKey] = useState("");
     const token = JSON.parse(sessionStorage.AccessToken).Token;
+    const [AlertMessage, setAlertMessage] = useState("success");
+    const [AlertType, setAlertType] = useState("success");
+    const [AlertOpen, setAlertOpen] = useState(false);
 
+    const AlertClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setAlertOpen(false);
+    };
     const httpClient = (url, options = {}) => {
         if (!options.headers) {
             options.headers = new Headers({ Accept: 'application/json' });
@@ -76,7 +91,10 @@ export default function SiteDetails() {
     const Update = (params) => {
         dataProvider.update('company_sites', { id: UpdateId, data: { Url: Url, Urls: Urls, CompanyId: JSON.parse(sessionStorage.CurrentCompany).id } })
             .then(response => {
-                alert("Success")
+                setAlertMessage("Selected site was Updated correctly!");
+                setAlertType("success");
+                setAlertOpen(true);
+
             })
             .catch(error => {
                 console.log(error)
@@ -106,6 +124,11 @@ export default function SiteDetails() {
     }, [])
     return (
         <Page title="Company | Holest">
+            <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
+                <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+                    {AlertMessage}
+                </Alert>
+            </Snackbar>
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>

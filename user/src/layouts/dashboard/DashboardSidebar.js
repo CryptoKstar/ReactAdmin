@@ -20,16 +20,17 @@ const DRAWER_WIDTH = 280;
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('lg')]: {
     flexShrink: 0,
-    width: DRAWER_WIDTH
+    width: DRAWER_WIDTH,
   }
 }));
 
 const AccountStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
+  backgroundColor: "white",
   padding: theme.spacing(2, 2.5),
   borderRadius: theme.shape.borderRadiusSm,
-  backgroundColor: theme.palette.grey[200]
+  // backgroundColor: theme.palette.grey[200]
 }));
 
 // ----------------------------------------------------------------------
@@ -53,6 +54,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     <Scrollbar
       sx={{
         height: '100%',
+        backgroundColor: "white",
         '& .simplebar-content': { height: '100%', display: 'flex', flexDirection: 'column' }
       }}
     >
@@ -67,8 +69,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           <AccountStyle>
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {sessionStorage.UserData?JSON.parse(sessionStorage.UserData).Name:""}
+              <Typography variant="subtitle2" sx={{ color: '#032b45' }}>
+                {sessionStorage.UserData ? JSON.parse(sessionStorage.UserData).Name : ""}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {account.role}
@@ -83,7 +85,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <Box sx={{ flexGrow: 1 }} />
 
       {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}> */}
-        {/* <Stack
+      {/* <Stack
           alignItems="center"
           spacing={3}
           sx={{
@@ -100,7 +102,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             sx={{ width: 100, position: 'absolute', top: -50 }}
           /> */}
 
-          {/* <Box sx={{ textAlign: 'center' }}>
+      {/* <Box sx={{ textAlign: 'center' }}>
             <Typography gutterBottom variant="h6">
               Get more?
             </Typography>
@@ -109,7 +111,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             </Typography>
           </Box> */}
 
-          {/* <Button
+      {/* <Button
             fullWidth
             href="https://material-ui.com/store/items/minimal-dashboard/"
             target="_blank"
@@ -117,7 +119,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
           >
             Upgrade to Pro
           </Button> */}
-          {/* </Stack>
+      {/* </Stack>
         </Box> */}
     </Scrollbar>
   );

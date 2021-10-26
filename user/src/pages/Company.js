@@ -1,25 +1,46 @@
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { Icon } from '@iconify/react';
 import Page from '../components/Page';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { ProductSort } from '../components/_dashboard/products';
-import { Button, Container, Stack, Typography, CardActionArea, CardActions } from '@mui/material';
+import { Button, Container, Stack, Typography, CardActions } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/material';
 import Label from '../components/Label';
 import SelecetCompany from './SelecetCompany';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { styled } from '@mui/material/styles';
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
 export default function EcommerceShop() {
   // eslint-disable-next-line
@@ -31,6 +52,22 @@ export default function EcommerceShop() {
   // eslint-disable-next-line
   const [open_select, setOpenSelect] = useState(false);
   const [opencompany, setopencompany] = useState(false);
+  const [AlertMessage, setAlertMessage] = useState("success");
+  const [AlertType, setAlertType] = useState("success");
+  const [AlertOpen, setAlertOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const AlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlertOpen(false);
+  };
+
   const details = (item) => {
     History.push(`/companydetails?id=${item.Id}`);
   }
@@ -111,7 +148,9 @@ export default function EcommerceShop() {
           })
         }
         if (res_data.length === 0) {
-          alert("Please create New Company")
+          setAlertMessage("Please create New Company");
+          setAlertType("info");
+          setAlertOpen(true);
         }
         else if (param === "delete") {
           sessionStorage.CurrentCompany = JSON.stringify({ id: res_data[0].Id, name: res_data[0].Name })
@@ -132,6 +171,11 @@ export default function EcommerceShop() {
 
   return (
     <Page title="Company | Holest">
+      <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
+        <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+          {AlertMessage}
+        </Alert>
+      </Snackbar>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -157,7 +201,7 @@ export default function EcommerceShop() {
           </Dialog>
 
           <Button
-            variant="contained"
+            variant="outlined"
             onClick={(e) => NewCompany(e)}
             startIcon={<Icon icon={plusFill} />}
           >
@@ -173,17 +217,9 @@ export default function EcommerceShop() {
           sx={{ mb: 5 }}
         >
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-            {/* <ProductFilterSidebar
-              formik={formik}
-              isOpenFilter={openFilter}
-              onResetFilter={handleResetFilter}
-              onOpenFilter={handleOpenFilter}
-              onCloseFilter={handleCloseFilter}
-            /> */}
             <ProductSort />
           </Stack>
         </Stack>
-        {/* <CustomCompany products={Companydata} /> */}
         <Grid container spacing={2}>
 
           {
@@ -205,17 +241,37 @@ export default function EcommerceShop() {
                   </Label>
 
                   <Card>
-                    <CardActionArea onClick={(e) => details(item)}>
-                      <CardMedia
-                        component="img"
-                        height="200"
-                        image="/static/default.png"
-                        alt="green iguana"
-                      />
+
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image="/static/default.png"
+                      alt="Paella dish"
+                      onClick={(e) => details(item)}
+                    />
+                    <CardContent>
+                      <Typography variant="h3" style={{ justifyContent: "center", display: "flex" }} color="text.secondary">
+                        {item.Name}
+                      </Typography>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                      <IconButton aria-label="add to favorites" onClick={(e) => details(item)}>
+                        <RemoveRedEyeIcon />
+                      </IconButton>
+                      <IconButton aria-label="share" onClick={(e) => ItemDelete(item.Id)}>
+                        <DeleteOutlineIcon />
+                      </IconButton>
+                      <ExpandMore
+                        expand={expanded}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                      >
+                        <ExpandMoreIcon />
+                      </ExpandMore>
+                    </CardActions>
+                    <Collapse in={expanded} timeout="auto" unmountOnExit>
                       <CardContent>
-                        <Typography gutterBottom variant="h5" component="div" >
-                          {item.Name}
-                        </Typography>
                         <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Label variant="ghost" color={'success'}>Address</Label>
                           <Label variant="ghost" color={'success'}>{item.Address}</Label>
@@ -229,15 +285,7 @@ export default function EcommerceShop() {
                           <Label variant="ghost" color={'info'}>{item.TaxNo}</Label>
                         </Typography>
                       </CardContent>
-                    </CardActionArea>
-                    <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Button size="small" color="primary" onClick={(e) => details(item)}>
-                        Manage
-                      </Button>
-                      <Button size="small" color="primary" onClick={(e) => ItemDelete(item.Id)}>
-                        Delete
-                      </Button>
-                    </CardActions>
+                    </Collapse>
                   </Card>
                 </Box>
               </Grid>

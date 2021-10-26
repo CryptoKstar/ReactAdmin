@@ -1,5 +1,5 @@
 import { filter } from 'lodash';
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 // material
 import {
   Card,
@@ -18,6 +18,13 @@ import {
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, CompanyTool } from '../components/_dashboard/user';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 
 const TABLE_HEAD = [
   { id: 'Id', label: 'ID', alignRight: false },
@@ -63,7 +70,16 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
   const [orderBy, setOrderBy] = useState('Name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [AlertMessage, setAlertMessage] = useState("success");
+  const [AlertType, setAlertType] = useState("success");
+  const [AlertOpen, setAlertOpen] = useState(false);
 
+  const AlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setAlertOpen(false);
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -80,13 +96,19 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
   };
   const manage = (params) => {
     if (selected.length > 1) {
-      alert("Please select one company!")
+      setAlertMessage("Please select one company!");
+      setAlertType("error");
+      setAlertOpen(true);
     }
     else if (selected.length === 0) {
-      alert("Please select one comapny!")
+      setAlertMessage("Please select one company!");
+      setAlertType("error");
+      setAlertOpen(true);
     }
     else {
-      alert("The company is selected!")
+      setAlertMessage("Please select one company!");
+      setAlertType("success");
+      setAlertOpen(true);
       let name = "";
       for (let i = 0; i < USERLIST.length; i++) {
         if (USERLIST[i].Id === selected[0]) {
@@ -139,19 +161,11 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
   return (
     // <Page title="User | Minimal-UI">
     <Container>
-      {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            User
-          </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="#"
-            startIcon={<Icon icon={plusFill} />}
-          >
-            New User
-          </Button>
-        </Stack> */}
+      <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
+        <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+          {AlertMessage}
+        </Alert>
+      </Snackbar>
 
       <Card>
         <CompanyTool
