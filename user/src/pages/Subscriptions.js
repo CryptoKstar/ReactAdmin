@@ -142,25 +142,28 @@ export default function User() {
     history.push(url);
   }
   const loadData = (params) => {
-    if (sessionStorage.CurrentCompany) {
-      dataProvider.getList("company_site_subscriptions", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: { CompanySiteId: 1 } })
+    if (sessionStorage.CurrentSite) {
+      dataProvider.getList("company_site_subscriptions", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: {} })
         .then(res => {
           const data = res.data;
           const res_data = [];
           for (let i = 0; i < data.length; i++) {
-            res_data.push({
-              Id: data[i].id,
-              name: data[i].Name,
-              amount: data[i].Amount,
-              UID: data[i].Uid,
-              date: data[i].FirstChargeAt,
-            })
+            console.log(data[i]);
+            if (JSON.parse(sessionStorage.CurrentSite).id === data[i].CompanySiteId) {
+              res_data.push({
+                Id: data[i].id,
+                name: data[i].Name,
+                amount: data[i].Amount,
+                UID: data[i].Uid,
+                date: data[i].FirstChargeAt,
+              })
+            }
           }
           setsites(res_data);
         })
     }
     else {
-      setAlertMessage("Please Select Company");
+      setAlertMessage("Please Select Site. so you see it!");
       setAlertType("error");
       setAlertOpen(true);
 

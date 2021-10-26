@@ -142,25 +142,31 @@ export default function User() {
     history.push(url);
   }
   const loadData = (params) => {
-    if (sessionStorage.CurrentCompany) {
+    if (sessionStorage.CurrentSite) {
       dataProvider.getList("company_site_transactions", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: { CompanySiteId: 1 } })
         .then(res => {
           const data = res.data;
           const res_data = [];
-          for (let i = 0; i < data.length; i++) {
-            res_data.push({
-              Id: data[i].id,
-              paymentid: data[i].CompanySitePaymentMethodId,
-              Type: data[i].Type,
-              Status: data[i].Status,
-              UpdatedAt: data[i].UpdatedAt,
+          dataProvider.getList("payment_methods", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: {} })
+            .then(res => {
+              let payment_methods = res.data;
+              for (let i = 0; i < data.length; i++) {
+                if (JSON.parse(sessionStorage.CurrentSite).id === data[i].CompanySiteId) {
+                  res_data.push({
+                    Id: data[i].id,
+                    paymentid: payment_methods[data[i].CompanySitePaymentMethodId - 1].Name,
+                    Type: data[i].Type,
+                    Status: data[i].Status,
+                    UpdatedAt: data[i].UpdatedAt,
+                  })
+                }
+              }
+              setsites(res_data);
             })
-          }
-          setsites(res_data);
         })
     }
     else {
-      setAlertMessage("Please Select Company");
+      setAlertMessage("Please Select Site. so you see it!");
       setAlertType("info");
       setAlertOpen(true);
     }
