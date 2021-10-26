@@ -1,8 +1,8 @@
 import { forwardRef, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import Page from '../components/Page';
 import AddTaskIcon from '@mui/icons-material/AddTask';
+import Page from '../components/Page';
 import { ProductSort } from '../components/_dashboard/products';
 import { Button, Container, Stack, Typography, CardActions } from '@mui/material';
 import { useHistory } from 'react-router-dom';
