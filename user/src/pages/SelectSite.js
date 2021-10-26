@@ -216,7 +216,7 @@ export default function User() {
         </Alert>
       </Snackbar>
       <Container>
-        <Card>
+        <Card style={{boxShadow:"none"}}>
           <UserListToolbar
             numSelected={selected.length}
             filterName={filterName}

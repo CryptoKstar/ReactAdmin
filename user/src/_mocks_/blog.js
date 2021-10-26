@@ -1,8 +1,5 @@
 import faker from 'faker';
-// utils
 import { mockImgCover } from '../utils/mockImages';
-
-// ----------------------------------------------------------------------
 
 const POST_TITLES = [
   'Whiteboard Templates By Industry Leaders',

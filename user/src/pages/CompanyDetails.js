@@ -5,18 +5,16 @@ import { useHistory } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
-import { Icon } from '@iconify/react';
-import plusFill from '@iconify/icons-eva/plus-fill';
 import { LoadingButton } from '@mui/lab';
-import RotateLeftIcon from '@mui/icons-material/RotateLeft';
-import SendIcon from '@mui/icons-material/Send';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import querystring from "query-string"
-
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -122,7 +120,7 @@ export default function CompanyDetails() {
                     <Button
                         variant="outlined"
                         onClick={(e) => back()}
-                        startIcon={<Icon icon={plusFill} />}
+                        startIcon={<ExitToAppIcon />}
                     >
                         Go Company
                     </Button>
@@ -184,7 +182,7 @@ export default function CompanyDetails() {
                                         fullWidth
                                         size="large"
                                         type="submit"
-                                        endIcon={<SendIcon />}
+                                        endIcon={<SystemUpdateAltIcon />}
                                         variant="outlined"
                                         onClick={(e) => Update()}
                                     >
@@ -194,7 +192,7 @@ export default function CompanyDetails() {
                                         fullWidth
                                         color="secondary"
                                         size="large"
-                                        endIcon={<RotateLeftIcon />}
+                                        endIcon={<DeleteForeverIcon />}
                                         type="reset"
                                         variant="outlined"
                                         onClick={(e) => ItemDelete()}

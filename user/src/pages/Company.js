@@ -1,8 +1,8 @@
 import { forwardRef, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { Icon } from '@iconify/react';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import Page from '../components/Page';
-import plusFill from '@iconify/icons-eva/plus-fill';
+import AddTaskIcon from '@mui/icons-material/AddTask';
 import { ProductSort } from '../components/_dashboard/products';
 import { Button, Container, Stack, Typography, CardActions } from '@mui/material';
 import { useHistory } from 'react-router-dom';
@@ -187,8 +187,9 @@ export default function EcommerceShop() {
 
           <Button
             variant="outlined"
+            color = "primary"
             onClick={(e) => dialogCompany()}
-            startIcon={<Icon icon={plusFill} />}
+            startIcon={<CheckBoxIcon />}
           >
             Select Company
           </Button>
@@ -203,7 +204,7 @@ export default function EcommerceShop() {
           <Button
             variant="outlined"
             onClick={(e) => NewCompany(e)}
-            startIcon={<Icon icon={plusFill} />}
+            startIcon={<AddTaskIcon />}
           >
             New Company
           </Button>
@@ -256,7 +257,7 @@ export default function EcommerceShop() {
                     </CardContent>
                     <CardActions disableSpacing>
                       <IconButton aria-label="add to favorites" onClick={(e) => details(item)}>
-                        <RemoveRedEyeIcon />
+                        <RemoveRedEyeIcon />  
                       </IconButton>
                       <IconButton aria-label="share" onClick={(e) => ItemDelete(item.Id)}>
                         <DeleteOutlineIcon />

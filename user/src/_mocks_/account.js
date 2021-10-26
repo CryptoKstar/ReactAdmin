@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 const account = {
   // displayName: JSON.parse(sessionStorage.UserData).Name,
   // email: JSON.parse(sessionStorage.UserData).Email,

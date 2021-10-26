@@ -1,7 +1,7 @@
 import { filter } from 'lodash';
-import { Icon } from '@iconify/react';
 import { forwardRef, useEffect, useState } from 'react';
-import plusFill from '@iconify/icons-eva/plus-fill';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import AddTaskIcon from '@mui/icons-material/AddTask';
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Table, Stack, Button, Checkbox, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
@@ -271,7 +271,7 @@ export default function User() {
           <Button
             variant="outlined"
             onClick={(e) => handleOpenSelect()}
-            startIcon={<Icon icon={plusFill} />}
+            startIcon={<CheckBoxIcon/>}
           >
             Select Site
           </Button>
@@ -289,7 +289,7 @@ export default function User() {
             onClick={handleClickOpen}
             component={RouterLink}
             to="#"
-            startIcon={<Icon icon={plusFill} />}
+            startIcon={<AddTaskIcon />}
           >
             New Site
           </Button>

@@ -167,7 +167,7 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
         </Alert>
       </Snackbar>
 
-      <Card>
+      <Card style={{boxShadow:"none"}}>
         <CompanyTool
           numSelected={selected.length}
           filterName={filterName}
