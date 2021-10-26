@@ -131,7 +131,6 @@ export default function User() {
         .then(res => {
           const data = res.data;
           const res_data = [];
-          console.log(res, 8888)
           for (let i = 0; i < data.length; i++) {
             res_data.push({
               Id: data[i].id,

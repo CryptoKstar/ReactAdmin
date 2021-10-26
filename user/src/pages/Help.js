@@ -112,7 +112,6 @@ export default function User() {
   };
 
   const handleFilterByName = (event) => {
-    console.log(event.target.value)
     setFilterName(event.target.value);
   };
 
@@ -131,7 +130,6 @@ export default function User() {
         .then(res => {
           const data = res.data;
           const res_data = [];
-          console.log(res, 8888)
           for (let i = 0; i < data.length; i++) {
             if (data[i].Name === "help_link") {
               res_data.push({

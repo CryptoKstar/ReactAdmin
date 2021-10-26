@@ -38,11 +38,9 @@ export default function SubscriptionsDetails() {
     const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
     const load = () => {
         const Id = params.id;
-        console.log(Id);
         dataProvider.getOne("company_site_subscriptions", { id: Id })
             .then(res => {
                 const data = res.data;
-                console.log(res, 8888)
                 setUpdateId(data.id);
                 setName(data.Name)
                 setamount(data.Amount)

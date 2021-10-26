@@ -107,7 +107,6 @@ export default function User() {
     else {
       alert("The company is selected!")
       let name = "";
-      // console.log(,99);
       for (let i = 0; i < sites.length; i++) {
         if (sites[i].Id === selected[0]) {
           name = sites[i].siteurl;
