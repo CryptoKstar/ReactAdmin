@@ -332,7 +332,7 @@ export default function User() {
                               onChange={(event) => handleClick(event, siteurl)}
                             />
                           </TableCell>
-                          <TableCell onClick={(e) => siteEdit(Id)} padding="checkbox" component="th" scope="row">
+                          <TableCell onClick={(e) => siteEdit(Id)} component="th" scope="row">
                             <Typography variant="subtitle2" noWrap>
                               {siteurl}
                             </Typography>

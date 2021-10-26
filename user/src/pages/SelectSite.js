@@ -18,6 +18,7 @@ import {
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
+import NavSection from '../components/NavSection';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
@@ -106,6 +107,7 @@ export default function User() {
     else {
       alert("The company is selected!")
       let name = "";
+      // console.log(,99);
       for (let i = 0; i < sites.length; i++) {
         if (sites[i].Id === selected[0]) {
           name = sites[i].siteurl;

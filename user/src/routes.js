@@ -19,6 +19,10 @@ import CreateCompany from './pages/CreateCompany';
 import Transactions from './pages/Transactions';
 import CompanyDetails from './pages/CompanyDetails';
 import SiteDetails from './pages/SiteDetails';
+import SubscriptionsDetails from './pages/SubscriptionsDetails';
+import TransactionsDetails from './pages/TransactionsDetails';
+import PaymentMethods from './pages/PaymentMethods';
+
 // import NotFound from './pages/Page404';
 
 export default function Router() {
@@ -28,7 +32,6 @@ export default function Router() {
       <Route path="/register" component={Register} exact />
       <Route path="/login" component={Login} exact />
       <DashboardLayout>
-      
         <Route path="/app" component={DashboardApp} exact />
         <Route path="/companydetails" component={CompanyDetails} exact />
         <Route path="/company" component={Company} exact />
@@ -42,8 +45,12 @@ export default function Router() {
         <Route path="/user" component={User} exact />
         <Route path="/products" component={Products} exact />
         <Route path="/blog" component={Blog} exact />
+        <Route path="/paymentmethods" component={PaymentMethods} exact />
         <Route path="/sitedetails/:id" component={SiteDetails} exact />
+        <Route path="/subscriptionsdetails/:id" component={SubscriptionsDetails} exact />
+        <Route path="/transactionsdetails/:id" component={TransactionsDetails} exact />
         {/* <Route path="*" component={NotFound} /> */}
+
       </DashboardLayout>
     </Switch>
   )

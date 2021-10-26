@@ -1,4 +1,4 @@
-const {crud, sequelizeCrud} = require('express-sequelize-crud');
+const { crud, sequelizeCrud } = require('express-sequelize-crud');
 
 const { Router } = require('express');
 const controllers = require('../controllers');
@@ -37,20 +37,20 @@ router.get('/me', controllers.me);
 
 
 UserCompany.userscope = {};
-UserCompany.addScope("userscope", function(user){
-	if(!user){
+UserCompany.addScope("userscope", function (user) {
+	if (!user) {
 		return {
-			where:{
+			where: {
 				UserId: -1
 			}
 		}
-	}else{
+	} else {
 		return {
-			where:{
+			where: {
 				UserId: user.get().id
 			},
-			include:[
-				{model: Company, as: "Company"}
+			include: [
+				{ model: Company, as: "Company" }
 			]
 		}
 	}
@@ -58,80 +58,82 @@ UserCompany.addScope("userscope", function(user){
 
 
 UserAuthToken.userscope = {};
-UserAuthToken.addScope("userscope", function(user){
-	if(!user){
+UserAuthToken.addScope("userscope", function (user) {
+	if (!user) {
 		return {
-			where:{
+			where: {
 			}
 		}
-	}else{
+	} else {
 		return {
-			where:{
-				UserId: user.get().id
-			},
-			include:[
-				{model: CompanySite, as: "CompanySite"},
-			]
+			// where: {
+			// 	UserId: user.get().id
+			// },
+			// include: [
+			// 	{ model: CompanySite, as: "CompanySite" },
+			// ]
 		}
 	}
 });
 
 Company.userscope = {};
-Company.addScope("userscope", function(user){
-	if(!user){
+Company.addScope("userscope", function (user) {
+	if (!user) {
 		return {
-			where:{
+			where: {
 				id: -1
 			}
 		}
-	}else{
+	} else {
 		return {
-			where:{
+			where: {
 				//
 			},
-			include:[
-				{model: User, as:"MainUser", attributes: {exclude: ['Password']}},
-				{model: UserCompany, as: "UserCompanies", where:{"user_id":user.get().id}}
+			include: [
+				{ model: User, as: "MainUser", attributes: { exclude: ['Password'] } },
+				{ model: UserCompany, as: "UserCompanies", where: { "user_id": user.get().id } }
 			]
 		}
 	}
 });
 
 CompanySite.userscope = {};
-CompanySite.addScope("userscope", function(user){
-	if(!user){
+CompanySite.addScope("userscope", function (user) {
+	if (!user) {
 		return {
-			where:{
+			where: {
 				id: -1
 			}
 		}
-	}else{
+	} else {
 		return {
-			include:[
-			    {model: Company, as: "Company", include:[  
-					{model: UserCompany, as: "UserCompanies", where:{"user_id":user.get().id}}
-				]}
+			include: [
+				{
+					model: Company, as: "Company", include: [
+						{ model: UserCompany, as: "UserCompanies", where: { "user_id": user.get().id } }
+					]
+				}
 			]
 		}
 	}
 });
 
 
-CompanySitePaymentMethod.userscope = {sites:1};
-CompanySitePaymentMethod.addScope("userscope", function(user, sites){
-	if(!user){
+CompanySitePaymentMethod.userscope = { sites: 1 };
+CompanySitePaymentMethod.addScope("userscope", function (user, sites) {
+	if (!user) {
 		return {
-			where:{
+			where: {
 				id: -1
 			}
 		}
-	}else{
+	} else {
 		return {
-			include:[
-				{model: CompanySitePaymentMethodLocale, as: "CompanySitePaymentMethodLocales"}
+			include: [
+				{ model: CompanySitePaymentMethodLocale, as: "CompanySitePaymentMethodLocales" }
 			],
 			where: {
-				CompanySiteId:{
+				CompanySiteId: {
 					[Op.in]: sites
 				}
 			}
@@ -139,83 +141,93 @@ CompanySitePaymentMethod.addScope("userscope", function(user, sites){
 	}
 });
 
-CompanySiteSubscription.userscope = {sites:1};
-CompanySiteSubscription.addScope("userscope", function(user, sites){
-	if(!user){
+CompanySiteSubscription.userscope = {};
+CompanySiteSubscription.addScope("userscope", function (user, sites) {
+	if (!user) {
 		return {
-			where:{
+		}
+	} else {
+		return {
+
+		}
+	}
+});
+
+
+HpParameter.userscope = {};
+HpParameter.addScope("userscope", function (user,sites) {
+	console.log(sites)
+	if (!user) {
+		return {
+			where: {
 				id: -1
 			}
 		}
-	}else{
+	} else {
 		return {
-			where: {
-				CompanySiteId:{
-					[Op.in]: sites
-				}
-			}
+
 		}
 	}
 });
 
-CompanySiteTransaction.userscope = {sites:1};
-CompanySiteTransaction.addScope("userscope", function(user, sites){
-	if(!user){
+CompanySiteTransaction.userscope = {};
+CompanySiteTransaction.addScope("userscope", function (user, sites) {
+	if (!user) {
 		return {
-			where:{
-				id: -1
-			}
+			// where: {
+			// 	id: -1
+			// }
 		}
-	}else{
+	} else {
 		return {
-			where: {
-				CompanySiteId:{
-					[Op.in]: sites
-				}
-			}
+			// where: {
+			// 	CompanySiteId: {
+			// 		[Op.in]: sites
+			// 	}
+			// }
 		}
 	}
 });
 
-function secure(router){
-	router.stack.filter((h) => h.route).forEach(function(l){
+function secure(router) {
+	router.stack.filter((h) => h.route).forEach(function (l) {
 		l.__hp_handle = l.handle;
-		
-		l.handle = (req,res,next) => {
-			if(!req.Auth){
-				return res.status(401).json({error: "401 Unauthorized"});
+
+		l.handle = (req, res, next) => {
+			if (!req.Auth) {
+				return res.status(401).json({ error: "401 Unauthorized" });
 			}
-			global.current_auth = req.Auth;	
-			return l.__hp_handle(req,res,next);
+			global.current_auth = req.Auth;
+			return l.__hp_handle(req, res, next);
 		};
 	});
 	return router;
 };
 
-function currentUser(){
-	if(!global.current_auth)
+function currentUser() {
+	if (!global.current_auth)
 		return null;
-	
+
 	return global.current_auth.User;
 }
 
-function createCRUD(model, readonly){
-	
+function createCRUD(model, readonly) {
+
 	let c = {};
-	
+
 	c.getOne = async (id) => {
 		return model.findByPk(id)
 	};
-	
+
 	c.getList = async ({ filter, limit, offset, order }) => {
-		
-	  if(model.userscope){
-		  
-		  const u = currentUser();
-		  
-		  let sites = null;
-		  if(model.userscope.sites){
-			 sites = (await model.sequelize.query(` SELECT 
+
+		if (model.userscope) {
+
+			const u = currentUser();
+
+			let sites = null;
+			if (model.userscope.sites) {
+				sites = (await model.sequelize.query(` SELECT 
 														company_site.id 
 													FROM 
 														user_company
@@ -223,46 +235,46 @@ function createCRUD(model, readonly){
 														company_site on user_company.company_id = company_site.company_id
 													WHERE 
 														user_company.user_id = ${u.get().id}`, { type: model.sequelize.QueryTypes.SELECT })).map((s) => s.id);
-		  }
-		  
-		  return model.scope({ method: [ "userscope", u , sites] }).findAndCountAll({
-			limit,
-			offset,
-			order,
-			where: filter
-		  });
-		  
-	  }else{	
-		  return model.findAndCountAll({
-			limit,
-			offset,
-			order,
-			where: filter
-		  });
-	  }
-	  
-    };
-	
-	if(!readonly){
+			}
+
+			return model.scope({ method: ["userscope", u, sites] }).findAndCountAll({
+				limit,
+				offset,
+				order,
+				where: filter
+			});
+
+		} else {
+			return model.findAndCountAll({
+				limit,
+				offset,
+				order,
+				where: filter
+			});
+		}
+
+	};
+
+	if (!readonly) {
 		c.create = async (body) => {
 			return model.create(body)
 		};
-	
+
 		c.update = async (id, body) => {
-		  const record = await model.findByPk(id)
-		  if (!record) {
-			throw new Error('Record not found')
-		  }
-		  return record.update(body)
+			const record = await model.findByPk(id)
+			if (!record) {
+				throw new Error('Record not found')
+			}
+			return record.update(body)
 		};
-	
+
 		c.destroy = async (id) => {
-		  const record = await model.findByPk(id)
-		  if (!record) {
-			throw new Error('Record not found')
-		  }
-		  await record.destroy()
-		  return { id }
+			const record = await model.findByPk(id)
+			if (!record) {
+				throw new Error('Record not found')
+			}
+			await record.destroy()
+			return { id }
 		};
 	}
 	return c;
@@ -272,14 +284,15 @@ function createCRUD(model, readonly){
 router.uses = [
 	secure(crud('/api/company_site_create', createCRUD(UserAuthToken))),
 	secure(crud('/api/user_companies', createCRUD(UserCompany))),
+	secure(crud('/api/hp', createCRUD(HpParameter))),
 	secure(crud('/api/companies', createCRUD(Company))),
 	secure(crud('/api/company_sites', createCRUD(CompanySite))),
 	secure(crud('/api/company_site_payment_methods', createCRUD(CompanySitePaymentMethod))),
 	secure(crud('/api/company_site_subscriptions', createCRUD(CompanySiteSubscription))),
 	secure(crud('/api/company_site_transactions', createCRUD(CompanySiteTransaction))),
-	secure(crud('/api/payment_methods', createCRUD(HpPaymentMethod,true))),
-	secure(crud('/api/translation', createCRUD(HpTranslation,true))),
-	secure(crud('/api/tickets', createCRUD(Ticket)))	
+	secure(crud('/api/payment_methods', createCRUD(HpPaymentMethod, true))),
+	secure(crud('/api/translation', createCRUD(HpTranslation, true))),
+	secure(crud('/api/tickets', createCRUD(Ticket)))
 ];
 
 module.exports = router

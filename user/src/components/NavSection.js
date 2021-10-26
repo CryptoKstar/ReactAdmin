@@ -78,6 +78,7 @@ function NavItem({ item, active }) {
   const isActiveRoot = active(item.path);
   const { title, path, icon, info, children } = item;
   const [open, setOpen] = useState(isActiveRoot);
+  const [display, setdisplay] = useState("display : none");
 
   const handleOpen = () => {
     setOpen((prev) => !prev);
@@ -125,22 +126,34 @@ function NavItem({ item, active }) {
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {children.map((item) => {
+
               const { title, path, icon } = item;
               const isActiveSub = active(path);
-
-              return (
-                <ListSubtyle
-                  key={title}
-                  component={RouterLink}
-                  to={path}
-                  sx={{
-                    ...(isActiveSub && activeSubStyle)
-                  }}
-                >
-                  <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-                  <ListItemText disableTypography primary={title} />
-                </ListSubtyle>
-              );
+              if (path === "/paymentmethods") {
+                return (
+                  <ListSubtyle
+                    key={title}
+                    component={RouterLink}
+                    to={path}
+                    sx={sessionStorage.CurrentSite ? "" : display}
+                  >
+                    <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
+                    <ListItemText disableTypography primary={title} />
+                  </ListSubtyle>
+                );
+              }
+              else {
+                return (
+                  <ListSubtyle
+                    key={title}
+                    component={RouterLink}
+                    to={path}
+                  >
+                    <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
+                    <ListItemText disableTypography primary={title} />
+                  </ListSubtyle>
+                );
+              }
             })}
           </List>
         </Collapse>
