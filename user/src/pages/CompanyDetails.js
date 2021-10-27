@@ -127,7 +127,7 @@ export default function CompanyDetails() {
                 </Stack>
             </Container>
             <Grid container justifyContent="center">
-                <Grid xs={9}>
+                <Grid item xs={9}>
                     <Card>
                         <CardActionArea>
                             <CardContent>

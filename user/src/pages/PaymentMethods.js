@@ -13,16 +13,27 @@ import { useHistory } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Icon } from '@iconify/react';
+import Dialog from '@mui/material/Dialog';
+import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+// import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Select from '@mui/material/Select';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'amount', label: 'Amount', alignRight: false },
-  { id: 'uid', label: 'UID', alignRight: false },
+  { id: 'name', label: 'Payment Method Name', alignRight: false },
+  // { id: 'amount', label: 'Amount', alignRight: false },
   { id: 'date', label: 'Date', alignRight: false },
+  { id: 'action', label: 'action', alignRight: false },
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -60,15 +71,29 @@ export default function User() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
+  // eslint-disable-next-line
+  const [sitepaymentmethods, setsitepaymentmethods] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sites, setsites] = useState([]);
+  // const [sites, setsites] = useState([]);
   // eslint-disable-next-line
   const [isOpen, setIsOpen] = useState(false);
+  // eslint-disable-next-line
   const history = useHistory();
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [PaymentMethods, setPaymentMethods] = useState([]);
+  const [age, setAge] = useState({});
 
+  const handleChange = (event) => {
+    console.log(event.target.value)
+    setAge(event.target.value);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const AlertClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -95,7 +120,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = sites.map((n) => n.siteurl);
+      const newSelecteds = sitepaymentmethods.map((n) => n.siteurl);
       setSelected(newSelecteds);
       return;
     }
@@ -133,36 +158,93 @@ export default function User() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - sites.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - sitepaymentmethods.length) : 0;
 
-  const filteredUsers = applySortFilter(sites, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(sitepaymentmethods, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
   const siteEdit = (Id) => {
-    const url = `/subscriptionsdetails/${Id}`;
-    history.push(url);
+    // const url = `/subscriptionsdetails/${Id}`;
+    // history.push(url);
   }
 
   const createpayment = (params) => {
-    history.push('/newpayment');
+    setOpen(true);
   }
-  
+
+  const save = (params) => {
+    let flag = 0;
+    for (let i = 0; i < sitepaymentmethods.length; i++) {
+      if (age.id === sitepaymentmethods[i].PaymentMethodsId) {
+        flag++;
+      }
+    }
+    if (flag !== 0) {
+      setAlertMessage("The Payment Methods is exist in this site");
+      setAlertType("error");
+      setAlertOpen(true);
+    }
+    else {
+      dataProvider.create('company_site_payment_methods', { data: { PaymentMethodId: age.id, CompanySiteId: JSON.parse(sessionStorage.CurrentSite).id, Data: age.Data } })
+        .then(res => {
+          setAlertMessage("Selected Payment Methods is added correctly");
+          setAlertType("success");
+          setAlertOpen(true);
+          loadData();
+          setOpen(false)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }
+
+  const paymentMethodsDelete = (id) => {
+    dataProvider.delete('company_site_payment_methods', { id: id })
+      .then(res => {
+        setAlertMessage("Selected Payment method is deleted correctly");
+        setAlertType("success");
+        setAlertOpen(true);
+        loadData();
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
   const loadData = (params) => {
     if (sessionStorage.CurrentCompany) {
-      dataProvider.getList("company_site_subscriptions", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: { CompanySiteId: 1 } })
+      let payment_methods = [];
+      dataProvider.getList("payment_methods", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: {} })
         .then(res => {
-          const data = res.data;
-          const res_data = [];
-          for (let i = 0; i < data.length; i++) {
-            res_data.push({
-              Id: data[i].id,
-              name: data[i].Name,
-              amount: data[i].Amount,
-              UID: data[i].Uid,
-              date: data[i].FirstChargeAt,
+          payment_methods = res.data;
+          const methods = [];
+          for (let i = 0; i < payment_methods.length; i++) {
+            methods.push({
+              label: payment_methods[i].Name,
+              value: payment_methods[i].id,
+              data: payment_methods[i],
             })
           }
-          setsites(res_data);
+          setPaymentMethods(methods);
+          dataProvider.getList('company_site_payment_methods', { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: {} })
+            .then(res => {
+              const data = res.data;
+              const res_data = [];
+              for (let i = 0; i < data.length; i++) {
+                res_data.push({
+                  id: data[i].id,
+                  name: payment_methods[data[i].PaymentMethodId - 1].Name,
+                  data: data[i].Data,
+                  date: data[i].UpdatedAt,
+                  PaymentMethodsId: data[i].PaymentMethodId,
+                })
+              }
+              setsitepaymentmethods(res_data);
+            })
+            .catch(error => {
+              console.log(error)
+            })
         })
     }
     else {
@@ -178,7 +260,7 @@ export default function User() {
   }, [])
 
   return (
-    <Page title="Sites | Holest">
+    <Page title="Payment Methods | Holest">
 
       <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
         <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
@@ -195,8 +277,39 @@ export default function User() {
             onClick={(e) => createpayment()}
             startIcon={<Icon icon={plusFill} />}
           >
-            Create PaymentMethod
+            Add PaymentMethod
           </Button>
+          <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
+            <DialogTitle>New Site</DialogTitle>
+            <DialogContent>
+              <Box sx={{ minWidth: 120, marginTop: "20px" }}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Payment Methods</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={age}
+                    label="Payment Methods"
+                    onChange={handleChange}
+                  >
+                    {
+                      PaymentMethods.map((item, key) => {
+                        return (
+                          <MenuItem key={key} value={item.data}>{item.label}</MenuItem>
+
+                        )
+                      })
+                    }
+
+                  </Select>
+                </FormControl>
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={(e) => save()}>Save</Button>
+              <Button onClick={handleClose}>Cancel</Button>
+            </DialogActions>
+          </Dialog>
         </Stack>
 
         <Card>
@@ -213,7 +326,7 @@ export default function User() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={sites.length}
+                  rowCount={sitepaymentmethods.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -222,9 +335,9 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, key) => {
-                      const { Id, name, amount, UID, date } = row;
-                      const isItemSelected = selected.indexOf(Id) !== -1;
-
+                      // eslint-disable-next-line
+                      const { id, name, data, date } = row;
+                      const isItemSelected = selected.indexOf(id) !== -1;
                       return (
                         <TableRow
                           hover
@@ -238,20 +351,17 @@ export default function User() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
-                              onChange={(event) => handleClick(event, Id)}
+                              onChange={(event) => handleClick(event, id)}
                             />
                           </TableCell>
-                          <TableCell onClick={(e) => siteEdit(Id)} component="th" scope="row">
+                          <TableCell onClick={(e) => siteEdit(id)} component="th" scope="row">
                             <Typography variant="subtitle2" noWrap>
                               {name}
                             </Typography>
                           </TableCell>
-                          <TableCell onClick={(e) => siteEdit(Id)} align="left">{amount}</TableCell>
-                          <TableCell align="left" onClick={(e) => siteEdit(Id)}> {UID}</TableCell>
-                          <TableCell align="left" onClick={(e) => siteEdit(Id)}>{date}</TableCell>
-                          {/* <TableCell align="right">
-                            <SiteMore Id={Id} siteEdit={siteEdit} />
-                          </TableCell> */}
+                          <TableCell align="left" onClick={(e) => siteEdit(id)}>{date}</TableCell>
+                          <TableCell align="left" onClick={(e) => paymentMethodsDelete(id)}><DeleteForeverIcon /></TableCell>
+
                         </TableRow>
                       );
                     })}
@@ -277,7 +387,7 @@ export default function User() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={sites.length}
+            count={sitepaymentmethods.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

@@ -148,7 +148,6 @@ export default function User() {
           const data = res.data;
           const res_data = [];
           for (let i = 0; i < data.length; i++) {
-            console.log(data[i]);
             if (JSON.parse(sessionStorage.CurrentSite).id === data[i].CompanySiteId) {
               res_data.push({
                 Id: data[i].id,

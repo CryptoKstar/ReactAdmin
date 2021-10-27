@@ -224,8 +224,8 @@ export default function EcommerceShop() {
         <Grid container spacing={2}>
 
           {
-            Companydata.map((item, key) => (
-              <Grid xs={4} paddingRight={2} paddingBottom={5} key={key}>
+            Companydata.map((subitem, key) => (
+              <Grid item xs={4} paddingRight={2} paddingBottom={5} key={key}>
                 <Box sx={{ position: 'relative' }}>
                   <Label
                     variant="filled"
@@ -248,18 +248,18 @@ export default function EcommerceShop() {
                       height="200"
                       image="/static/default.png"
                       alt="Paella dish"
-                      onClick={(e) => details(item)}
+                      onClick={(e) => details(subitem)}
                     />
                     <CardContent>
                       <Typography variant="h3" style={{ justifyContent: "center", display: "flex" }} color="text.secondary">
-                        {item.Name}
+                        {subitem.Name}
                       </Typography>
                     </CardContent>
                     <CardActions disableSpacing>
-                      <IconButton aria-label="add to favorites" onClick={(e) => details(item)}>
+                      <IconButton aria-label="add to favorites" onClick={(e) => details(subitem)}>
                         <RemoveRedEyeIcon />  
                       </IconButton>
-                      <IconButton aria-label="share" onClick={(e) => ItemDelete(item.Id)}>
+                      <IconButton aria-label="share" onClick={(e) => ItemDelete(subitem.Id)}>
                         <DeleteOutlineIcon />
                       </IconButton>
                       <ExpandMore
@@ -275,15 +275,15 @@ export default function EcommerceShop() {
                       <CardContent>
                         <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Label variant="ghost" color={'success'}>Address</Label>
-                          <Label variant="ghost" color={'success'}>{item.Address}</Label>
+                          <Label variant="ghost" color={'success'}>{subitem.Address}</Label>
                         </Typography>
                         <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Label variant="ghost" color={'error'}>RegNo</Label>
-                          <Label variant="ghost" color={'error'}>{item.RegNo}</Label>
+                          <Label variant="ghost" color={'error'}>{subitem.RegNo}</Label>
                         </Typography>
                         <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <Label variant="ghost" color={'info'}>TaxNo</Label>
-                          <Label variant="ghost" color={'info'}>{item.TaxNo}</Label>
+                          <Label variant="ghost" color={'info'}>{subitem.TaxNo}</Label>
                         </Typography>
                       </CardContent>
                     </Collapse>

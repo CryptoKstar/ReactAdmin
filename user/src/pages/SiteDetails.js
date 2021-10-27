@@ -121,7 +121,7 @@ export default function SiteDetails() {
         // eslint-disable-next-line
     }, [])
     return (
-        <Page title="Company | Holest">
+        <Page title="Site Details | Holest">
             <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
                 <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
                     {AlertMessage}
@@ -130,7 +130,7 @@ export default function SiteDetails() {
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        Company Details
+                        Site Details
                     </Typography>
                     <Button
                         variant="outlined"
@@ -142,7 +142,7 @@ export default function SiteDetails() {
                 </Stack>
             </Container>
             <Grid container justifyContent="center">
-                <Grid xs={9}>
+                <Grid item xs={9}>
                     <Card>
                         <CardActionArea>
                             <CardContent>
