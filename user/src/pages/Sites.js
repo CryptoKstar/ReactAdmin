@@ -224,13 +224,13 @@ export default function User() {
               })
             }
           }
-          if(res_data.length === 0){
+          if (res_data.length === 0) {
             setAlertMessage("Please create Sites!");
             setAlertType("info");
             setAlertOpen(true);
           }
-          else{
-            if(!sessionStorage.CurrentSite){
+          else {
+            if (!sessionStorage.CurrentSite) {
               setAlertMessage("Please select sites!");
               setAlertType("info");
               setAlertOpen(true);
@@ -271,7 +271,7 @@ export default function User() {
           <Button
             variant="outlined"
             onClick={(e) => handleOpenSelect()}
-            startIcon={<CheckBoxIcon/>}
+            startIcon={<CheckBoxIcon />}
           >
             Select Site
           </Button>

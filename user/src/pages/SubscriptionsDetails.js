@@ -19,6 +19,7 @@ export default function SubscriptionsDetails() {
     // eslint-disable-next-line
     const [UpdateId, setUpdateId] = useState("");
     const [Name, setName] = useState("");
+    const [actions, setactions] = useState("");
     const [amount, setamount] = useState("");
     const [UID, setUID] = useState("");
     const [date, setdate] = useState("");
@@ -43,6 +44,8 @@ export default function SubscriptionsDetails() {
                 setamount(data.Amount)
                 setUID(data.Uid)
                 setdate(data.FirstChargeAt)
+                const action = JSON.parse(data.Data).actions
+                setactions(action)
                 setdata(data.Data)
             })
     }
@@ -115,31 +118,18 @@ export default function SubscriptionsDetails() {
                                     disabled
                                     onChange={(e) => setdate(e.target.value)}
                                 />
-                                {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={10}>
-                                    <LoadingButton
-                                        fullWidth
-                                        size="large"
-                                        type="submit"
-                                        endIcon={<SendIcon />}
-                                        variant="outlined"
-                                    >
-                                        Update
-                                    </LoadingButton>
-                                    <LoadingButton
-                                        fullWidth
-                                        color="secondary"
-                                        size="large"
-                                        endIcon={<RotateLeftIcon />}
-                                        type="reset"
-                                        variant="outlined"
-                                    >
-                                        Delete
-                                    </LoadingButton>
-                                </Stack> */}
+                                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={10} justifyContent="space-between">
+                                    {
+                                        actions === "" ? "" : (actions.map((item, key) => {
+                                            console.log(item.Action)
+                                            return (
+                                                <Button variant="outlined" onClick={function add() { alert('Initiate CAPTURE') }} key={key}>{item.Caption}</Button>
+                                            )
+                                        }))
+                                    }
+                                </Stack>
 
                             </Stack>
-                            {/* </Form>
-                            </FormikProvider> */}
                         </CardContent>
                     </Card>
                 </Grid>

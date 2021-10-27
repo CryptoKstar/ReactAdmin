@@ -1,6 +1,6 @@
 import { filter } from 'lodash';
 import { forwardRef, useEffect, useState } from 'react';
-import { Card, Table, Stack, Checkbox, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
+import { Card, Table, Stack, Checkbox, Button, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
@@ -20,7 +20,7 @@ const TABLE_HEAD = [
   { id: 'Type', label: 'Type', alignRight: false },
   { id: 'Status', label: 'Status', alignRight: false },
   { id: 'UpdatedAt', label: 'Date', alignRight: false },
-  // { id: '' }
+  { id: 'actions', label: 'Actions' }
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -158,6 +158,7 @@ export default function User() {
                     Type: data[i].Type,
                     Status: data[i].Status,
                     UpdatedAt: data[i].UpdatedAt,
+                    data: data[i].Data
                   })
                 }
               }
@@ -213,9 +214,9 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, key) => {
-                      const { Id, paymentid, Type, Status, UpdatedAt } = row;
+                      const { Id, paymentid, Type, Status, UpdatedAt, data } = row;
                       const isItemSelected = selected.indexOf(Id) !== -1;
-
+                      console.log(data)
                       return (
                         <TableRow
                           hover
@@ -240,9 +241,17 @@ export default function User() {
                           <TableCell onClick={(e) => siteEdit(Id)} align="left">{Type}</TableCell>
                           <TableCell align="left" onClick={(e) => siteEdit(Id)}> {Status}</TableCell>
                           <TableCell align="left" onClick={(e) => siteEdit(Id)}>{UpdatedAt}</TableCell>
-                          {/* <TableCell align="right">
-                            <SiteMore Id={Id} siteEdit={siteEdit} />
-                          </TableCell> */}
+                          <TableCell align="right">
+                            <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent ="space-between">
+                              {
+                                JSON.parse(data).actions.map((item, subkey) => {
+                                  return (
+                                    <Button key={subkey} onClick = {function add(){ alert('Initiate CAPTURE')}} variant="outlined" >{item.Caption}</Button>
+                                  )
+                                })
+                              }
+                            </Stack>
+                          </TableCell>
                         </TableRow>
                       );
                     })}

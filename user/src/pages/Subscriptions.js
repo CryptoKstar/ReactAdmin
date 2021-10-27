@@ -1,6 +1,6 @@
 import { filter } from 'lodash';
 import { forwardRef, useEffect, useState } from 'react';
-import { Card, Table, Stack, Checkbox, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
+import { Card, Table, Stack, Checkbox, TableRow, Button, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
@@ -155,6 +155,7 @@ export default function User() {
                 amount: data[i].Amount,
                 UID: data[i].Uid,
                 date: data[i].FirstChargeAt,
+                data: data[i].Data
               })
             }
           }
@@ -211,7 +212,7 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, key) => {
-                      const { Id, name, amount, UID, date } = row;
+                      const { Id, name, amount, UID, date, data } = row;
                       const isItemSelected = selected.indexOf(Id) !== -1;
 
                       return (
@@ -238,9 +239,17 @@ export default function User() {
                           <TableCell onClick={(e) => siteEdit(Id)} align="left">{amount}</TableCell>
                           <TableCell align="left" onClick={(e) => siteEdit(Id)}> {UID}</TableCell>
                           <TableCell align="left" onClick={(e) => siteEdit(Id)}>{date}</TableCell>
-                          {/* <TableCell align="right">
-                            <SiteMore Id={Id} siteEdit={siteEdit} />
-                          </TableCell> */}
+                          <TableCell align="right">
+                            <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between">
+                              {
+                                JSON.parse(data).actions.map((item, subkey) => {
+                                  return (
+                                    <Button key={subkey} onClick={function add() { alert('Initiate CAPTURE') }} variant="outlined" >{item.Caption}</Button>
+                                  )
+                                })
+                              }
+                            </Stack>
+                          </TableCell>
                         </TableRow>
                       );
                     })}
