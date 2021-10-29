@@ -246,7 +246,7 @@ export default function User() {
                               {
                                 JSON.parse(data).actions.map((item, subkey) => {
                                   return (
-                                    <Button key={subkey} onClick = {function add(){ alert('Initiate CAPTURE')}} variant="outlined" >{item.Caption}</Button>
+                                    <Button key={subkey} onClick = {function add(){ alert('Initiate CAPTURE')}} variant="contained" >{item.Caption}</Button>
                                   )
                                 })
                               }

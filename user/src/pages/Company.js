@@ -186,7 +186,7 @@ export default function EcommerceShop() {
           </Typography>
 
           <Button
-            variant="outlined"
+            variant="contained"
             color = "primary"
             onClick={(e) => dialogCompany()}
             startIcon={<CheckBoxIcon />}
@@ -202,7 +202,7 @@ export default function EcommerceShop() {
           </Dialog>
 
           <Button
-            variant="outlined"
+            variant="contained"
             onClick={(e) => NewCompany(e)}
             startIcon={<AddTaskIcon />}
           >

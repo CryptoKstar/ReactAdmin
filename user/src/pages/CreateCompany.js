@@ -140,7 +140,7 @@ export default function CreateCompany() {
                                                 size="large"
                                                 type="submit"
                                                 endIcon={<SendIcon />}
-                                                variant="outlined"
+                                                variant="contained"
                                                 loading={isSubmitting}
                                             >
                                                 Create
@@ -151,7 +151,7 @@ export default function CreateCompany() {
                                                 size="large"
                                                 endIcon={<RotateLeftIcon />}
                                                 type="reset"
-                                                variant="outlined"
+                                                variant="contained"
                                             >
                                                 Reset
                                             </LoadingButton>

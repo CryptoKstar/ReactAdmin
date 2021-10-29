@@ -269,7 +269,7 @@ export default function User() {
             Current Site : {sessionStorage.CurrentSite ? JSON.parse(sessionStorage.CurrentSite).name : "No selected"}
           </Typography>
           <Button
-            variant="outlined"
+            variant="contained"
             onClick={(e) => handleOpenSelect()}
             startIcon={<CheckBoxIcon />}
           >
@@ -285,7 +285,7 @@ export default function User() {
 
           <Button
             // variant="contained"
-            variant="outlined"
+            variant="contained"
             onClick={handleClickOpen}
             component={RouterLink}
             to="#"

@@ -65,7 +65,7 @@ export default function SubscriptionsDetails() {
                         Subscriptions Details
                     </Typography>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         onClick={(e) => back()}
                         startIcon={<Icon icon={plusFill} />}
                     >
@@ -123,7 +123,7 @@ export default function SubscriptionsDetails() {
                                         actions === "" ? "" : (actions.map((item, key) => {
                                             console.log(item.Action)
                                             return (
-                                                <Button variant="outlined" onClick={function add() { alert('Initiate CAPTURE') }} key={key}>{item.Caption}</Button>
+                                                <Button variant="contained" onClick={function add() { alert('Initiate CAPTURE') }} key={key}>{item.Caption}</Button>
                                             )
                                         }))
                                     }

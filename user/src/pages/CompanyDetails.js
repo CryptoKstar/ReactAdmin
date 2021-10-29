@@ -118,7 +118,7 @@ export default function CompanyDetails() {
                         Company Details
                     </Typography>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         onClick={(e) => back()}
                         startIcon={<ExitToAppIcon />}
                     >
@@ -183,7 +183,7 @@ export default function CompanyDetails() {
                                         size="large"
                                         type="submit"
                                         endIcon={<SystemUpdateAltIcon />}
-                                        variant="outlined"
+                                        variant="contained"
                                         onClick={(e) => Update()}
                                     >
                                         Update
@@ -194,7 +194,7 @@ export default function CompanyDetails() {
                                         size="large"
                                         endIcon={<DeleteForeverIcon />}
                                         type="reset"
-                                        variant="outlined"
+                                        variant="contained"
                                         onClick={(e) => ItemDelete()}
                                     >
                                         Delete

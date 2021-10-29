@@ -16,6 +16,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+var md5 = require('md5');
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -99,6 +100,25 @@ export default function SiteDetails() {
             });
     }
 
+    const regenerate = (params) => {
+        const company_id = JSON.parse(JSON.parse(sessionStorage.CurrentCompany).id);
+        const company_site_id = UpdateId;
+        const token_id = JSON.parse(sessionStorage.AccessToken).id;
+        const user_token = JSON.parse(sessionStorage.AccessToken).Token;
+        const Token = user_token.substr(10, 10);
+        const Site_Token = md5(company_id + company_site_id + token_id + Token);
+        console.log(Site_Token);
+        // dataProvider.create("company_site_create", { })
+        //     .then(res => {
+        //     })
+        //     .catch(err => {
+
+        //     })
+        // setAlertMessage("Site is added in the company");
+        // setAlertType("success");
+        // setAlertOpen(true);
+    }
+
     const ItemDelete = () => {
         dataProvider.delete('company_sites', {
             id: UpdateId
@@ -133,7 +153,7 @@ export default function SiteDetails() {
                         Site Details
                     </Typography>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         onClick={(e) => back()}
                         startIcon={<ExitToAppIcon />}
                     >
@@ -194,9 +214,9 @@ export default function SiteDetails() {
                                         fullWidth
                                         size="large"
                                         type="submit"
-                                        endIcon={<BorderColorIcon  />}
-                                        variant="outlined"
-                                        onClick={(e) => Update()}
+                                        endIcon={<BorderColorIcon />}
+                                        variant="contained"
+                                        onClick={(e) => regenerate()}
                                     >
                                         ReGenerate
                                     </LoadingButton>
@@ -209,7 +229,7 @@ export default function SiteDetails() {
                                         size="large"
                                         type="submit"
                                         endIcon={<SystemUpdateAltIcon />}
-                                        variant="outlined"
+                                        variant="contained"
                                         onClick={(e) => Update()}
                                     >
                                         Update
@@ -220,7 +240,7 @@ export default function SiteDetails() {
                                         size="large"
                                         endIcon={<DeleteForeverIcon />}
                                         type="reset"
-                                        variant="outlined"
+                                        variant="contained"
                                         onClick={(e) => ItemDelete()}
                                     >
                                         Delete

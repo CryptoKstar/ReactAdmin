@@ -87,7 +87,6 @@ export default function User() {
   const [age, setAge] = useState({});
 
   const handleChange = (event) => {
-    console.log(event.target.value)
     setAge(event.target.value);
   };
 
@@ -232,13 +231,15 @@ export default function User() {
               const data = res.data;
               const res_data = [];
               for (let i = 0; i < data.length; i++) {
-                res_data.push({
-                  id: data[i].id,
-                  name: payment_methods[data[i].PaymentMethodId - 1].Name,
-                  data: data[i].Data,
-                  date: data[i].UpdatedAt,
-                  PaymentMethodsId: data[i].PaymentMethodId,
-                })
+                if(data[i].CompanySiteId === JSON.parse(sessionStorage.CurrentSite).id){
+                  res_data.push({
+                    id: data[i].id,
+                    name: payment_methods[data[i].PaymentMethodId - 1].Name,
+                    data: data[i].Data,
+                    date: data[i].UpdatedAt,
+                    PaymentMethodsId: data[i].PaymentMethodId,
+                  })
+                }
               }
               setsitepaymentmethods(res_data);
             })
@@ -273,7 +274,7 @@ export default function User() {
             Payment Methods
           </Typography>
           <Button
-            variant="outlined"
+            variant="contained"
             onClick={(e) => createpayment()}
             startIcon={<Icon icon={plusFill} />}
           >
