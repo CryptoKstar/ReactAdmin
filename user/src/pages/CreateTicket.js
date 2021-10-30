@@ -14,7 +14,7 @@ import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import { useEffect, useState } from 'react';
 
-export default function CreateTicket({ TicketData }) {
+export default function CreateTicket({ TicketData , setTicketData}) {
     const history = useHistory();
     const [ticketdata, setticketdata] = useState([]);
     const RegisterSchema = Yup.object().shape({
@@ -43,6 +43,7 @@ export default function CreateTicket({ TicketData }) {
                     dataProvider.update('tickets', { id: ticketdata.id, data: { Closed: true } })
                         .then(response => {
                             history.push('/tickets')
+                            setTicketData("");
                         })
                         .catch(error => {
                             console.log(error)
@@ -63,7 +64,7 @@ export default function CreateTicket({ TicketData }) {
     useEffect(() => {
         load()
         // eslint-disable-next-line
-    }, [])
+    }, [TicketData])
     return (
         <Page title="Company | Holest">
             {/* <Container>

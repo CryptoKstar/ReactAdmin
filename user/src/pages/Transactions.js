@@ -216,7 +216,6 @@ export default function User() {
                     .map((row, key) => {
                       const { Id, paymentid, Type, Status, UpdatedAt, data } = row;
                       const isItemSelected = selected.indexOf(Id) !== -1;
-                      console.log(data)
                       return (
                         <TableRow
                           hover

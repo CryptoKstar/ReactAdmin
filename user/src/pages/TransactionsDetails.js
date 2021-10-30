@@ -119,7 +119,7 @@ export default function SubscriptionsDetails() {
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={10} justifyContent ="space-between">
                                     {
                                         actions === "" ? "" : (actions.map((item, key) => {
-                                            console.log(item.Action)
+                                            // console.log(item.Action)
                                             return (
                                                 <Button variant ="contained" onClick = {function add(){ alert('Initiate CAPTURE')}} key={key}>{item.Caption}</Button>
                                             )

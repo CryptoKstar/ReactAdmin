@@ -36,9 +36,8 @@ const actions = [
 export default function EcommerceShop() {
   const [value, setValue] = useState('1');
   const [open, setOpen] = useState(false);
-  const [isTicket, setisTicket] = useState(false);
   const [TicketName, setTicketName] = useState("");
-  const [TicketData, setTicketData] = useState("");
+  const [TicketData, setTicketData] = useState(null);
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
       options.headers = new Headers({ Accept: 'application/json' });
@@ -66,7 +65,8 @@ export default function EcommerceShop() {
     dataProvider.create('tickets', { data: { UserId: MainUserId, CompanySiteId: null, CompanySitePaymentMethodId: null, AltEmail: JSON.parse(sessionStorage.UserData).Email, Title: TicketName } })
       .then(res => {
         setOpen(false);
-        setisTicket(true);
+        // setisTicket(true);
+        load();
       })
       .catch(error => {
         console.log(error)
@@ -80,11 +80,9 @@ export default function EcommerceShop() {
     })
       .then(res => {
         const res_data = res.data;
-        for (var i = 0; i < res_data.length; i++) {
-          if (res_data[i].UserId === MainUserId && res_data[i].Closed === null) {
-            setTicketData(res_data[i]);
-            setisTicket(true);
-          }
+        let item = res_data.find(obj => obj.UserId === MainUserId && obj.Closed === false)
+        if (item) {
+          setTicketData(item);
         }
       })
       .catch(error => {
@@ -115,7 +113,7 @@ export default function EcommerceShop() {
                 </Box>
                 <TabPanel value="1">
                   {
-                    isTicket ? <CreateTicket TicketData={TicketData} /> : <Box sx={{ height: 500, transform: 'translateZ(0px)', flexGrow: 1 }}>
+                    TicketData ? <CreateTicket TicketData={TicketData} setTicketData={setTicketData} /> : <Box sx={{ height: 500, transform: 'translateZ(0px)', flexGrow: 1 }}>
                       <SpeedDial
                         ariaLabel="SpeedDial openIcon example"
                         color="secondary"
@@ -124,7 +122,7 @@ export default function EcommerceShop() {
                       >
                         {actions.map((action) => (
                           <SpeedDialAction
-                          
+
                             key={action.name}
                             icon={action.icon}
                             tooltipTitle={action.name}

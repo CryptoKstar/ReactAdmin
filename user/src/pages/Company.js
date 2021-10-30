@@ -187,7 +187,6 @@ export default function EcommerceShop() {
 
           <Button
             variant="contained"
-            color="primary"
             onClick={(e) => dialogCompany()}
             startIcon={<CheckBoxIcon />}
             color="secondary"
