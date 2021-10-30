@@ -277,7 +277,8 @@ export default function User() {
             variant="contained"
             onClick={(e) => createpayment()}
             startIcon={<Icon icon={plusFill} />}
-          >
+            color="secondary"
+            >
             Add PaymentMethod
           </Button>
           <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">

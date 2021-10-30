@@ -118,11 +118,13 @@ export default function EcommerceShop() {
                     isTicket ? <CreateTicket TicketData={TicketData} /> : <Box sx={{ height: 500, transform: 'translateZ(0px)', flexGrow: 1 }}>
                       <SpeedDial
                         ariaLabel="SpeedDial openIcon example"
+                        color="secondary"
                         sx={{ position: 'absolute', bottom: 16, right: 16 }}
                         icon={<SpeedDialIcon openIcon={<EditIcon />} />}
                       >
                         {actions.map((action) => (
                           <SpeedDialAction
+                          
                             key={action.name}
                             icon={action.icon}
                             tooltipTitle={action.name}
@@ -139,8 +141,8 @@ export default function EcommerceShop() {
                           <TextField autoFocus margin="dense" onChange={(e) => setTicketName(e.target.value)} id="name" label="Ticket Name" type="type" fullWidth variant="standard" style={{ width: "500px" }} />
                         </DialogContent>
                         <DialogActions>
-                          <Button onClick={handleClose}>Cancel</Button>
-                          <Button onClick={(e) => saveticket()}>Open</Button>
+                          <Button onClick={handleClose} color="secondary">Cancel</Button>
+                          <Button onClick={(e) => saveticket()} color="secondary">Open</Button>
                         </DialogActions>
                       </Dialog>
                     </Box>

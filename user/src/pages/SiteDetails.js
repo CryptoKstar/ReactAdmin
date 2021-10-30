@@ -156,7 +156,8 @@ export default function SiteDetails() {
                         variant="contained"
                         onClick={(e) => back()}
                         startIcon={<ExitToAppIcon />}
-                    >
+                        color="secondary"
+                        >
                         Go Sites
                     </Button>
                 </Stack>
@@ -217,6 +218,7 @@ export default function SiteDetails() {
                                         endIcon={<BorderColorIcon />}
                                         variant="contained"
                                         onClick={(e) => regenerate()}
+                                        color="secondary"
                                     >
                                         ReGenerate
                                     </LoadingButton>
@@ -226,6 +228,7 @@ export default function SiteDetails() {
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={10}>
                                     <LoadingButton
                                         fullWidth
+                                        color="secondary"
                                         size="large"
                                         type="submit"
                                         endIcon={<SystemUpdateAltIcon />}

@@ -106,7 +106,7 @@ export default function CompanyDetails() {
     }, [])
     return (
         <Page title="Company | Holest">
-            <Snackbar open={AlertOpen} autoHideDuration={6000}  anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
+            <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
                 <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
                     {AlertMessage}
                 </Alert>
@@ -121,6 +121,7 @@ export default function CompanyDetails() {
                         variant="contained"
                         onClick={(e) => back()}
                         startIcon={<ExitToAppIcon />}
+                        color="secondary"
                     >
                         Go Company
                     </Button>
@@ -185,6 +186,7 @@ export default function CompanyDetails() {
                                         endIcon={<SystemUpdateAltIcon />}
                                         variant="contained"
                                         onClick={(e) => Update()}
+                                        color="secondary"
                                     >
                                         Update
                                     </LoadingButton>

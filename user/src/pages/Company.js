@@ -190,7 +190,8 @@ export default function EcommerceShop() {
             color="primary"
             onClick={(e) => dialogCompany()}
             startIcon={<CheckBoxIcon />}
-          >
+            color="secondary"
+            >
             Select Company
           </Button>
 
@@ -205,7 +206,8 @@ export default function EcommerceShop() {
             variant="contained"
             onClick={(e) => NewCompany(e)}
             startIcon={<AddTaskIcon />}
-          >
+            color="secondary"
+            >
             New Company
           </Button>
 

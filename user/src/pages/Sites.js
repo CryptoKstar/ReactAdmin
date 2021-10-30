@@ -272,7 +272,8 @@ export default function User() {
             variant="contained"
             onClick={(e) => handleOpenSelect()}
             startIcon={<CheckBoxIcon />}
-          >
+            color="secondary"
+            >
             Select Site
           </Button>
 
@@ -290,7 +291,8 @@ export default function User() {
             component={RouterLink}
             to="#"
             startIcon={<AddTaskIcon />}
-          >
+            color="secondary"
+            >
             New Site
           </Button>
 
