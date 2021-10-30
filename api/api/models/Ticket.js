@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Ticket', {
     id: {
+      autoIncrement: true,
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true

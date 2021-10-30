@@ -292,7 +292,8 @@ router.uses = [
 	secure(crud('/api/company_site_transactions', createCRUD(CompanySiteTransaction))),
 	secure(crud('/api/payment_methods', createCRUD(HpPaymentMethod, true))),
 	secure(crud('/api/translation', createCRUD(HpTranslation, true))),
-	secure(crud('/api/tickets', createCRUD(Ticket)))
+	secure(crud('/api/tickets', createCRUD(Ticket))),
+	secure(crud('/api/ticket_entry', createCRUD(TicketEntry)))
 ];
 
 module.exports = router
