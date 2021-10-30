@@ -171,8 +171,8 @@ export default function EcommerceShop() {
 
   return (
     <Page title="Company | Holest">
-      <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
-        <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+      <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
+        <Alert onClose={AlertClose} severity={AlertType}>
           {AlertMessage}
         </Alert>
       </Snackbar>
@@ -187,7 +187,7 @@ export default function EcommerceShop() {
 
           <Button
             variant="contained"
-            color = "primary"
+            color="primary"
             onClick={(e) => dialogCompany()}
             startIcon={<CheckBoxIcon />}
           >
@@ -257,7 +257,7 @@ export default function EcommerceShop() {
                     </CardContent>
                     <CardActions disableSpacing>
                       <IconButton aria-label="add to favorites" onClick={(e) => details(subitem)}>
-                        <RemoveRedEyeIcon />  
+                        <RemoveRedEyeIcon />
                       </IconButton>
                       <IconButton aria-label="share" onClick={(e) => ItemDelete(subitem.Id)}>
                         <DeleteOutlineIcon />

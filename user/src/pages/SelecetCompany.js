@@ -161,7 +161,7 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
   return (
     // <Page title="User | Minimal-UI">
     <Container>
-      <Snackbar open={AlertOpen} autoHideDuration={6000} onClose={AlertClose}>
+      <Snackbar open={AlertOpen} autoHideDuration={6000}  anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
         <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
           {AlertMessage}
         </Alert>
