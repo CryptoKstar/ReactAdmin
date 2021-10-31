@@ -58,6 +58,7 @@ const register = async (req, res) => {
 		const user = await createUser(req, res);
 		// console.log(res);
 		// console.log(user.id);
+		console.log("register")
 		sendEmail("toppythondev13579@gmail.com", templates.confirm('1'));
 		// return res.json({ msg: msgs.confirm })
 		return new Promise(function (resolve, reject) {

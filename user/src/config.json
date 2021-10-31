@@ -1,5 +1,5 @@
 {
 	"SITE_URL": "http://localhost:3000",
-	"API_URL": "http://localhost:4080/",
+	"API_URL": "http://138.68.184.136:4080/",
 	"HOLEST_PAY_URL": "https://pay.holest.com"
 }
