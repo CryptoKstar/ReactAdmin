@@ -1,5 +1,8 @@
 const models = require('../database.js');
 const bcrypt = require('bcrypt');
+const sendEmail = require('./email.send')
+const msgs = require('./email.msgs')
+const templates = require('./email.templates')
 
 require('../model_extend.js')(models);
 
@@ -46,27 +49,33 @@ const createUser = async (req, res) => {
 
 const register = async (req, res) => {
 	// try {
-	if(req.body.Confirmpassword != req.body.Password){
-	    return res.status(201).json({ status: "Password is not matched!" })
+	if (req.body.Confirmpassword != req.body.Password) {
+		return res.status(201).json({ status: "Password is not matched!" })
 	}
-	else{
+	else {
 		const hash = bcrypt.hashSync(req.body.Password, 16);
 		req.body = Object.assign(req.body, { Password: hash });
 		const user = await createUser(req, res);
-		if(!user){
-			return res.status(201).json({ status: "Same Email is exist!" })
-		}
-		else{
-			let authorization = await user.authorize();
-			res.cookie("auth_token", authorization.authToken.get().Token);
-			return new Promise(function (resolve, reject) {
-				resolve(res.status(201).json(authorization));
-			})
-		}
+		// console.log(res);
+		// console.log(user.id);
+		sendEmail("topcoderruslan13579@gmail.com", templates.confirm('1'));
+		// return res.json({ msg: msgs.confirm })
+		return new Promise(function (resolve, reject) {
+			resolve(res.status(201).json({ msg: msgs.confirm }));
+		})
+		// if (!user) {
+		// 	return res.status(201).json({ status: "Same Email is exist!" })
+		// }
+		// else {
+		// 	let authorization = await user.authorize();
+		// 	res.cookie("auth_token", authorization.authToken.get().Token);
+		// 	console.log(authorization);
+		// 	// console.log(user.id);
+		// 	// return new Promise(function (resolve, reject) {
+		// 	// 	resolve(res.status(201).json(authorization));
+		// 	// })
+		// }
 	}
-	// }catch (error) {
-	    // return res.status(201).json({ error: error.message })
-	// }
 };
 
 const login = async (req, res) => {

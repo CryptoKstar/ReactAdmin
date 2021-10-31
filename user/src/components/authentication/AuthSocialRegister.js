@@ -43,12 +43,36 @@ export default function AuthSocialRegister() {
           if (response.statusText === "Created") {
             if (response.data.status) {
               // response.data.status)
-              setAlertMessage(response.data.status);
+              setAlertMessage(response.data.user);
               setAlertType("error");
               setOpen(true);
             }
             else {
-              history.push('/login');
+              axios.post(configData.API_URL + 'login', {
+                Email: Email,
+                Password: GoogleID,
+              })
+                .then(response => {
+                  if (response.data.error) {
+                    setAlertMessage(response.data.status);
+                    setAlertType("error");
+                    setOpen(true);
+                  }
+                  else {
+                    const user_data = response.data.user;
+                    const authToken = response.data.authToken;
+                    sessionStorage.UserData = JSON.stringify(user_data);
+                    sessionStorage.AccessToken = JSON.stringify(authToken);
+                    history.push('/app');
+                  }
+                })
+                .catch(error => {
+                  console.log('There was an error!', error);
+                });
+              // const user_data = response.data.user;
+              // const authToken = response.data.authToken;
+              // console.log(response);
+              // history.push('/app');
             }
           }
         })

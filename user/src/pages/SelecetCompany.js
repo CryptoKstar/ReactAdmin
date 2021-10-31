@@ -254,7 +254,7 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
             </Table>
           </TableContainer>
         </Scrollbar>
-        <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }} paddingLeft={4} style={{ display: 'flex', justifyContent: 'space-between' }}>
+        {/* <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }} paddingLeft={4} style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Button size="small" color="primary" onClick={(e) => manage()}>
             Manage
           </Button>
@@ -267,7 +267,7 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-        </Stack>
+        </Stack> */}
       </Card>
     </Container>
     // </Page>
