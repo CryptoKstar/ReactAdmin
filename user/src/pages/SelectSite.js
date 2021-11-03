@@ -185,7 +185,6 @@ export default function SelectSite({ reload }) {
 
   const loadData = (params) => {
     if (sessionStorage.CurrentCompany) {
-      console.log(JSON.parse(sessionStorage.CurrentCompany).id, 12)
       dataProvider.getList("company_sites", { pagination: { page: 1, perPage: 10 }, sort: { field: 'url', order: 'ASC' }, filter: { CompanyId: JSON.parse(sessionStorage.CurrentCompany).id } })
         .then(res => {
           const data = res.data;

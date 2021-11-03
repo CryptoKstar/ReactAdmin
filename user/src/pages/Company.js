@@ -216,7 +216,7 @@ export default function EcommerceShop() {
                       onClick={(e) => details(subitem)}
                     />
                     <CardContent>
-                      <Typography variant="h3" style={{ justifyContent: "center", display: "flex" }} color="text.secondary">
+                      <Typography variant="h4" style={{ justifyContent: "center", display: "flex" }} color="text.secondary">
                         {subitem.Name}
                       </Typography>
                     </CardContent>
