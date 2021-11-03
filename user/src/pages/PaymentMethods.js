@@ -24,6 +24,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 // import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Select from '@mui/material/Select';
+import SelectSite from './SelectSite'
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -212,6 +213,7 @@ export default function User() {
   }
 
   const loadData = (params) => {
+    console.log(JSON.parse(sessionStorage.CurrentSite).id, 99)
     if (sessionStorage.CurrentCompany) {
       let payment_methods = [];
       dataProvider.getList("payment_methods", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: {} })
@@ -273,6 +275,7 @@ export default function User() {
           <Typography variant="h4" gutterBottom>
             Payment Methods
           </Typography>
+          <SelectSite reload={loadData} />
           <Button
             variant="contained"
             onClick={(e) => createpayment()}

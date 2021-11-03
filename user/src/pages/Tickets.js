@@ -1,4 +1,4 @@
-import { Container, Grid, Tabs, Typography } from '@mui/material';
+import { Container, Grid, Stack, Tabs, Typography } from '@mui/material';
 import Page from '../components/Page';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -26,6 +26,8 @@ import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import configData from "../config.json";
 import CreateTicket from "./CreateTicket";
+import SelectSite from './SelectSite'
+
 const actions = [
   { icon: <FileCopyIcon />, name: 'New' },
   { icon: <SaveIcon />, name: 'Save' },
@@ -98,9 +100,12 @@ export default function EcommerceShop() {
   return (
     <Page title=" Ticket | Holest">
       <Container>
-        <Typography variant="h4" sx={{ mb: 5 }}>
-          Ticket
-        </Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+          <Typography variant="h4" >
+            Ticket
+          </Typography>
+          <SelectSite reload={load} />
+        </Stack>
         <Grid container>
           <Grid item xs={12} justifyContent="center">
             <Box sx={{ width: '100%', typography: 'body1', justifyContent: "center" }}>

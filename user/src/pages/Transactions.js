@@ -11,6 +11,7 @@ import jsonServerProvider from 'ra-data-json-server';
 import { useHistory } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import SelectSite from './SelectSite'
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -189,6 +190,8 @@ export default function User() {
           <Typography variant="h4" gutterBottom>
             Transactions
           </Typography>
+          <SelectSite reload={loadData} />
+
         </Stack>
 
         <Card>

@@ -73,7 +73,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function SelectSite({reload}) {
+export default function SelectSite({ reload }) {
   // eslint-disable-next-line
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
@@ -134,20 +134,6 @@ export default function SelectSite({reload}) {
   };
 
   const manage = (Id) => {
-    // if (selected.length > 1) {
-    //   setAlertMessage("Please select one company!");
-    //   setAlertType("error");
-    //   setAlertOpen(true);
-    // }
-    // else if (selected.length === 0) {
-    //   setAlertMessage("Please select one company!");
-    //   setAlertType("error");
-    //   setAlertOpen(true);
-    // }
-    // else {
-    setAlertMessage("The site is selected!");
-    setAlertType("success");
-    setAlertOpen(true);
     let name = "";
     for (let i = 0; i < sites.length; i++) {
       if (sites[i].Id === Id) {
@@ -155,8 +141,8 @@ export default function SelectSite({reload}) {
       }
     }
     sessionStorage.CurrentSite = JSON.stringify({ id: Id, name: name })
+    loadData()
     handleClose();
-    // }
   }
 
 
@@ -228,10 +214,10 @@ export default function SelectSite({reload}) {
             sessionStorage.CurrentSite = JSON.stringify({ id: res_data[0].Id, name: res_data[0].siteurl })
           }
           setsites(res_data);
-          reload();
         })
-      }
-      else {
+        reload();
+    }
+    else {
       setAlertMessage("Please Select Company");
       setAlertType("info");
       setAlertOpen(true);
@@ -244,14 +230,12 @@ export default function SelectSite({reload}) {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>
-        Sites
+      
+      <Typography variant="h7" gutterBottom>
+        Company : {sessionStorage.CurrentCompany ? JSON.parse(sessionStorage.CurrentCompany).name : "No selected"}
       </Typography>
       <Typography variant="h7" gutterBottom>
-        Current Company : {sessionStorage.CurrentCompany ? JSON.parse(sessionStorage.CurrentCompany).name : "No selected"}
-      </Typography>
-      <Typography variant="h7" gutterBottom>
-        Current Site : {sessionStorage.CurrentSite ? JSON.parse(sessionStorage.CurrentSite).name : "No selected"}
+        Site : {sessionStorage.CurrentSite ? JSON.parse(sessionStorage.CurrentSite).name : "No selected"}
       </Typography>
       <Button
         variant="contained"
@@ -265,7 +249,7 @@ export default function SelectSite({reload}) {
       <Dialog open={opencompany} onClose={handleClose} fullWidth={true} maxWidth="md">
         <DialogTitle>Please select Company</DialogTitle>
         <DialogContent>
-          <SelecetCompany handleOpenSelect={handleClose} load = {loadData}/>
+          <SelecetCompany handleOpenSelect={handleClose} load={loadData} />
         </DialogContent>
       </Dialog>
       <Button

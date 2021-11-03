@@ -1,26 +1,22 @@
-import { Box, Container, Typography } from '@mui/material';
+import { Container, Stack, Typography, Button } from '@mui/material';
 import Page from '../components/Page';
 import Iframe from 'react-iframe'
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import configData from "../config.json";
-import { forwardRef, useEffect, useState } from 'react';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-export default function DashboardApp() {
-  const [AlertMessage, setAlertMessage] = useState("success");
-  const [AlertType, setAlertType] = useState("success");
-  const [AlertOpen, setAlertOpen] = useState(false);
-  const AlertClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setAlertOpen(false);
-  };
+import { useEffect, useState } from 'react';
+import SelectSite from './SelectSite'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
+export default function DashboardApp() {
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -42,9 +38,7 @@ export default function DashboardApp() {
       .then(response => {
         const data = response.data;
         if (data.length === 0) {
-          setAlertMessage("Please create New Company");
-          setAlertType("info");
-          setAlertOpen(true);
+          setOpen(true);
         }
       })
       .catch(error => {
@@ -58,15 +52,30 @@ export default function DashboardApp() {
 
   return (
     <Page title="Dashboard | Minimal-UI">
-      <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
-        <Alert onClose={AlertClose} severity={AlertType}>
-          {AlertMessage}
-        </Alert>
-      </Snackbar>
-      <Container maxWidth="xl">
-        <Box sx={{ pb: 5 }}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+          Welcome!
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            You have no company for now. So please create New Company
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus variant="contained" color="secondary" onClick={handleClose}>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Container>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4">DashBoard</Typography>
-        </Box>
+          <SelectSite reload={loadData} />
+        </Stack>
         <Iframe height="100%" overflow="hidden" frameBorder="0" url="./static/DashBoard.html" />
       </Container>
     </Page>

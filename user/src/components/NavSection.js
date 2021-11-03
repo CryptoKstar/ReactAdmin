@@ -73,7 +73,7 @@ function NavItem({ item, active }) {
   const isActiveRoot = active(item.path);
   const { title, path, icon, info, children } = item;
   const [open, setOpen] = useState(isActiveRoot);
-   // eslint-disable-next-line
+  // eslint-disable-next-line
   const [display, setdisplay] = useState("display : none");
 
   const handleOpen = () => {
@@ -110,22 +110,24 @@ function NavItem({ item, active }) {
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
+            {/* eslint-disable-next-line */}
             {children.map((item) => {
-
               const { title, path, icon } = item;
               // const isActiveSub = active(path);
               if (path === "/paymentmethods") {
-                return (
-                  <ListSubtyle
-                    key={title}
-                    component={RouterLink}
-                    to={path}
-                    sx={sessionStorage.CurrentSite ? "" : display}
-                  >
-                    <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-                    <ListItemText disableTypography primary={title} />
-                  </ListSubtyle>
-                );
+                if (sessionStorage.CurrentSite) {
+                  return (
+                    <ListSubtyle
+                      key={title}
+                      component={RouterLink}
+                      to={path}
+                      sx={JSON.parse(sessionStorage.CurrentSite).id === "" ? display : ""}
+                    >
+                      <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
+                      <ListItemText disableTypography primary={title} />
+                    </ListSubtyle>
+                  );
+                }
               }
               else {
                 return (

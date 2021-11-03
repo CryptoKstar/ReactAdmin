@@ -1,6 +1,5 @@
 import { forwardRef, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import Page from '../components/Page';
 import { ProductSort } from '../components/_dashboard/products';
@@ -20,13 +19,11 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/material';
 import Label from '../components/Label';
-import SelecetCompany from './SelecetCompany';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/material/styles';
+import SelectSite from './SelectSite'
+
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -51,7 +48,6 @@ export default function EcommerceShop() {
   const [open, setOpen] = useState(false);
   // eslint-disable-next-line
   const [open_select, setOpenSelect] = useState(false);
-  const [opencompany, setopencompany] = useState(false);
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
@@ -71,17 +67,6 @@ export default function EcommerceShop() {
   const details = (item) => {
     History.push(`/companydetails?id=${item.Id}`);
   }
-
-  const dialogCompany = (params) => {
-    setopencompany(true);
-  }
-
-
-  const handleClose = () => {
-    setOpen(false)
-    setOpenSelect(false)
-    setopencompany(false);
-  };
 
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -178,25 +163,7 @@ export default function EcommerceShop() {
           <Typography variant="h4" gutterBottom>
             Company
           </Typography>
-          <Typography variant="h5" gutterBottom>
-            Current Company : {sessionStorage.CurrentCompany ? JSON.parse(sessionStorage.CurrentCompany).name : "No selected"}
-          </Typography>
-
-          <Button
-            variant="contained"
-            onClick={(e) => dialogCompany()}
-            startIcon={<CheckBoxIcon />}
-            color="secondary"
-          >
-            Select Company
-          </Button>
-
-          <Dialog open={opencompany} onClose={handleClose} fullWidth={true} maxWidth="md">
-            <DialogTitle>Please select Company</DialogTitle>
-            <DialogContent>
-              <SelecetCompany handleOpenSelect={handleClose} />
-            </DialogContent>
-          </Dialog>
+          <SelectSite reload={loadData} />
 
           <Button
             variant="contained"
