@@ -17,3 +17,13 @@
     font-size:x-small!important;
     font-weight: bolder!important;
 }
+
+.css-bxc6xg-MuiTableCell-root{
+    display: none;
+}
+.css-1fmcalr-MuiTableCell-root{
+    width: 20%;
+}
+.css-wrcnww-MuiPaper-root-MuiDialog-paper{
+    height: 30vw;
+}

@@ -56,26 +56,21 @@ const register = async (req, res) => {
 		const hash = bcrypt.hashSync(req.body.Password, 16);
 		req.body = Object.assign(req.body, { Password: hash });
 		const user = await createUser(req, res);
-		// console.log(res);
-		// console.log(user.id);
-		console.log("register")
-		sendEmail("toppythondev13579@gmail.com", templates.confirm('1'));
-		// return res.json({ msg: msgs.confirm })
-		return new Promise(function (resolve, reject) {
-			resolve(res.status(201).json({ msg: msgs.confirm }));
-		})
-		// if (!user) {
-		// 	return res.status(201).json({ status: "Same Email is exist!" })
-		// }
-		// else {
-		// 	let authorization = await user.authorize();
-		// 	res.cookie("auth_token", authorization.authToken.get().Token);
-		// 	console.log(authorization);
-		// 	// console.log(user.id);
-		// 	// return new Promise(function (resolve, reject) {
-		// 	// 	resolve(res.status(201).json(authorization));
-		// 	// })
-		// }
+		// sendEmail("toppythondev13579@gmail.com", templates.confirm('1'));
+		// // return res.json({ msg: msgs.confirm })
+		// return new Promise(function (resolve, reject) {
+		// 	resolve(res.status(201).json({ msg: msgs.confirm }));
+		// })
+		if (!user) {
+			return res.status(201).json({ status: "Same Email is exist!" })
+		}
+		else {
+			let authorization = await user.authorize();
+			res.cookie("auth_token", authorization.authToken.get().Token);
+			return new Promise(function (resolve, reject) {
+				resolve(res.status(201).json(authorization));
+			})
+		}
 	}
 };
 

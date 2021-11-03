@@ -1,9 +1,8 @@
 import { filter } from 'lodash';
 import { forwardRef, useEffect, useState } from 'react';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Table, Stack, Button, Checkbox, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
+import { Card, Table, Stack, Button, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -74,7 +73,6 @@ export default function User() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
-  const [opensite, setopensite] = useState(false);
   const [siteurl, setsiteurl] = useState("");
   const [siteurls, setsiteurls] = useState("");
   const [sites, setsites] = useState([]);
@@ -105,13 +103,8 @@ export default function User() {
     setOpen(true);
   };
 
-  const handleOpenSelect = (params) => {
-    setopensite(true);
-  }
-
   const handleClose = () => {
     setOpen(false);
-    setopensite(false);
   };
 
   const handleRequestSort = (event, property) => {
@@ -129,23 +122,23 @@ export default function User() {
     setSelected([]);
   };
 
-  const handleClick = (event, siteurl) => {
-    const selectedIndex = selected.indexOf(siteurl);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, siteurl);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, siteurl) => {
+  //   const selectedIndex = selected.indexOf(siteurl);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, siteurl);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -225,16 +218,16 @@ export default function User() {
             }
           }
           if (res_data.length === 0) {
-            setAlertMessage("Please create Sites!");
+            sessionStorage.CurrentSite = JSON.stringify({ id: "", name: "No Select" })
+            setAlertMessage("Please create New Company");
             setAlertType("info");
             setAlertOpen(true);
           }
-          else {
-            if (!sessionStorage.CurrentSite) {
-              setAlertMessage("Please select sites!");
-              setAlertType("info");
-              setAlertOpen(true);
-            }
+          else if (params === "default") {
+            sessionStorage.CurrentSite = JSON.stringify({ id: res_data[0].Id, name: res_data[0].siteurl })
+          }
+          else if (res_data.length === 1) {
+            sessionStorage.CurrentSite = JSON.stringify({ id: res_data[0].Id, name: res_data[0].siteurl })
           }
           setsites(res_data);
         })
@@ -246,44 +239,20 @@ export default function User() {
     }
   }
   useEffect(() => {
-    loadData();
+    loadData("load");
     // eslint-disable-next-line
   }, [])
 
   return (
     <Page title="Sites | Holest">
-      <Snackbar open={AlertOpen} autoHideDuration={6000}  anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
+      <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
         <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
           {AlertMessage}
         </Alert>
       </Snackbar>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            Sites
-          </Typography>
-          <Typography variant="h7" gutterBottom>
-            Current Company : {sessionStorage.CurrentCompany ? JSON.parse(sessionStorage.CurrentCompany).name : "No selected"}
-          </Typography>
-          <Typography variant="h7" gutterBottom>
-            Current Site : {sessionStorage.CurrentSite ? JSON.parse(sessionStorage.CurrentSite).name : "No selected"}
-          </Typography>
-          <Button
-            variant="contained"
-            onClick={(e) => handleOpenSelect()}
-            startIcon={<CheckBoxIcon />}
-            color="secondary"
-            >
-            Select Site
-          </Button>
-
-          <Dialog open={opensite} onClose={handleClose} fullWidth={true} maxWidth="md">
-            <DialogTitle>Please select Site</DialogTitle>
-            <DialogContent>
-              <SelectSite sites={sites} />
-            </DialogContent>
-          </Dialog>
-
+          <SelectSite reload={loadData} />
           <Button
             // variant="contained"
             variant="contained"
@@ -292,7 +261,7 @@ export default function User() {
             to="#"
             startIcon={<AddTaskIcon />}
             color="secondary"
-            >
+          >
             New Site
           </Button>
 
@@ -366,12 +335,12 @@ export default function User() {
                           aria-checked={isItemSelected}
 
                         >
-                          <TableCell padding="checkbox">
+                          {/* <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, siteurl)}
                             />
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell onClick={(e) => siteEdit(Id)} component="th" scope="row">
                             <Typography variant="subtitle2" noWrap>
                               {siteurl}

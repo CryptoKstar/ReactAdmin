@@ -1,7 +1,7 @@
 import { filter } from 'lodash';
 import { forwardRef, useEffect, useState } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
-import { Card, Button, Table, Stack, Checkbox, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
+import { Card, Button, Table, Stack, TableRow, TableBody, TableCell, Container, Typography, TableContainer, TablePagination } from '@mui/material';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
@@ -126,23 +126,23 @@ export default function User() {
     setSelected([]);
   };
 
-  const handleClick = (event, siteurl) => {
-    const selectedIndex = selected.indexOf(siteurl);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, siteurl);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, siteurl) => {
+  //   const selectedIndex = selected.indexOf(siteurl);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, siteurl);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -231,7 +231,7 @@ export default function User() {
               const data = res.data;
               const res_data = [];
               for (let i = 0; i < data.length; i++) {
-                if(data[i].CompanySiteId === JSON.parse(sessionStorage.CurrentSite).id){
+                if (data[i].CompanySiteId === JSON.parse(sessionStorage.CurrentSite).id) {
                   res_data.push({
                     id: data[i].id,
                     name: payment_methods[data[i].PaymentMethodId - 1].Name,
@@ -263,7 +263,7 @@ export default function User() {
   return (
     <Page title="Payment Methods | Holest">
 
-      <Snackbar open={AlertOpen} autoHideDuration={6000}  anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
+      <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
         <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
           {AlertMessage}
         </Alert>
@@ -278,7 +278,7 @@ export default function User() {
             onClick={(e) => createpayment()}
             startIcon={<Icon icon={plusFill} />}
             color="secondary"
-            >
+          >
             Add PaymentMethod
           </Button>
           <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
@@ -350,19 +350,19 @@ export default function User() {
                           aria-checked={isItemSelected}
 
                         >
-                          <TableCell padding="checkbox">
+                          {/* <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, id)}
                             />
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell onClick={(e) => siteEdit(id)} component="th" scope="row">
                             <Typography variant="subtitle2" noWrap>
                               {name}
                             </Typography>
                           </TableCell>
                           <TableCell align="left" onClick={(e) => siteEdit(id)}>{date}</TableCell>
-                          <TableCell align="left" onClick={(e) => paymentMethodsDelete(id)}><DeleteForeverIcon /></TableCell>
+                          <TableCell align="left" ><DeleteForeverIcon onClick={(e) => paymentMethodsDelete(id)} /></TableCell>
 
                         </TableRow>
                       );

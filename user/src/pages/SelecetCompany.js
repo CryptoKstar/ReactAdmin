@@ -4,22 +4,22 @@ import { forwardRef, useState } from 'react';
 import {
   Card,
   Table,
-  Stack,
-  Button,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
   Typography,
   TableContainer,
-  TablePagination
 } from '@mui/material';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, CompanyTool } from '../components/_dashboard/user';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { fetchUtils } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+import configData from "../config.json";
+import { useEffect } from 'react';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -63,16 +63,30 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
+export default function SelecetCompany({ handleOpenSelect, load }) {
+// eslint-disable-next-line
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('Name');
   const [filterName, setFilterName] = useState('');
+  // eslint-disable-next-line
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
+  const [Companydata, setCompanydata] = useState([]);
+
+  const httpClient = (url, options = {}) => {
+    if (!options.headers) {
+      options.headers = new Headers({ Accept: 'application/json' });
+    }
+    const token = JSON.parse(sessionStorage.AccessToken).Token;
+    options.headers.set('Authorization', `${token}`);
+    return fetchUtils.fetchJson(url, options);
+  };
+  const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
+  const MainUserId = JSON.parse(sessionStorage.AccessToken).UserId
 
   const AlertClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -88,86 +102,127 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.Id);
+      const newSelecteds = Companydata.map((n) => n.Id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
-  const manage = (params) => {
-    if (selected.length > 1) {
-      setAlertMessage("Please select one company!");
-      setAlertType("error");
-      setAlertOpen(true);
-    }
-    else if (selected.length === 0) {
-      setAlertMessage("Please select one company!");
-      setAlertType("error");
-      setAlertOpen(true);
-    }
-    else {
+  const manage = (Id) => {
+    // if (selected.length > 1) {
+    //   setAlertMessage("Please select one company!");
+    //   setAlertType("error");
+    //   setAlertOpen(true);
+    // }
+    // else if (selected.length === 0) {
+    //   setAlertMessage("Please select one company!");
+    //   setAlertType("error");
+    //   setAlertOpen(true);
+    // }
+    // else {
       setAlertMessage("Please select one company!");
       setAlertType("success");
       setAlertOpen(true);
       let name = "";
-      for (let i = 0; i < USERLIST.length; i++) {
-        if (USERLIST[i].Id === selected[0]) {
-          name = USERLIST[i].Name;
+      for (let i = 0; i < Companydata.length; i++) {
+        if (Companydata[i].Id === Id) {
+          name = Companydata[i].Name;
         }
       }
-      sessionStorage.CurrentCompany = JSON.stringify({ id: selected[0], name: name })
-      sessionStorage.removeItem('CurrentSite');
+      sessionStorage.CurrentCompany = JSON.stringify({ id: Id, name: name })
+      // sessionStorage.removeItem('CurrentSite');
+      load('default');
       handleOpenSelect()
-    }
+    // }
   }
 
-  const handleClick = (event, name, Id) => {
-    const selectedIndex = selected.indexOf(Id);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, Id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, name, Id) => {
+  //   const selectedIndex = selected.indexOf(Id);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, Id);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - Companydata.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(Companydata, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
+  const loadData = (param) => {
+    const res_data = [];
+    dataProvider.getList('companies', {
+      pagination: { page: 1, perPage: 5 },
+      sort: { field: 'name', order: 'ASC' },
+      filter: { MainUserId: MainUserId }
+    })
+      .then(response => {
+        const data = response.data;
+        for (let i = 0; i < data.length; i++) {
+          res_data.push({
+            Id: data[i].id,
+            Name: data[i].Name,
+            RegNo: data[i].RegNo,
+            TaxNo: data[i].TaxNo,
+            Address: data[i].Address
+          })
+        }
+        if (res_data.length === 0) {
+          sessionStorage.CurrentCompany = JSON.stringify({ id: "", name: "No Select" })
+          setAlertMessage("Please create New Company");
+          setAlertType("info");
+          setAlertOpen(true);
+        }
+        else if (param === "delete") {
+          sessionStorage.CurrentCompany = JSON.stringify({ id: res_data[0].Id, name: res_data[0].Name })
+        }
+        else if (res_data.length === 1) {
+          sessionStorage.CurrentCompany = JSON.stringify({ id: res_data[0].Id, name: res_data[0].Name })
+        }
+        setCompanydata(res_data)
+      })
+      .catch(error => {
+        console.log(error)
+      });
+  }
+  useEffect(() => {
+    loadData("defalut");
+    // eslint-disable-next-line  
+  }, [])
 
   return (
     // <Page title="User | Minimal-UI">
     <Container>
-      <Snackbar open={AlertOpen} autoHideDuration={6000}  anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
+      <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
         <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
           {AlertMessage}
         </Alert>
       </Snackbar>
 
-      <Card style={{boxShadow:"none"}}>
+      <Card style={{ boxShadow: "none" }}>
         <CompanyTool
           numSelected={selected.length}
           filterName={filterName}
@@ -181,7 +236,7 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={USERLIST.length}
+                rowCount={Companydata.length}
                 numSelected={selected.length}
                 onRequestSort={handleRequestSort}
                 onSelectAllClick={handleSelectAllClick}
@@ -198,16 +253,18 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
                         hover
                         key={Id}
                         tabIndex={-1}
+                        onClick = {(e) => manage(Id)}
                         role="checkbox"
                         selected={isItemSelected}
                         aria-checked={isItemSelected}
+                        
                       >
-                        <TableCell padding="checkbox">
+                        {/* <TableCell padding="checkbox">
                           <Checkbox
                             checked={isItemSelected}
                             onChange={(event) => handleClick(event, Name, Id)}
                           />
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell align="left">{Id}</TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           {/* <Stack direction="row" alignItems="center" spacing={2}> */}
@@ -261,7 +318,7 @@ export default function SelecetCompany({ USERLIST, handleOpenSelect }) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={Companydata.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

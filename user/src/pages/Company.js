@@ -72,10 +72,6 @@ export default function EcommerceShop() {
     History.push(`/companydetails?id=${item.Id}`);
   }
 
-  const handleOpenSelect = (item) => {
-    setOpenSelect(true);
-  }
-
   const dialogCompany = (params) => {
     setopencompany(true);
   }
@@ -148,6 +144,7 @@ export default function EcommerceShop() {
           })
         }
         if (res_data.length === 0) {
+          sessionStorage.CurrentCompany = JSON.stringify({ id: "", name: "No Select" })
           setAlertMessage("Please create New Company");
           setAlertType("info");
           setAlertOpen(true);
@@ -171,7 +168,7 @@ export default function EcommerceShop() {
 
   return (
     <Page title="Company | Holest">
-      <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
+      <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
         <Alert onClose={AlertClose} severity={AlertType}>
           {AlertMessage}
         </Alert>
@@ -190,14 +187,14 @@ export default function EcommerceShop() {
             onClick={(e) => dialogCompany()}
             startIcon={<CheckBoxIcon />}
             color="secondary"
-            >
+          >
             Select Company
           </Button>
 
           <Dialog open={opencompany} onClose={handleClose} fullWidth={true} maxWidth="md">
             <DialogTitle>Please select Company</DialogTitle>
             <DialogContent>
-              <SelecetCompany USERLIST={Companydata} handleOpenSelect={handleOpenSelect} />
+              <SelecetCompany handleOpenSelect={handleClose} />
             </DialogContent>
           </Dialog>
 
@@ -206,7 +203,7 @@ export default function EcommerceShop() {
             onClick={(e) => NewCompany(e)}
             startIcon={<AddTaskIcon />}
             color="secondary"
-            >
+          >
             New Company
           </Button>
 

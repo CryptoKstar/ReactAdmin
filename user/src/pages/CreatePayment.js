@@ -84,7 +84,7 @@ export default function CreatePayment() {
                         <CardActionArea>
                             <CardContent>
                                 <Typography variant="h5" gutterBottom>
-                                    New Post
+                                    Payments
                                 </Typography>
                             </CardContent>
                         </CardActionArea>

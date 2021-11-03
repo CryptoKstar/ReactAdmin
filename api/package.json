@@ -14,7 +14,7 @@
     "react": "^17.0.2",
     "react-admin": "^3.18.3",
     "react-dom": "^17.0.2",
-    "sequelize": "^5.0.0",
+    "sequelize": "^6.7.0",
     "sequelize-auto": "^0.8.4",
     "yarn": "^1.22.17"
   },

@@ -84,7 +84,7 @@ export default function CreateCompany() {
                         <CardActionArea>
                             <CardContent>
                                 <Typography variant="h5" gutterBottom>
-                                    Post
+                                    Company
                                 </Typography>
                             </CardContent>
                         </CardActionArea>

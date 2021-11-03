@@ -4,16 +4,13 @@ import { forwardRef, useEffect, useState } from 'react';
 import {
   Card,
   Table,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
-  Button,
   Container,
   Typography,
   TableContainer,
-  TablePagination,
-  Stack
+  Button
 } from '@mui/material';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
@@ -24,6 +21,13 @@ import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import Dialog from '@mui/material/Dialog';
+// import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+// import DialogContentText from '@mui/material/DialogContentText';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import DialogTitle from '@mui/material/DialogTitle';
+import SelecetCompany from './SelecetCompany';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -69,17 +73,29 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function User() {
+export default function SelectSite({reload}) {
+  // eslint-disable-next-line
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('siteurl');
   const [filterName, setFilterName] = useState('');
+  // eslint-disable-next-line
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sites, setsites] = useState([]);
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
+  const [opensite, setopensite] = useState(false);
+  const [opencompany, setopencompany] = useState(false);
+  const handleOpenSelect = (params) => {
+    setopensite(true);
+  }
+  const handleClose = () => {
+    setopensite(false);
+    setopencompany(false);
+
+  };
 
   const AlertClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -87,7 +103,10 @@ export default function User() {
     }
     setAlertOpen(false);
   };
-
+  const dialogCompany = (params) => {
+    setopencompany(true);
+    // ()
+  }
 
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -114,58 +133,59 @@ export default function User() {
     setSelected([]);
   };
 
-  const manage = (params) => {
-    if (selected.length > 1) {
-      setAlertMessage("Please select one company!");
-      setAlertType("error");
-      setAlertOpen(true);
-    }
-    else if (selected.length === 0) {
-      setAlertMessage("Please select one company!");
-      setAlertType("error");
-      setAlertOpen(true);
-    }
-    else {
-      setAlertMessage("The site is selected!");
-      setAlertType("success");
-      setAlertOpen(true);
-      let name = "";
-      for (let i = 0; i < sites.length; i++) {
-        if (sites[i].Id === selected[0]) {
-          name = sites[i].siteurl;
-        }
+  const manage = (Id) => {
+    // if (selected.length > 1) {
+    //   setAlertMessage("Please select one company!");
+    //   setAlertType("error");
+    //   setAlertOpen(true);
+    // }
+    // else if (selected.length === 0) {
+    //   setAlertMessage("Please select one company!");
+    //   setAlertType("error");
+    //   setAlertOpen(true);
+    // }
+    // else {
+    setAlertMessage("The site is selected!");
+    setAlertType("success");
+    setAlertOpen(true);
+    let name = "";
+    for (let i = 0; i < sites.length; i++) {
+      if (sites[i].Id === Id) {
+        name = sites[i].siteurl;
       }
-      sessionStorage.CurrentSite = JSON.stringify({ id: selected[0], name: name })
     }
+    sessionStorage.CurrentSite = JSON.stringify({ id: Id, name: name })
+    handleClose();
+    // }
   }
 
 
-  const handleClick = (event, Id) => {
-    const selectedIndex = selected.indexOf(Id);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, Id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, Id) => {
+  //   const selectedIndex = selected.indexOf(Id);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, Id);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
@@ -179,6 +199,7 @@ export default function User() {
 
   const loadData = (params) => {
     if (sessionStorage.CurrentCompany) {
+      console.log(JSON.parse(sessionStorage.CurrentCompany).id, 12)
       dataProvider.getList("company_sites", { pagination: { page: 1, perPage: 10 }, sort: { field: 'url', order: 'ASC' }, filter: { CompanyId: JSON.parse(sessionStorage.CurrentCompany).id } })
         .then(res => {
           const data = res.data;
@@ -194,10 +215,23 @@ export default function User() {
               })
             }
           }
+          if (res_data.length === 0) {
+            sessionStorage.CurrentSite = JSON.stringify({ id: "", name: "No Select" })
+            setAlertMessage("Please create New Company");
+            setAlertType("info");
+            setAlertOpen(true);
+          }
+          else if (params === "default") {
+            sessionStorage.CurrentSite = JSON.stringify({ id: res_data[0].Id, name: res_data[0].siteurl })
+          }
+          else if (res_data.length === 1) {
+            sessionStorage.CurrentSite = JSON.stringify({ id: res_data[0].Id, name: res_data[0].siteurl })
+          }
           setsites(res_data);
+          reload();
         })
-    }
-    else {
+      }
+      else {
       setAlertMessage("Please Select Company");
       setAlertType("info");
       setAlertOpen(true);
@@ -209,88 +243,128 @@ export default function User() {
   }, [])
 
   return (
-    <Page title="Sites | Holest">
-      <Snackbar open={AlertOpen} autoHideDuration={6000}  anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
-        <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
-          {AlertMessage}
-        </Alert>
-      </Snackbar>
-      <Container>
-        <Card style={{boxShadow:"none"}}>
-          <UserListToolbar
-            numSelected={selected.length}
-            filterName={filterName}
-            onFilterName={handleFilterByName}
-          />
+    <>
+      <Typography variant="h4" gutterBottom>
+        Sites
+      </Typography>
+      <Typography variant="h7" gutterBottom>
+        Current Company : {sessionStorage.CurrentCompany ? JSON.parse(sessionStorage.CurrentCompany).name : "No selected"}
+      </Typography>
+      <Typography variant="h7" gutterBottom>
+        Current Site : {sessionStorage.CurrentSite ? JSON.parse(sessionStorage.CurrentSite).name : "No selected"}
+      </Typography>
+      <Button
+        variant="contained"
+        onClick={(e) => dialogCompany()}
+        startIcon={<CheckBoxIcon />}
+        color="secondary"
+      >
+        Select Company
+      </Button>
 
-          <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={sites.length}
+      <Dialog open={opencompany} onClose={handleClose} fullWidth={true} maxWidth="md">
+        <DialogTitle>Please select Company</DialogTitle>
+        <DialogContent>
+          <SelecetCompany handleOpenSelect={handleClose} load = {loadData}/>
+        </DialogContent>
+      </Dialog>
+      <Button
+        variant="contained"
+        onClick={(e) => handleOpenSelect()}
+        startIcon={<CheckBoxIcon />}
+        color="secondary"
+      >
+        Select Site
+      </Button>
+
+
+
+      <Dialog open={opensite} onClose={handleClose} fullWidth={true} maxWidth="md">
+        <DialogTitle>Please select Site</DialogTitle>
+        <DialogContent>
+          <Page title="Sites | Holest">
+            <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
+              <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+                {AlertMessage}
+              </Alert>
+            </Snackbar>
+            <Container>
+              <Card style={{ boxShadow: "none" }}>
+                <UserListToolbar
                   numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
+                  filterName={filterName}
+                  onFilterName={handleFilterByName}
                 />
-                <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, key) => {
-                      const { Id, siteurl, siteurls, companyname, date } = row;
-                      const isItemSelected = selected.indexOf(Id) !== -1;
 
-                      return (
-                        <TableRow
-                          hover
-                          key={key}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={isItemSelected}
-                          aria-checked={isItemSelected}
-                        >
-                          <TableCell padding="checkbox">
+                <Scrollbar>
+                  <TableContainer sx={{ minWidth: 800 }}>
+                    <Table>
+                      <UserListHead
+                        order={order}
+                        orderBy={orderBy}
+                        headLabel={TABLE_HEAD}
+                        rowCount={sites.length}
+                        numSelected={selected.length}
+                        onRequestSort={handleRequestSort}
+                        onSelectAllClick={handleSelectAllClick}
+                      />
+                      <TableBody>
+                        {filteredUsers
+                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                          .map((row, key) => {
+                            const { Id, siteurl, siteurls, companyname, date } = row;
+                            const isItemSelected = selected.indexOf(Id) !== -1;
+
+                            return (
+                              <TableRow
+                                hover
+                                key={key}
+                                tabIndex={-1}
+                                role="checkbox"
+                                onClick={(e) => manage(Id)}
+                                selected={isItemSelected}
+                                aria-checked={isItemSelected}
+                              >
+                                {/* <TableCell padding="checkbox">
                             <Checkbox
                               checked={isItemSelected}
                               onChange={(event) => handleClick(event, Id)}
                             />
-                          </TableCell>
-                          <TableCell align="left">{Id}</TableCell>
-                          <TableCell component="th" scope="row" padding="none">
-                            <Typography variant="subtitle2" noWrap>
-                              {siteurl}
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="left">{siteurls}</TableCell>
-                          <TableCell align="left">{companyname}</TableCell>
-                          <TableCell align="left">{date}</TableCell>
-                          <TableCell align="right">
-                            <UserMoreMenu />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                {isUserNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
-          </Scrollbar>
-          <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }} paddingLeft={4} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          </TableCell> */}
+                                <TableCell align="left">{Id}</TableCell>
+                                <TableCell component="th" scope="row" padding="none">
+                                  <Typography variant="subtitle2" noWrap>
+                                    {siteurl}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell align="left">{siteurls}</TableCell>
+                                <TableCell align="left">{companyname}</TableCell>
+                                <TableCell align="left">{date}</TableCell>
+                                <TableCell align="right">
+                                  <UserMoreMenu />
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        {emptyRows > 0 && (
+                          <TableRow style={{ height: 53 * emptyRows }}>
+                            <TableCell colSpan={6} />
+                          </TableRow>
+                        )}
+                      </TableBody>
+                      {isUserNotFound && (
+                        <TableBody>
+                          <TableRow>
+                            <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                              <SearchNotFound searchQuery={filterName} />
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      )}
+                    </Table>
+                  </TableContainer>
+                </Scrollbar>
+                {/* <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }} paddingLeft={4} style={{ display: 'flex', justifyContent: 'space-between' }}>
 
             <Button onClick={(e) => manage()}>Manage</Button>
 
@@ -303,9 +377,13 @@ export default function User() {
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
-          </Stack>
-        </Card>
-      </Container>
-    </Page>
+          </Stack> */}
+              </Card>
+            </Container>
+          </Page>
+        </DialogContent>
+      </Dialog>
+
+    </>
   );
 }
