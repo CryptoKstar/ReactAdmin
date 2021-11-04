@@ -37,6 +37,7 @@ export default function DashboardApp() {
     })
       .then(response => {
         const data = response.data;
+        console.log(data)
         if (data.length === 0) {
           setOpen(true);
         }

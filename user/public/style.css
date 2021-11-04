@@ -31,3 +31,10 @@
 .css-1lu2e92-MuiPaper-root-MuiCard-root{
     /* padding: 10px 30px; */
 }
+.toolbar-class{
+    visibility: visible!important;
+}
+.rdw-editor-wrapper{
+    border: 1px solid;
+    border-radius: 5px;
+}

@@ -1,6 +1,6 @@
 // import { useState } from 'react';
 import Page from '../components/Page';
-import { Container, Stack, Typography, CardActionArea, TextField } from '@mui/material';
+import { Container, Button, Stack, Typography, CardActionArea, TextField, FormControl, InputLabel, Select, MenuItem, Input, Checkbox } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -14,9 +14,29 @@ import SendIcon from '@mui/icons-material/Send';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
+import { useEffect } from 'react';
+import { useState } from 'react';
+// import { Editor, EditorState } from 'draft-js'
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
+// import { CollectionsBookmarkRounded } from '@material-ui/icons';
 
 export default function CreatePayment() {
     const history = useHistory();
+    const [PaymentMethods, setPaymentMethods] = useState([]);
+    const [SitePayment, setSitePayment] = useState({});
+    const [Details, setDetails] = useState();
+    // const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
+    const handleChange = (event) => {
+        const data = event.target.value;
+        setDetails(JSON.parse(data.Data).parameters);
+        console.log(JSON.parse(data.Data).parameters)
+        setSitePayment(data);
+    };
     const RegisterSchema = Yup.object().shape({
         name: Yup.string()
             .min(2, 'Too Short!')
@@ -52,7 +72,7 @@ export default function CreatePayment() {
         },
         validationSchema: RegisterSchema,
         onSubmit: async (values, e) => {
-            dataProvider.create('companies', { data: { Name: values.name, Address: values.address, Country : values.country, TaxNo: values.taxnumber, RegNo: values.regnumber, MainUserId: MainUserId } })
+            dataProvider.create('companies', { data: { Name: values.name, Address: values.address, Country: values.country, TaxNo: values.taxnumber, RegNo: values.regnumber, MainUserId: MainUserId } })
                 .then(response => {
                     dataProvider.create('user_companies', { data: { UserId: MainUserId, CompanyId: response.data.id, Role: "admin" } })
                         .then(response => {
@@ -68,7 +88,28 @@ export default function CreatePayment() {
         }
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
+    const load = (params) => {
+        let payment_methods = [];
+        dataProvider.getList("payment_methods", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: {} })
+            .then(res => {
+                payment_methods = res.data;
+                const methods = [];
+                for (let i = 0; i < payment_methods.length; i++) {
+                    methods.push({
+                        label: payment_methods[i].Name,
+                        value: payment_methods[i].id,
+                        data: payment_methods[i],
+                    })
+                }
+                setPaymentMethods(methods);
+            })
+    }
+
+    useEffect(() => {
+        load()
+        // eslint-disable-next-line
+    }, [])
+    const { errors, touched, isSubmitting, handleSubmit } = formik;
     return (
         <Page title="Company | Holest">
             <Container>
@@ -79,7 +120,7 @@ export default function CreatePayment() {
                 </Stack>
             </Container>
             <Grid container justifyContent="center">
-                <Grid xs={8}>
+                <Grid item xs={8}>
                     <Card>
                         <CardActionArea>
                             <CardContent>
@@ -89,56 +130,127 @@ export default function CreatePayment() {
                             </CardContent>
                         </CardActionArea>
                         <CardContent>
+                            <FormControl fullWidth style={{ marginBottom: "10px" }}>
+                                <InputLabel id="demo-simple-select-label">Payment Methods</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={SitePayment}
+                                    label="Payment Methods"
+                                    onChange={handleChange}
+                                >
+                                    {
+                                        PaymentMethods.map((item, key) => {
+                                            return (
+                                                <MenuItem key={key} value={item.data}>{item.label}</MenuItem>
+
+                                            )
+                                        })
+                                    }
+
+                                </Select>
+                            </FormControl>
                             <FormikProvider value={formik}>
                                 <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                                     <Stack spacing={3}>
-                                        <TextField
-                                            fullWidth
-                                            label="Company Name"
-                                            {...getFieldProps('name')}
-                                            error={Boolean(touched.name && errors.name)}
-                                            helperText={touched.name && errors.name}
-                                        />
-                                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}>
-                                            <TextField
-                                                fullWidth
-                                                label="Conutry"
-                                                {...getFieldProps('country')}
-                                                error={Boolean(touched.country && errors.country)}
-                                                helperText={touched.country && errors.country}
-                                            />
-                                            <TextField
-                                                fullWidth
-                                                label="Address"
-                                                {...getFieldProps('address')}
-                                                error={Boolean(touched.address && errors.address)}
-                                                helperText={touched.address && errors.address}
-                                            />
-                                        </Stack>
-                                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}>
-                                            <TextField
-                                                fullWidth
-                                                label="Reg Number"
-                                                {...getFieldProps('regnumber')}
-                                                error={Boolean(touched.regnumber && errors.regnumber)}
-                                                helperText={touched.regnumber && errors.regnumber}
-                                            />
+                                        {
+                                            Details ? Details.map((item, key) => {
+                                                console.log(item)
+                                                if (item.Type === "Text") {
+                                                    return (
+                                                        <TextField
+                                                            key={key}
+                                                            fullWidth
+                                                            label={item.Name}
+                                                            defaultValue={item.Default}
+                                                            error={Boolean(touched.name && errors.name)}
+                                                            helperText={touched.name && errors.name}
+                                                        />
+                                                    )
+                                                }
+                                                else if (item.Type === "WYSIWYG") {
+                                                    return (
+                                                        <Editor
+                                                            key={key}
+                                                            toolbarOnFocus
+                                                            wrapperClassName="wrapper-class"
+                                                            editorClassName="editor-class"
+                                                            toolbarClassName="toolbar-class"
+                                                            toolbar={{
+                                                                inline: { inDropdown: true },
+                                                                list: { inDropdown: true },
+                                                                textAlign: { inDropdown: true },
+                                                                link: { inDropdown: true },
+                                                                history: { inDropdown: true },
+                                                            }}
+                                                        />
+                                                    )
+                                                }
+                                                else if (item.Type === "Upload") {
+                                                    return (
+                                                        <label key={key} htmlFor="contained-button-file">
+                                                            <Input accept="image/*" id="contained-button-file" multiple type="file" style={{ display: "none" }} />
+                                                            <Button variant="contained" color="secondary" component="span" size="large" fullWidth>
+                                                                Upload
+                                                            </Button>
+                                                        </label>
+                                                    )
+                                                }
+                                                else if (item.Type === "RADIO") {
+                                                    return (
+                                                        <FormControl component="fieldset" key={key}>
+                                                            <FormLabel component="legend" color="secondary">{item.Name}</FormLabel>
+                                                            <RadioGroup row aria-label="gender" defaultValue={item.Default} name="row-radio-buttons-group">
+                                                                {
+                                                                    item.Options.map((sub_item, sub_key) => {
+                                                                        return (
+                                                                            <FormControlLabel value={Object.values(sub_item)[0]} key={sub_key} control={<Radio color="secondary" />} label={Object.values(sub_item)[0]} />
 
-                                            <TextField
-                                                fullWidth
-                                                label="Tax Number"
-                                                {...getFieldProps('taxnumber')}
-                                                error={Boolean(touched.taxnumber && errors.taxnumber)}
-                                                helperText={touched.taxnumber && errors.taxnumber}
-                                            />
-                                        </Stack>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </RadioGroup>
+                                                        </FormControl>
+                                                    )
+                                                }
+                                                else if (item.Type === "Checkbox") {
+                                                    return (
+                                                        <FormControlLabel key={key} control={<Checkbox color="secondary" defaultChecked={item.Default} />} label={item.Name} />
+                                                    )
+                                                }
+                                                else if (item.Type === "Select") {
+                                                    return (
+                                                        <FormControl key={key}>
+                                                            <InputLabel id="demo-simple-select-label">{item.Name}</InputLabel>
+                                                            <Select
+                                                                labelId="demo-simple-select-label"
+                                                                id="demo-simple-select"
+                                                                // value={SitePayment}
+                                                                label="Payment Methods"
+                                                                onChange={(e) => console.log(e.target.value)}
+                                                            >
+                                                                {
+                                                                    item.Options.map((sub_item, sub_key) => {
+                                                                        return (
+                                                                            <MenuItem key={sub_key} value={Object.values(sub_item)[0]}>{Object.keys(sub_item)[0]}</MenuItem>
 
+                                                                        )
+                                                                    })
+                                                                }
+
+                                                            </Select>
+                                                        </FormControl>
+                                                    )
+                                                }
+                                            }) : ""
+                                        }
 
                                         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={10}>
                                             <LoadingButton
                                                 fullWidth
                                                 size="large"
                                                 type="submit"
+                                                color="secondary"
                                                 endIcon={<SendIcon />}
                                                 variant="contained"
                                                 loading={isSubmitting}
@@ -164,6 +276,6 @@ export default function CreatePayment() {
                     </Card>
                 </Grid>
             </Grid>
-        </Page>
+        </Page >
     );
 }

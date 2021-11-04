@@ -121,9 +121,9 @@ export default function SubscriptionsDetails() {
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={10} justifyContent="space-between">
                                     {
                                         actions === "" ? "" : (actions.map((item, key) => {
-                                            // console.log(item.Action)
+                                            const function_name = "window.func = " + item.Action;
                                             return (
-                                                <Button variant="contained" onClick={function add() { alert('Initiate CAPTURE') }} key={key}>{item.Caption}</Button>
+                                                <Button key={key} onClick={window.eval(function_name)} variant="contained" >{item.Caption}</Button>
                                             )
                                         }))
                                     }

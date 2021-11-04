@@ -245,8 +245,9 @@ export default function User() {
                             <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between">
                               {
                                 JSON.parse(data).actions.map((item, subkey) => {
+                                  const function_name = "window.func = " + item.Action;
                                   return (
-                                    <Button key={subkey} onClick={function add() { alert('Initiate CAPTURE') }} variant="contained" >{item.Caption}</Button>
+                                    <Button key={subkey} onClick={window.eval(function_name)} variant="contained" >{item.Caption}</Button>
                                   )
                                 })
                               }

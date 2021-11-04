@@ -169,7 +169,8 @@ export default function User() {
   }
 
   const createpayment = (params) => {
-    setOpen(true);
+    // setOpen(true);
+    history.push('newpayment')
   }
 
   const save = (params) => {
@@ -310,7 +311,7 @@ export default function User() {
               </Box>
             </DialogContent>
             <DialogActions>
-              <Button onClick={(e) => save()}>Save</Button>
+              <Button onClick={(e) => save()}>Open</Button>
               <Button onClick={handleClose}>Cancel</Button>
             </DialogActions>
           </Dialog>

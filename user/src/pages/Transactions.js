@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import SelectSite from './SelectSite'
+import { fn } from 'numeral';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -180,7 +181,7 @@ export default function User() {
 
   return (
     <Page title="Transactions | Holest">
-      <Snackbar open={AlertOpen} autoHideDuration={6000}  anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
+      <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
         <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
           {AlertMessage}
         </Alert>
@@ -244,11 +245,12 @@ export default function User() {
                           <TableCell align="left" onClick={(e) => siteEdit(Id)}> {Status}</TableCell>
                           <TableCell align="left" onClick={(e) => siteEdit(Id)}>{UpdatedAt}</TableCell>
                           <TableCell align="right">
-                            <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent ="space-between">
+                            <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between">
                               {
                                 JSON.parse(data).actions.map((item, subkey) => {
+                                  const function_name = "window.func = " + item.Action;
                                   return (
-                                    <Button key={subkey} onClick = {function add(){ alert('Initiate CAPTURE')}} variant="contained" >{item.Caption}</Button>
+                                    <Button key={subkey} onClick={window.eval(function_name)} variant="contained" >{item.Caption}</Button>
                                   )
                                 })
                               }

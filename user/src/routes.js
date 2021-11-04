@@ -37,7 +37,6 @@ export default function Router() {
         <Route path="/companydetails" component={CompanyDetails} exact />
         <Route path="/company" component={Company} exact />
         <Route path="/newcompany" component={CreateCompany} exact />
-        <Route path="/newpayment" component={CreatePayment} exact />
         <Route path="/help" component={Help} exact />
         <Route path="/tickets" component={Tickets} exact />
         <Route path="/transactions" component={Transactions} exact />
@@ -51,6 +50,7 @@ export default function Router() {
         <Route path="/sitedetails/:id" component={SiteDetails} exact />
         <Route path="/subscriptionsdetails/:id" component={SubscriptionsDetails} exact />
         <Route path="/transactionsdetails/:id" component={TransactionsDetails} exact />
+        <Route path="/newpayment" component={CreatePayment} exact />
         {/* <Route path="*" component={NotFound} /> */}
 
       </DashboardLayout>
