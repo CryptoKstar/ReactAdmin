@@ -247,6 +247,7 @@ export default function User() {
                                 JSON.parse(data).actions.map((item, subkey) => {
                                   const function_name = "window.func = " + item.Action;
                                   return (
+                                     // eslint-disable-next-line
                                     <Button key={subkey} onClick={window.eval(function_name)} variant="contained" >{item.Caption}</Button>
                                   )
                                 })

@@ -74,7 +74,7 @@ export default function SubscriptionsDetails() {
                 </Stack>
             </Container>
             <Grid container justifyContent="center">
-                <Grid xs={9}>
+                <Grid item xs={9}>
                     <Card>
                         <CardActionArea>
                             <CardContent>
@@ -123,6 +123,7 @@ export default function SubscriptionsDetails() {
                                         actions === "" ? "" : (actions.map((item, key) => {
                                             const function_name = "window.func = " + item.Action;
                                             return (
+                                                 // eslint-disable-next-line
                                                 <Button key={key} onClick={window.eval(function_name)} variant="contained" >{item.Caption}</Button>
                                             )
                                         }))

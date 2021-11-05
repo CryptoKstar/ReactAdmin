@@ -121,6 +121,7 @@ export default function SubscriptionsDetails() {
                                         actions === "" ? "" : (actions.map((item, key) => {
                                             const function_name = "window.func = " + item.Action;
                                             return (
+                                                 // eslint-disable-next-line
                                                 <Button key={key} onClick={window.eval(function_name)} variant="contained" >{item.Caption}</Button>
                                             )
                                         }))

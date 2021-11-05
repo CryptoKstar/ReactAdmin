@@ -12,7 +12,6 @@ import { useHistory } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import SelectSite from './SelectSite'
-import { fn } from 'numeral';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -250,6 +249,7 @@ export default function User() {
                                 JSON.parse(data).actions.map((item, subkey) => {
                                   const function_name = "window.func = " + item.Action;
                                   return (
+                                     // eslint-disable-next-line
                                     <Button key={subkey} onClick={window.eval(function_name)} variant="contained" >{item.Caption}</Button>
                                   )
                                 })

@@ -26,7 +26,7 @@ import { forwardRef } from 'react';
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-export default function CreatePayment() {
+export default function PaymentDetails() {
     const history = useHistory();
     const [PaymentMethods, setPaymentMethods] = useState([]);
     const [SitePayment, setSitePayment] = useState({});

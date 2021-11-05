@@ -13,17 +13,7 @@ import { useHistory } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { Icon } from '@iconify/react';
-import Dialog from '@mui/material/Dialog';
-import MenuItem from '@mui/material/MenuItem';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-// import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Select from '@mui/material/Select';
 import SelectSite from './SelectSite'
 
 const Alert = forwardRef(function Alert(props, ref) {
@@ -32,7 +22,6 @@ const Alert = forwardRef(function Alert(props, ref) {
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Payment Method Name', alignRight: false },
-  // { id: 'amount', label: 'Amount', alignRight: false },
   { id: 'date', label: 'Date', alignRight: false },
   { id: 'action', label: 'action', alignRight: false },
 ];
@@ -126,24 +115,6 @@ export default function User() {
     }
     setSelected([]);
   };
-
-  // const handleClick = (event, siteurl) => {
-  //   const selectedIndex = selected.indexOf(siteurl);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, siteurl);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -251,7 +222,7 @@ export default function User() {
         })
     }
     else {
-      setAlertMessage("Please Select Company");
+      setAlertMessage("Please Select Sites");
       setAlertType("error");
       setAlertOpen(true);
 
@@ -284,7 +255,7 @@ export default function User() {
           >
             Add PaymentMethod
           </Button>
-          <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
+          {/* <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
             <DialogTitle>New Site</DialogTitle>
             <DialogContent>
               <Box sx={{ minWidth: 120, marginTop: "20px" }}>
@@ -314,7 +285,7 @@ export default function User() {
               <Button onClick={(e) => save()}>Open</Button>
               <Button onClick={handleClose}>Cancel</Button>
             </DialogActions>
-          </Dialog>
+          </Dialog> */}
         </Stack>
 
         <Card>
