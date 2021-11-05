@@ -39,7 +39,6 @@ export default function CreatePayment() {
     const handleChange = (event) => {
         const data = event.target.value;
         setDetails(JSON.parse(data.Data).parameters);
-        console.log(JSON.parse(data.Data).parameters)
         setSitePayment(data);
     };
 
@@ -60,12 +59,11 @@ export default function CreatePayment() {
     };
 
     const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
-    const MainUserId = JSON.parse(sessionStorage.AccessToken).UserId
+    // const MainUserId = JSON.parse(sessionStorage.Acces   sToken).UserId
     const formik = useFormik({
     });
 
     const handleSubmit = (params, e) => {
-        console.log(ValueObject)
         let flag = 0;
         for (let i = 0; i < sitepaymentmethods.length; i++) {
             if (SitePayment.id === sitepaymentmethods[i].PaymentMethodsId) {
@@ -132,7 +130,7 @@ export default function CreatePayment() {
         load()
         // eslint-disable-next-line
     }, [])
-    const { errors, touched, isSubmitting, onSubmit } = formik;
+    const { isSubmitting } = formik;
     return (
         <Page title="Company | Holest">
             <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
@@ -179,9 +177,10 @@ export default function CreatePayment() {
                                 </Select>
                             </FormControl>
                             <FormikProvider value={formik}>
-                                <Form autoComplete="off" action = "/paymentmethods" noValidate onSubmit={handleSubmit}>
+                                <Form autoComplete="off" action="/paymentmethods" noValidate onSubmit={handleSubmit}>
                                     <Stack spacing={3}>
                                         {
+                                            // eslint-disable-next-line
                                             Details ? Details.map((item, key) => {
                                                 console.log(item)
                                                 if (item.Type === "Text") {

@@ -72,7 +72,7 @@ export default function User() {
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const [PaymentMethods, setPaymentMethods] = useState([]);
   const [age, setAge] = useState({});
 
@@ -80,9 +80,9 @@ export default function User() {
     setAge(event.target.value);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
   const AlertClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -135,12 +135,11 @@ export default function User() {
 
   const isUserNotFound = filteredUsers.length === 0;
   const siteEdit = (Id) => {
-    // const url = `/subscriptionsdetails/${Id}`;
-    // history.push(url);
+    const url = `/paymentdetails/${Id}`;
+    history.push(url);
   }
 
   const createpayment = (params) => {
-    // setOpen(true);
     history.push('newpayment')
   }
 
@@ -163,7 +162,6 @@ export default function User() {
           setAlertType("success");
           setAlertOpen(true);
           loadData();
-          setOpen(false)
         })
         .catch(error => {
           console.log(error)
@@ -255,37 +253,6 @@ export default function User() {
           >
             Add PaymentMethod
           </Button>
-          {/* <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
-            <DialogTitle>New Site</DialogTitle>
-            <DialogContent>
-              <Box sx={{ minWidth: 120, marginTop: "20px" }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Payment Methods</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={age}
-                    label="Payment Methods"
-                    onChange={handleChange}
-                  >
-                    {
-                      PaymentMethods.map((item, key) => {
-                        return (
-                          <MenuItem key={key} value={item.data}>{item.label}</MenuItem>
-
-                        )
-                      })
-                    }
-
-                  </Select>
-                </FormControl>
-              </Box>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={(e) => save()}>Open</Button>
-              <Button onClick={handleClose}>Cancel</Button>
-            </DialogActions>
-          </Dialog> */}
         </Stack>
 
         <Card>
@@ -324,12 +291,6 @@ export default function User() {
                           aria-checked={isItemSelected}
 
                         >
-                          {/* <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, id)}
-                            />
-                          </TableCell> */}
                           <TableCell onClick={(e) => siteEdit(id)} component="th" scope="row">
                             <Typography variant="subtitle2" noWrap>
                               {name}
