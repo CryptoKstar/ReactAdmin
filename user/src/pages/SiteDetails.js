@@ -16,6 +16,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { useTranslation } from 'react-i18next';
 var md5 = require('md5');
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -37,6 +38,7 @@ export default function SiteDetails() {
     const [AlertMessage, setAlertMessage] = useState("success");
     const [AlertType, setAlertType] = useState("success");
     const [AlertOpen, setAlertOpen] = useState(false);
+    const { t } = useTranslation();
 
     const AlertClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -141,7 +143,7 @@ export default function SiteDetails() {
     }, [])
     return (
         <Page title="Site Details | Holest">
-            <Snackbar open={AlertOpen} autoHideDuration={6000}  anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
+            <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
                 <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
                     {AlertMessage}
                 </Alert>
@@ -149,15 +151,15 @@ export default function SiteDetails() {
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        Site Details
+                        {t("Site Details")}
                     </Typography>
                     <Button
                         variant="contained"
                         onClick={(e) => back()}
                         startIcon={<ExitToAppIcon />}
                         color="secondary"
-                        >
-                        Go Sites
+                    >
+                        {t("Go Sites")}
                     </Button>
                 </Stack>
             </Container>
@@ -167,7 +169,7 @@ export default function SiteDetails() {
                         <CardActionArea>
                             <CardContent>
                                 <Typography variant="h5" gutterBottom>
-                                    Details
+                                    {t("Details")}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -175,7 +177,7 @@ export default function SiteDetails() {
                             <Stack spacing={3}>
                                 <TextField
                                     fullWidth
-                                    label="Company Name"
+                                    label={t("Company Name")}
                                     value={CompanyName}
                                     disabled
                                     onChange={(e) => setCompanyName(e.target.value)}
@@ -183,13 +185,13 @@ export default function SiteDetails() {
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}>
                                     <TextField
                                         fullWidth
-                                        label="Site Url"
+                                        label={t("Site Url")}
                                         value={Url}
                                         onChange={(e) => setUrl(e.target.value)}
                                     />
                                     <TextField
                                         fullWidth
-                                        label="Site Urls"
+                                        label={t("Site Urls")}
                                         value={Urls}
                                         onChange={(e) => setUrls(e.target.value)}
                                     />
@@ -198,14 +200,14 @@ export default function SiteDetails() {
                                     <TextField
                                         disabled
                                         fullWidth
-                                        label="Site Secret"
+                                        label={t("Site Secret")}
                                         value={token}
                                     />
 
                                     <TextField
                                         disabled
                                         fullWidth
-                                        label="Site Key"
+                                        label={t("Site Key")}
                                         value={SiteKey}
                                     />
                                     <LoadingButton
@@ -217,7 +219,7 @@ export default function SiteDetails() {
                                         onClick={(e) => regenerate()}
                                         color="secondary"
                                     >
-                                        ReGenerate
+                                        {t("ReGenerate")}
                                     </LoadingButton>
                                 </Stack>
 
@@ -232,7 +234,7 @@ export default function SiteDetails() {
                                         variant="contained"
                                         onClick={(e) => Update()}
                                     >
-                                        Update
+                                        {t("Update")}
                                     </LoadingButton>
                                     <LoadingButton
                                         fullWidth
@@ -243,7 +245,7 @@ export default function SiteDetails() {
                                         variant="contained"
                                         onClick={(e) => ItemDelete()}
                                     >
-                                        Delete
+                                        {t("Delete")}
                                     </LoadingButton>
                                 </Stack>
 

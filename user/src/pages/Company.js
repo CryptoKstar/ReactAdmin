@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import Page from '../components/Page';
-import { ProductSort } from '../components/_dashboard/products';
+// import { ProductSort } from '../components/_dashboard/products';
 import { Button, Container, Stack, Typography, CardActions } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import configData from "../config.json";
@@ -23,6 +23,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/material/styles';
 import SelectSite from './SelectSite'
+import { useTranslation } from 'react-i18next';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -52,6 +53,7 @@ export default function EcommerceShop() {
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const { t } = useTranslation();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -129,8 +131,8 @@ export default function EcommerceShop() {
           })
         }
         if (res_data.length === 0) {
-          sessionStorage.CurrentCompany = JSON.stringify({ id: "", name: "No Select" })
-          setAlertMessage("Please create New Company");
+          sessionStorage.CurrentCompany = JSON.stringify({ id: "", name: t("No selected") })
+          setAlertMessage(t('Please create New Company'));
           setAlertType("info");
           setAlertOpen(true);
         }
@@ -161,7 +163,7 @@ export default function EcommerceShop() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Company
+            {t('Company')}
           </Typography>
           <SelectSite reload={loadData} />
 
@@ -171,11 +173,11 @@ export default function EcommerceShop() {
             startIcon={<AddTaskIcon />}
             color="secondary"
           >
-            New Company
+            {t('New Company')}
           </Button>
 
         </Stack>
-        <Stack
+        {/* <Stack
           direction="row"
           flexWrap="wrap-reverse"
           alignItems="center"
@@ -185,7 +187,7 @@ export default function EcommerceShop() {
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
             <ProductSort />
           </Stack>
-        </Stack>
+        </Stack> */}
         <Grid container spacing={2}>
 
           {
@@ -203,7 +205,7 @@ export default function EcommerceShop() {
                       textTransform: 'uppercase'
                     }}
                   >
-                    Company
+                    {t('Company')}
                   </Label>
 
                   <Card>
@@ -239,15 +241,15 @@ export default function EcommerceShop() {
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                       <CardContent>
                         <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Label variant="ghost" color={'success'}>Address</Label>
+                          <Label variant="ghost" color={'success'}>{t('Address')}</Label>
                           <Label variant="ghost" color={'success'}>{subitem.Address}</Label>
                         </Typography>
                         <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Label variant="ghost" color={'error'}>RegNo</Label>
+                          <Label variant="ghost" color={'error'}>{t('ResNo')}</Label>
                           <Label variant="ghost" color={'error'}>{subitem.RegNo}</Label>
                         </Typography>
                         <Typography variant="body2" color="text.secondary" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <Label variant="ghost" color={'info'}>TaxNo</Label>
+                          <Label variant="ghost" color={'info'}>{t('TaxNo')}</Label>
                           <Label variant="ghost" color={'info'}>{subitem.TaxNo}</Label>
                         </Typography>
                       </CardContent>

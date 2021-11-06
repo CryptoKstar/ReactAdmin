@@ -1,39 +1,41 @@
 import { useRef, useState } from 'react';
-// material
 import { alpha } from '@mui/material/styles';
 import { Box, MenuItem, ListItemIcon, ListItemText, IconButton } from '@mui/material';
-// components
 import MenuPopover from '../../components/MenuPopover';
-
-// ----------------------------------------------------------------------
+import { useTranslation } from 'react-i18next';
 
 const LANGS = [
   {
     value: 'en',
     label: 'English',
-    icon: '/static/icons/ic_flag_en.svg'
+    icon: '/static/icons/gb.png'
   },
   {
-    value: 'de',
-    label: 'German',
-    icon: '/static/icons/ic_flag_de.svg'
+    value: 'sb',
+    label: 'Serbia',
+    icon: '/static/icons/rs.png'
   },
-  {
-    value: 'fr',
-    label: 'French',
-    icon: '/static/icons/ic_flag_fr.svg'
-  }
 ];
 
-// ----------------------------------------------------------------------
-
 export default function LanguagePopover() {
+  const { i18n } = useTranslation();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
+  // const [index, setindex] = useState(0);
 
   const handleOpen = () => {
     setOpen(true);
   };
+
+  const languagechange = (params) => {
+    setOpen(false);
+    i18n.changeLanguage(params)
+    if (params === "en") {
+      sessionStorage.index = 0
+    } else {
+      sessionStorage.index = 1
+    }
+  }
 
   const handleClose = () => {
     setOpen(false);
@@ -53,7 +55,7 @@ export default function LanguagePopover() {
           })
         }}
       >
-        <img src={LANGS[0].icon} alt={LANGS[0].label} />
+        <img src={LANGS[sessionStorage.index ? sessionStorage.index : 0].icon} alt={LANGS[0].label} />
       </IconButton>
 
       <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current}>
@@ -62,7 +64,8 @@ export default function LanguagePopover() {
             <MenuItem
               key={option.value}
               selected={option.value === LANGS[0].value}
-              onClick={handleClose}
+              onClick={(e) => languagechange(option.value)}
+              // onChange = {}
               sx={{ py: 1, px: 2.5 }}
             >
               <ListItemIcon>

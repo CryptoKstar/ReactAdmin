@@ -6,7 +6,7 @@ import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
 import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
-
+import { useTranslation } from 'react-i18next';
 const ListItemStyle = styled((props) => <ListItemButton disableGutters {...props} />)(
   ({ theme }) => ({
     ...theme.typography.body2,
@@ -69,6 +69,7 @@ NavItem.propTypes = {
 };
 
 function NavItem({ item, active }) {
+  const { t } = useTranslation();
   const theme = useTheme();
   const isActiveRoot = active(item.path);
   const { title, path, icon, info, children } = item;
@@ -99,7 +100,7 @@ function NavItem({ item, active }) {
           }}
         >
           <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-          <ListItemText disableTypography primary={title} />
+          <ListItemText disableTypography primary={t(title)} />
           {info && info}
           <Box
             component={Icon}
@@ -124,7 +125,7 @@ function NavItem({ item, active }) {
                       sx={JSON.parse(sessionStorage.CurrentSite).id === "" ? display : ""}
                     >
                       <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-                      <ListItemText disableTypography primary={title} />
+                      <ListItemText disableTypography primary={t(title)} />
                     </ListSubtyle>
                   );
                 }
@@ -137,7 +138,7 @@ function NavItem({ item, active }) {
                     to={path}
                   >
                     <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-                    <ListItemText disableTypography primary={title} />
+                    <ListItemText disableTypography primary={t(title)} />
                   </ListSubtyle>
                 );
               }
@@ -157,7 +158,7 @@ function NavItem({ item, active }) {
       }}
     >
       <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-      <ListItemText disableTypography primary={title} />
+      <ListItemText disableTypography primary={t(title)} />
       {info && info}
     </ListItemStyle>
   );

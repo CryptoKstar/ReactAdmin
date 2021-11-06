@@ -8,6 +8,7 @@ import axios from 'axios'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { forwardRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -15,6 +16,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 
 export default function AuthSocialRegister() {
   const history = useHistory();
+  const { t } = useTranslation();
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [open, setOpen] = useState(false);
@@ -81,7 +83,7 @@ export default function AuthSocialRegister() {
         });
     }
     else {
-      setAlertMessage("Users closed Google Register Window!");
+      setAlertMessage(t("Users closed Google Register Window Or Network Error!"));
       setAlertType("error");
       setOpen(true);
     }
@@ -104,7 +106,7 @@ export default function AuthSocialRegister() {
           <GoogleLogin
             className="GoogleLogin"
             clientId={Google_clientId}
-            buttonText="Sign up Google"
+            buttonText={t("Sign up Google")}
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
             icon={false}
@@ -119,7 +121,7 @@ export default function AuthSocialRegister() {
             fields="name,email,picture"
             scope="public_profile,user_friends"
             callback={responseFacebook}
-            textButton="Sign up FaceBook"
+            textButton={t("Sign up FaceBook")}
           />
         </FacebookLoginButton>
         {/* <Button fullWidth size="large" color="inherit" variant="outlined">
@@ -136,7 +138,7 @@ export default function AuthSocialRegister() {
 
       <Divider sx={{ my: 3 }}>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          OR
+          {t("OR")}
         </Typography>
       </Divider>
     </>

@@ -1,22 +1,17 @@
 import PropTypes from 'prop-types';
-// material
 import { Paper, Typography } from '@mui/material';
-
-// ----------------------------------------------------------------------
+import { useTranslation } from 'react-i18next';
 
 SearchNotFound.propTypes = {
   searchQuery: PropTypes.string
 };
 
 export default function SearchNotFound({ searchQuery = '', ...other }) {
+  const { t } = useTranslation();
   return (
     <Paper {...other}>
       <Typography gutterBottom align="center" variant="subtitle1">
-        Not found
-      </Typography>
-      <Typography variant="body2" align="center">
-        No results found for &nbsp;
-        <strong>&quot;{searchQuery}&quot;</strong>. Try checking for typos or using complete words.
+        {t("Not found")}
       </Typography>
     </Paper>
   );

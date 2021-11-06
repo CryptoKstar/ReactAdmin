@@ -21,19 +21,12 @@ import SelectSite from './SelectSite'
 import { useHistory } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { useTranslation } from 'react-i18next';
 var md5 = require('md5');
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
-const TABLE_HEAD = [
-  { id: 'siteurl', label: 'Site Url', alignRight: false },
-  { id: 'siteurls', label: 'Site Urls', alignRight: false },
-  { id: 'companyname', label: 'Company Name', alignRight: false },
-  { id: 'date', label: 'Date', alignRight: false },
-  { id: '' }
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -81,6 +74,15 @@ export default function User() {
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
+  const { t } = useTranslation();
+
+  const TABLE_HEAD = [
+    { id: 'siteurl', label: t('Site Url'), alignRight: false },
+    { id: 'siteurls', label: t('Site Urls'), alignRight: false },
+    { id: 'companyname', label: t('Company Name'), alignRight: false },
+    { id: 'date', label: t('Date'), alignRight: false },
+    { id: '' }
+  ];
 
   const AlertClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -143,7 +145,7 @@ export default function User() {
     dataProvider.delete("company_sites", { id: Id })
       .then(res => {
         setIsOpen(false)
-        setAlertMessage("Selected site is deleted correctly!");
+        setAlertMessage(t("Selected site is deleted correctly!"));
         setAlertType("success");
         setAlertOpen(true);
         loadData();
@@ -174,7 +176,7 @@ export default function User() {
           .catch(err => {
 
           })
-        setAlertMessage("New Site is added in the company");
+        setAlertMessage(t("New Site is added in the company"));
         setAlertType("success");
         setAlertOpen(true);
       })
@@ -198,8 +200,8 @@ export default function User() {
             }
           }
           if (res_data.length === 0) {
-            sessionStorage.CurrentSite = JSON.stringify({ id: "", name: "No Select" })
-            setAlertMessage("Please create new Site.");
+            sessionStorage.CurrentSite = JSON.stringify({ id: "", name: t("No selected") })
+            setAlertMessage(t("Please create new Site."));
             setAlertType("info");
             setAlertOpen(true);
           }
@@ -213,7 +215,7 @@ export default function User() {
         })
     }
     else {
-      setAlertMessage("Please Select Company");
+      setAlertMessage(t("Please Select Company"));
       setAlertType("info");
       setAlertOpen(true);
     }
@@ -233,7 +235,7 @@ export default function User() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Sites
+            {t("Sites")}
           </Typography>
           <SelectSite reload={loadData} />
           <Button
@@ -245,19 +247,19 @@ export default function User() {
             startIcon={<AddTaskIcon />}
             color="secondary"
           >
-            New Site
+            {t("New Site")}
           </Button>
 
           <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
-            <DialogTitle>New Site</DialogTitle>
+            <DialogTitle>{t("New Site")}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Please add sites in the Company
+                {t("Please add sites in the Company")}
               </DialogContentText>
               <TextField
                 autoFocus
                 margin="dense"
-                label="Site url!"
+                label={t("Site Url")}
                 type="text"
                 fullWidth
                 variant="standard"
@@ -267,7 +269,7 @@ export default function User() {
 
               <TextField
                 margin="dense"
-                label="Site urls!"
+                label={t("Site Urls")}
                 type="text"
                 fullWidth
                 variant="standard"
@@ -276,8 +278,8 @@ export default function User() {
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={(e) => save()}>Save</Button>
-              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={(e) => save()}>{t("Save")}</Button>
+              <Button onClick={handleClose}>{t("Cancel")}</Button>
             </DialogActions>
           </Dialog>
         </Stack>

@@ -15,16 +15,11 @@ import MuiAlert from '@mui/material/Alert';
 import { Icon } from '@iconify/react';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SelectSite from './SelectSite'
+import { useTranslation } from 'react-i18next';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Payment Method Name', alignRight: false },
-  { id: 'date', label: 'Date', alignRight: false },
-  { id: 'action', label: 'action', alignRight: false },
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -69,6 +64,13 @@ export default function User() {
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
+  const { t } = useTranslation();
+
+  const TABLE_HEAD = [
+    { id: 'name', label: t('Payment Method Name'), alignRight: false },
+    { id: 'date', label: t('Date'), alignRight: false },
+    { id: 'action', label: t('Action'), alignRight: false },
+  ];
 
   const AlertClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -133,7 +135,7 @@ export default function User() {
   const paymentMethodsDelete = (id) => {
     dataProvider.delete('company_site_payment_methods', { id: id })
       .then(res => {
-        setAlertMessage("Selected Payment method is deleted correctly");
+        setAlertMessage(t("Selected Payment method is deleted correctly"));
         setAlertType("success");
         setAlertOpen(true);
         loadData();
@@ -180,7 +182,7 @@ export default function User() {
         })
     }
     else {
-      setAlertMessage("Please Select Sites");
+      setAlertMessage(t("Please Select Sites"));
       setAlertType("error");
       setAlertOpen(true);
 
@@ -202,7 +204,7 @@ export default function User() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Payment Methods
+            {t("Payment Methods")}
           </Typography>
           <SelectSite reload={loadData} />
           <Button
@@ -211,7 +213,7 @@ export default function User() {
             startIcon={<Icon icon={plusFill} />}
             color="secondary"
           >
-            Add PaymentMethod
+            {t("Add PaymentMethod")}
           </Button>
         </Stack>
 

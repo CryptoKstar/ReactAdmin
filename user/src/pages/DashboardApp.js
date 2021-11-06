@@ -12,7 +12,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 export default function DashboardApp() {
+  // eslint-disable-next-line
+  const { t , i18n} = useTranslation();
   const [open, setOpen] = useState(false);
   const history = useHistory();
   const handleClose = () => {
@@ -38,7 +42,6 @@ export default function DashboardApp() {
     })
       .then(response => {
         const data = response.data;
-        console.log(data)
         if (data.length === 0) {
           setOpen(true);
         }
@@ -53,6 +56,7 @@ export default function DashboardApp() {
 
   useEffect(() => {
     loadData("defalut");
+
     // eslint-disable-next-line  
   }, [])
 
@@ -64,22 +68,22 @@ export default function DashboardApp() {
         aria-labelledby="draggable-dialog-title"
       >
         <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-          Welcome!
+          {t('Welcome!')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            You have no company for now. So please create New Company
+            {t('You have no company for now. So please create New Company!')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button autoFocus variant="contained" color="secondary" onClick={(e) => gocreatecompany()}>
-            Confirm
+            {t('Confirm')}
           </Button>
         </DialogActions>
       </Dialog>
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4">DashBoard</Typography>
+          <Typography variant="h4">{t('Dashboard')}</Typography>
           <SelectSite reload={loadData} />
         </Stack>
         <Iframe height="100%" overflow="hidden" frameBorder="0" url="./static/DashBoard.html" />

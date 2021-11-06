@@ -27,6 +27,7 @@ import jsonServerProvider from 'ra-data-json-server';
 import configData from "../config.json";
 import CreateTicket from "./CreateTicket";
 import SelectSite from './SelectSite'
+import { useTranslation } from 'react-i18next';
 
 const actions = [
   { icon: <FileCopyIcon />, name: 'New' },
@@ -40,6 +41,8 @@ export default function EcommerceShop() {
   const [open, setOpen] = useState(false);
   const [TicketName, setTicketName] = useState("");
   const [TicketData, setTicketData] = useState(null);
+  const { t } = useTranslation();
+
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
       options.headers = new Headers({ Accept: 'application/json' });
@@ -102,7 +105,7 @@ export default function EcommerceShop() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" >
-            Ticket
+            {t("Ticket")}
           </Typography>
           <SelectSite reload={load} />
         </Stack>
@@ -112,8 +115,8 @@ export default function EcommerceShop() {
               <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <Tabs value={value} onChange={handleChange} aria-label="disabled tabs example">
-                    <Tab icon={<AirplaneTicketIcon />} iconposition="start" style={{ width: "50%" }} label="New Ticket" value="1" />
-                    <Tab icon={<FavoriteIcon />} iconposition="start" style={{ width: "50%" }} label="My Tickets" value="2" />
+                    <Tab icon={<AirplaneTicketIcon />} iconposition="start" style={{ width: "50%" }} label={t("New Ticket")} value="1" />
+                    <Tab icon={<FavoriteIcon />} iconposition="start" style={{ width: "50%" }} label={t("My Tickets")} value="2" />
                   </Tabs>
                 </Box>
                 <TabPanel value="1">

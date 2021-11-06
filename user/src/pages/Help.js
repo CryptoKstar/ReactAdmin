@@ -11,15 +11,13 @@ import jsonServerProvider from 'ra-data-json-server';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import SelectSite from './SelectSite'
+import { useTranslation } from 'react-i18next';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const TABLE_HEAD = [
-  { id: 'Link', label: 'Link', alignRight: false },
-  { id: 'Description', label: 'Description', alignRight: false },
-];
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -61,6 +59,12 @@ export default function User() {
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
+  const { t } = useTranslation();
+
+  const TABLE_HEAD = [
+    { id: 'Link', label: t('Link'), alignRight: false },
+    { id: 'Description', label: t('Description'), alignRight: false },
+  ];
 
   const AlertClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -133,7 +137,7 @@ export default function User() {
         })
     }
     else {
-      setAlertMessage("Please Select Company");
+      setAlertMessage(t("Please Select Company"));
       setAlertType("error");
       setAlertOpen(true);
     }
@@ -153,7 +157,7 @@ export default function User() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Help
+            {t("Help")}
           </Typography>
           <SelectSite reload={loadData} />
 

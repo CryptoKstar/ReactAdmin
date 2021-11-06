@@ -7,6 +7,9 @@ import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { LoginForm } from '../components/authentication/login';
 import AuthSocialLogin from '../components/authentication/AuthSocialLogin';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import axios from 'axios'
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -34,19 +37,36 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }));
 
 export default function Login() {
+  const { t , i18n } = useTranslation();
+  const load = async (params) => {
+    await axios.get('https://apps.holest.com/iploc.php?ip=auto', {}).then(res => {
+      const country_name = res.data.CountryName;
+      if (country_name === "Serbia" || country_name === "BiH" || country_name === "Montenegro") {
+        i18n.changeLanguage('sb');
+      }
+      else {
+        i18n.changeLanguage('en');
+      }
+    })
+  }
+
+  useEffect(() => {
+    load();
+  // eslint-disable-next-line
+  }, [])
   return (
     <RootStyle title="Login | Minimal-UI">
       <AuthLayout>
-        Don’t have an account? &nbsp;
+        {t("Don’t have an account?")} &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
-          Get started
+          {t("Get started")}
         </Link>
       </AuthLayout>
 
       <MHidden width="mdDown">
         <SectionStyle>
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Hi, Welcome Back
+            {t("Hi, Welcome Back")}
           </Typography>
           <img src="/static/illustrations/illustration_login.png" alt="login" />
         </SectionStyle>
@@ -55,18 +75,18 @@ export default function Login() {
       <Container maxWidth="sm">
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
-            <Iframe height="50px" overflow = "hidden" frameBorder = "0" url="./static/landing_top.html" />
+            <Iframe height="50px" overflow="hidden" frameBorder="0" url="./static/landing_top.html" />
           </Stack>
           <AuthSocialLogin />
 
           <LoginForm />
-          <Iframe height="50px" overflow = "hidden" frameBorder = "0" url="./static/landing_bottom.html" />
+          <Iframe height="50px" overflow="hidden" frameBorder="0" url="./static/landing_bottom.html" />
 
           <MHidden width="smUp">
             <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-              Don’t have an account?&nbsp;
+              {t("Don’t have an account?")}&nbsp;
               <Link variant="subtitle2" component={RouterLink} to="register">
-                Get started
+                {t("Get started")}
               </Link>
             </Typography>
           </MHidden>

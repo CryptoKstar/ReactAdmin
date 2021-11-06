@@ -11,6 +11,8 @@ import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import { useParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
+
 export default function SubscriptionsDetails() {
     const params = useParams();
     const history = useHistory();
@@ -22,6 +24,7 @@ export default function SubscriptionsDetails() {
     const [amount, setamount] = useState("");
     const [UID, setUID] = useState("");
     const [date, setdate] = useState("");
+    const { t } = useTranslation();
 
     const httpClient = (url, options = {}) => {
         if (!options.headers) {
@@ -60,14 +63,14 @@ export default function SubscriptionsDetails() {
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        Transactions Details
+                        {t("Transactions Details")}
                     </Typography>
                     <Button
                         variant="contained"
                         onClick={(e) => back()}
                         startIcon={<Icon icon={plusFill} />}
                     >
-                        Go Transactions
+                        {t("Go Transactions")}
                     </Button>
                 </Stack>
             </Container>
@@ -77,7 +80,7 @@ export default function SubscriptionsDetails() {
                         <CardActionArea>
                             <CardContent>
                                 <Typography variant="h5" gutterBottom>
-                                    Details
+                                    {t("Details")}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -85,7 +88,7 @@ export default function SubscriptionsDetails() {
                             <Stack spacing={3}>
                                 <TextField
                                     fullWidth
-                                    label="Payment ID"
+                                    label={t("Payment Method")}
                                     value={Name}
                                     disabled
                                     onChange={(e) => setName(e.target.value)}
@@ -93,14 +96,14 @@ export default function SubscriptionsDetails() {
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}>
                                     <TextField
                                         fullWidth
-                                        label="Type"
+                                        label={t("Type")}
                                         value={amount}
                                         disabled
                                         onChange={(e) => setamount(e.target.value)}
                                     />
                                     <TextField
                                         fullWidth
-                                        label="Status"
+                                        label={t("Status")}
                                         disabled
                                         value={UID}
                                         onChange={(e) => setUID(e.target.value)}
@@ -109,7 +112,7 @@ export default function SubscriptionsDetails() {
 
                                 <TextField
                                     fullWidth
-                                    label="Date"
+                                    label={t("Date")}
                                     value={date}
                                     disabled
                                     onChange={(e) => setdate(e.target.value)}

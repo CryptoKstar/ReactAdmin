@@ -8,7 +8,7 @@ import { MHidden } from '../../components/@material-extend';
 import AccountPopover from './AccountPopover';
 // import LanguagePopover from './LanguagePopover';
 // import NotificationsPopover from './NotificationsPopover';
-
+import LanguagePopover from './LanguagePopover'
 const DRAWER_WIDTH = 280;
 const APPBAR_MOBILE = 64;
 const APPBAR_DESKTOP = 92;
@@ -48,8 +48,8 @@ export default function DashboardNavbar({ onOpenSidebar }) {
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          {/* <LanguagePopover />
-          <NotificationsPopover /> */}
+          <LanguagePopover />
+          {/* <NotificationsPopover /> */}
           <AccountPopover />
         </Stack>
       </ToolbarStyle>

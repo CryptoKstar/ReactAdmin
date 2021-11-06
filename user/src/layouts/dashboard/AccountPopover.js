@@ -2,36 +2,28 @@ import axios from 'axios'
 import { Icon } from '@iconify/react';
 import { useRef, useState } from 'react';
 import homeFill from '@iconify/icons-eva/home-fill';
-import personFill from '@iconify/icons-eva/person-fill';
-import settings2Fill from '@iconify/icons-eva/settings-2-fill';
+// import personFill from '@iconify/icons-eva/person-fill';
+// import settings2Fill from '@iconify/icons-eva/settings-2-fill';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material';
 import MenuPopover from '../../components/MenuPopover';
 import configData from "../../config.json";
 import account from '../../_mocks_/account';
+import { useTranslation } from 'react-i18next';
 
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: homeFill,
-    linkTo: '/app'
-  },
-  {
-    label: 'Profile',
-    icon: personFill,
-    linkTo: '#'
-  },
-  {
-    label: 'Settings',
-    icon: settings2Fill,
-    linkTo: '#'
-  }
-];
 export default function AccountPopover() {
   const anchorRef = useRef(null);
   const history = useHistory();
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
+  const MENU_OPTIONS = [
+    {
+      label: t('Home'),
+      icon: homeFill,
+      linkTo: '/app'
+    }
+  ];
   const handleOpen = () => {
     setOpen(true);
   };
@@ -83,10 +75,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {sessionStorage.UserData?JSON.parse(sessionStorage.UserData).Name:""}
+            {sessionStorage.UserData ? JSON.parse(sessionStorage.UserData).Name : ""}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {sessionStorage.UserData?JSON.parse(sessionStorage.UserData).Email:""}
+            {sessionStorage.UserData ? JSON.parse(sessionStorage.UserData).Email : ""}
           </Typography>
         </Box>
 
@@ -116,7 +108,7 @@ export default function AccountPopover() {
 
         <Box sx={{ p: 2, pt: 1.5 }}>
           <Button fullWidth color="inherit" variant="outlined" onClick={(e) => logout(e)}>
-            Logout
+            {t("Logout")}
           </Button>
         </Box>
       </MenuPopover>

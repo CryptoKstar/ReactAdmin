@@ -12,21 +12,24 @@ import SendIcon from '@mui/icons-material/Send';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
+import { useTranslation } from 'react-i18next';
 
 export default function CreateCompany() {
     const history = useHistory();
+    const { t } = useTranslation();
+
     const RegisterSchema = Yup.object().shape({
         name: Yup.string()
-            .min(2, 'Too Short!')
-            .max(200, 'Too Long!')
-            .required('Name is required'),
+            .min(2, t('Too Short!'))
+            .max(200, t('Too Long!'))
+            .required(t('Name is required')),
         address: Yup.string()
-            .min(2, 'Too Short!')
-            .max(200, 'Too Long!')
-            .required('Address is required'),
-        regnumber: Yup.string().min(2, 'Too Short!').max(15, 'Too Long!').required('Reg Number required'),
-        taxnumber: Yup.string().min(2, 'Too Short!').max(15, 'Too Long!').required('Tax Number required'),
-        country: Yup.string().min(2, 'Too Short!').max(15, 'Too Long!').required('Country required'),
+            .min(2, t('Too Short!'))
+            .max(200, t('Too Long!'))
+            .required(t('Address is required')),
+        regnumber: Yup.string().min(2, t('Too Short!')).max(15, t('Too Long!')).required(t('Reg Number required')),
+        taxnumber: Yup.string().min(2, t('Too Short!')).max(15, t('Too Long!')).required(t('Tax Number required')),
+        country: Yup.string().min(2, t('Too Short!')).max(15, t('Too Long!')).required(t('Country required')),
     });
 
     const httpClient = (url, options = {}) => {
@@ -72,7 +75,7 @@ export default function CreateCompany() {
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        New Company
+                        {t("New Company")}
                     </Typography>
                 </Stack>
             </Container>
@@ -82,7 +85,7 @@ export default function CreateCompany() {
                         <CardActionArea>
                             <CardContent>
                                 <Typography variant="h5" gutterBottom>
-                                    Company
+                                    {t("Company")}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -92,7 +95,7 @@ export default function CreateCompany() {
                                     <Stack spacing={3}>
                                         <TextField
                                             fullWidth
-                                            label="Company Name"
+                                            label={t("Company Name")}
                                             {...getFieldProps('name')}
                                             error={Boolean(touched.name && errors.name)}
                                             helperText={touched.name && errors.name}
@@ -100,14 +103,14 @@ export default function CreateCompany() {
                                         {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}> */}
                                         <TextField
                                             fullWidth
-                                            label="Conutry"
+                                            label={t("Conutry")}
                                             {...getFieldProps('country')}
                                             error={Boolean(touched.country && errors.country)}
                                             helperText={touched.country && errors.country}
                                         />
                                         <TextField
                                             fullWidth
-                                            label="Address"
+                                            label={t("Address")}
                                             {...getFieldProps('address')}
                                             error={Boolean(touched.address && errors.address)}
                                             helperText={touched.address && errors.address}
@@ -116,7 +119,7 @@ export default function CreateCompany() {
                                         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}>
                                             <TextField
                                                 fullWidth
-                                                label="Reg Number"
+                                                label={t("ResNo")}
                                                 {...getFieldProps('regnumber')}
                                                 error={Boolean(touched.regnumber && errors.regnumber)}
                                                 helperText={touched.regnumber && errors.regnumber}
@@ -124,7 +127,7 @@ export default function CreateCompany() {
 
                                             <TextField
                                                 fullWidth
-                                                label="Tax Number"
+                                                label={t("TaxNo")}
                                                 {...getFieldProps('taxnumber')}
                                                 error={Boolean(touched.taxnumber && errors.taxnumber)}
                                                 helperText={touched.taxnumber && errors.taxnumber}
@@ -141,7 +144,7 @@ export default function CreateCompany() {
                                                 variant="contained"
                                                 loading={isSubmitting}
                                             >
-                                                Create
+                                                {t("Create")}
                                             </LoadingButton>
                                             <LoadingButton
                                                 fullWidth
@@ -151,7 +154,7 @@ export default function CreateCompany() {
                                                 type="reset"
                                                 variant="contained"
                                             >
-                                                Reset
+                                                {t("Reset")}
                                             </LoadingButton>
                                         </Stack>
 

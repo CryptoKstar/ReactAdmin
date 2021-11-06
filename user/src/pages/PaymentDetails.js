@@ -25,6 +25,7 @@ import MuiAlert from '@mui/material/Alert';
 import { forwardRef } from 'react';
 import plusFill from '@iconify/icons-eva/plus-fill';
 import { useParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -35,10 +36,13 @@ export default function PaymentDetails() {
     const [SitePayment, setSitePayment] = useState("123");
     const [Details, setDetails] = useState();
     const [ValueObject, setValueObject] = useState({});
+  // eslint-disable-next-line
     const [AlertMessage, setAlertMessage] = useState("success");
+  // eslint-disable-next-line
     const [AlertType, setAlertType] = useState("success");
     const [AlertOpen, setAlertOpen] = useState(false)
     const params = useParams();
+    const { t } = useTranslation();
 
     const AlertClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -63,9 +67,6 @@ export default function PaymentDetails() {
     const handleSubmit = (params, e) => {
         dataProvider.update('company_site_payment_methods', { id: Currentdata.id, data: { PaymentMethodId: Currentdata.PaymentMethodId, CompanySiteId: JSON.parse(sessionStorage.CurrentSite).id, Data: Currentdata.Data } })
             .then(res => {
-                setAlertMessage("Selected Payment Methods is added correctly");
-                setAlertType("success");
-                setAlertOpen(true);
                 history.push('/paymentmethods')
             })
             .catch(error => {
@@ -80,9 +81,6 @@ export default function PaymentDetails() {
     const paymentMethodsDelete = (id) => {
         dataProvider.delete('company_site_payment_methods', { id: Currentdata.id })
             .then(res => {
-                setAlertMessage("Selected Payment method is deleted correctly");
-                setAlertType("success");
-                setAlertOpen(true);
                 history.push('/paymentmethods')
             })
             .catch(error => {
@@ -130,7 +128,7 @@ export default function PaymentDetails() {
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        Payment Methods Details
+                        {t("Payment Methods Details")}
                     </Typography>
                     <Button
                         variant="contained"
@@ -138,7 +136,7 @@ export default function PaymentDetails() {
                         startIcon={<Icon icon={plusFill} />}
                         color="secondary"
                     >
-                        GO PaymentMethod
+                        {t("GO PaymentMethod")}
                     </Button>
                 </Stack>
             </Container>
@@ -148,7 +146,7 @@ export default function PaymentDetails() {
                         <CardActionArea>
                             <CardContent>
                                 <Typography variant="h5" gutterBottom>
-                                    Payments
+                                    {t("Details")}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -285,7 +283,7 @@ export default function PaymentDetails() {
                                                 variant="contained"
                                                 loading={isSubmitting}
                                             >
-                                                Update
+                                                {t("Update")}
                                             </LoadingButton>
                                             <LoadingButton
                                                 fullWidth
@@ -296,7 +294,7 @@ export default function PaymentDetails() {
                                                 variant="contained"
                                                 onClick={(e) => paymentMethodsDelete()}
                                             >
-                                                Delete
+                                                {t("Delete")}
                                             </LoadingButton>
                                         </Stack>
 

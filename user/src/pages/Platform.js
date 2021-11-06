@@ -4,9 +4,10 @@ import Iframe from 'react-iframe'
 import Page from '../components/Page';
 import SelectSite from './SelectSite'
 import { Stack } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export default function EcommerceShop() {
-
+  const { t } = useTranslation();
   const load = (params) => {
 
   }
@@ -19,7 +20,7 @@ export default function EcommerceShop() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4">
-            Platform Modules
+            {t("Platform Modules")}
           </Typography>
           <SelectSite reload={load} />
         </Stack>

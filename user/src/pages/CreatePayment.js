@@ -23,6 +23,7 @@ import FormLabel from '@mui/material/FormLabel';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { forwardRef } from 'react';
+import { useTranslation } from 'react-i18next';
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -36,6 +37,8 @@ export default function CreatePayment() {
     const [AlertMessage, setAlertMessage] = useState("success");
     const [AlertType, setAlertType] = useState("success");
     const [AlertOpen, setAlertOpen] = useState(false);
+    const { t } = useTranslation();
+
     const handleChange = (event) => {
         const data = event.target.value;
         setDetails(JSON.parse(data.Data).parameters);
@@ -70,14 +73,14 @@ export default function CreatePayment() {
             }
         }
         if (flag !== 0) {
-            setAlertMessage("The Payment Methods is exist in this site");
+            setAlertMessage(t("The Payment Methods is exist in this site"));
             setAlertType("error");
             setAlertOpen(true);
         }
         else {
             dataProvider.create('company_site_payment_methods', { data: { PaymentMethodId: SitePayment.id, CompanySiteId: JSON.parse(sessionStorage.CurrentSite).id, Data: SitePayment.Data } })
                 .then(res => {
-                    setAlertMessage("Selected Payment Methods is added correctly");
+                    setAlertMessage(t("Selected Payment Methods is added correctly"));
                     setAlertType("success");
                     setAlertOpen(true);
                     history.push('/paymentmethods')
@@ -140,7 +143,7 @@ export default function CreatePayment() {
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        New Payment Methods
+                        {t("New Payment Methods")}
                     </Typography>
                 </Stack>
             </Container>
@@ -150,25 +153,24 @@ export default function CreatePayment() {
                         <CardActionArea>
                             <CardContent>
                                 <Typography variant="h5" gutterBottom>
-                                    Payments
+                                    {t("Payments")}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
                         <CardContent>
                             <FormControl fullWidth style={{ marginBottom: "10px" }}>
-                                <InputLabel id="demo-simple-select-label">Payment Methods</InputLabel>
+                                <InputLabel id="demo-simple-select-label">{t("Payment Methods")}</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
                                     value={SitePayment}
-                                    label="Payment Methods"
+                                    label={t("Payment Methods")}
                                     onChange={handleChange}
                                 >
                                     {
                                         PaymentMethods.map((item, key) => {
                                             return (
                                                 <MenuItem key={key} value={item.data}>{item.label}</MenuItem>
-
                                             )
                                         })
                                     }
@@ -227,7 +229,7 @@ export default function CreatePayment() {
                                                     return (
                                                         <FormControl key={key}>
                                                             <label htmlFor="contained-button-file">
-                                                                <Input accept="image/*" id="contained-button-file" multiple type="file" style={{ display: "none" }} value={ValueObject[item.Name]} onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })} />
+                                                                <Input accept="image/*" id="contained-button-file" disabled={!item.Localizable} multiple type="file" style={{ display: "none" }} value={ValueObject[item.Name]} onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })} />
                                                                 <Button variant="contained" color="secondary" disabled={!item.Localizable} required={item.Required} component="span" size="large" fullWidth>
                                                                     {item.Name} Upload
                                                                 </Button>
@@ -244,7 +246,6 @@ export default function CreatePayment() {
                                                                     item.Options.map((sub_item, sub_key) => {
                                                                         return (
                                                                             <FormControlLabel value={Object.values(sub_item)[0]} required={item.Required} disabled={!item.Localizable} key={sub_key} control={<Radio color="secondary" />} label={Object.values(sub_item)[0]} />
-
                                                                         )
                                                                     })
                                                                 }
@@ -273,7 +274,6 @@ export default function CreatePayment() {
                                                                 required={item.Required}
                                                                 value={ValueObject[item.Name]}
                                                                 onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })}
-                                                            // onChange={(e) => console.log(e.target.value)}
                                                             >
                                                                 {
                                                                     item.Options.map((sub_item, sub_key) => {
@@ -301,7 +301,7 @@ export default function CreatePayment() {
                                                 variant="contained"
                                                 loading={isSubmitting}
                                             >
-                                                Create
+                                                {t("Create")}
                                             </LoadingButton>
                                             <LoadingButton
                                                 fullWidth
@@ -311,7 +311,7 @@ export default function CreatePayment() {
                                                 type="reset"
                                                 variant="contained"
                                             >
-                                                Reset
+                                                {t("Reset")}
                                             </LoadingButton>
                                         </Stack>
 

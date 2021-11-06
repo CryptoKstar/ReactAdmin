@@ -1,16 +1,6 @@
 import { filter } from 'lodash';
 import { forwardRef, useState } from 'react';
-// material
-import {
-  Card,
-  Table,
-  TableRow,
-  TableBody,
-  TableCell,
-  Container,
-  Typography,
-  TableContainer,
-} from '@mui/material';
+import { Card, Table, TableRow, TableBody, TableCell, Container, Typography, TableContainer } from '@mui/material';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, CompanyTool } from '../components/_dashboard/user';
@@ -20,19 +10,11 @@ import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import configData from "../config.json";
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
-
-const TABLE_HEAD = [
-  { id: 'Id', label: 'ID', alignRight: false },
-  { id: 'Name', label: 'Company Name', alignRight: false },
-  { id: 'RegNo', label: 'ResNo', alignRight: false },
-  { id: 'TaxNo', label: 'TaxNo', alignRight: false },
-  { id: 'Address', label: 'Address', alignRight: false },
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -76,6 +58,15 @@ export default function SelecetCompany({ handleOpenSelect, load }) {
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
   const [Companydata, setCompanydata] = useState([]);
+  const { t } = useTranslation();
+
+  const TABLE_HEAD = [
+    { id: 'Id', label: t('ID'), alignRight: false },
+    { id: 'Name', label: t('Company Name'), alignRight: false },
+    { id: 'RegNo', label: t('ResNo'), alignRight: false },
+    { id: 'TaxNo', label: t('TaxNo'), alignRight: false },
+    { id: 'Address', label: t('Address'), alignRight: false },
+  ];
 
   const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -109,7 +100,7 @@ export default function SelecetCompany({ handleOpenSelect, load }) {
     setSelected([]);
   };
   const manage = (Id) => {
-    setAlertMessage("Please select one company!");
+    setAlertMessage(t('Please Select Company'));
     setAlertType("success");
     setAlertOpen(true);
     let name = "";
@@ -151,8 +142,8 @@ export default function SelecetCompany({ handleOpenSelect, load }) {
           })
         }
         if (res_data.length === 0) {
-          sessionStorage.CurrentCompany = JSON.stringify({ id: "", name: "No Select" })
-          setAlertMessage("Please create New Company");
+          sessionStorage.CurrentCompany = JSON.stringify({ id: "", name: "No selected" })
+          setAlertMessage(t('Please create New Company'));
           setAlertType("info");
           setAlertOpen(true);
         }

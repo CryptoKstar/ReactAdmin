@@ -7,6 +7,7 @@ import Page from '../components/Page';
 import { MHidden } from '../components/@material-extend';
 import { RegisterForm } from '../components/authentication/register';
 import AuthSocialRegister from '../components/authentication/AuthSocialRegister';
+import { useTranslation } from 'react-i18next';
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -34,19 +35,21 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }));
 
 export default function Register() {
+  const { t } = useTranslation();
+
   return (
     <RootStyle title="Register | Minimal-UI">
       <AuthLayout>
-        Already have an account? &nbsp;
+        {t("Already have an account?")} &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to="/login">
-          Login
+          {t("Login")}
         </Link>
       </AuthLayout>
 
       <MHidden width="mdDown">
         <SectionStyle>
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Manage the job more effectively with Minimal
+            {t("Manage the job more effectively with Minimal")}
           </Typography>
           <img alt="register" src="/static/illustrations/illustration_register.png" />
         </SectionStyle>
@@ -62,9 +65,9 @@ export default function Register() {
           <Iframe height="50px" overflow="hidden" frameBorder="0" url="./static/landing_bottom.html" />
           <MHidden width="smUp">
             <Typography variant="subtitle2" sx={{ mt: 3, textAlign: 'center' }}>
-              Already have an account?&nbsp;
+              {t("Already have an account?")}&nbsp;
               <Link to="/login" component={RouterLink}>
-                Login
+                {t("Login")}
               </Link>
             </Typography>
           </MHidden>

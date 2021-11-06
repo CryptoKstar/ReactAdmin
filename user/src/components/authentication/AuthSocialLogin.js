@@ -8,6 +8,7 @@ import axios from 'axios'
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { forwardRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -15,6 +16,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 
 export default function AuthSocialLogin() {
   const history = useHistory();
+  const { t } = useTranslation();
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [open, setOpen] = useState(false);
@@ -53,7 +55,7 @@ export default function AuthSocialLogin() {
         });
     }
     else {
-      setAlertMessage("Users closed Google Register Window!");
+      setAlertMessage(t("Users closed Google Register Window Or Network Error!"));
       setAlertType("error");
       setOpen(true);
 
@@ -73,12 +75,12 @@ export default function AuthSocialLogin() {
             {AlertMessage}
           </Alert>
         </Snackbar>
-        <GoogleLoginButton className = "GoogleLoginButton">
+        <GoogleLoginButton className="GoogleLoginButton">
           <GoogleLogin
             className="GoogleLogin"
             clientId={Google_clientId}
-            buttonText="Sign In Google"
-            style = {{backgroundColor : "rgb(33 43 54)"}}
+            buttonText={t("Sign In Google")}
+            style={{ backgroundColor: "rgb(33 43 54)" }}
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
             icon={false}
@@ -93,7 +95,7 @@ export default function AuthSocialLogin() {
             fields="name,email,picture"
             scope="public_profile,user_friends"
             callback={responseFacebook}
-            textButton="Sign In FaceBook"
+            textButton={t("Sign In FaceBook")}
           />
         </FacebookLoginButton>
         {/* <Button fullWidth size="large" color="inherit" variant="outlined">
@@ -110,7 +112,7 @@ export default function AuthSocialLogin() {
 
       <Divider sx={{ my: 3 }}>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          OR
+          {t("OR")}
         </Typography>
       </Divider>
     </>

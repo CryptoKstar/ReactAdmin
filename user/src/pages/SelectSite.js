@@ -1,7 +1,7 @@
 import { filter } from 'lodash';
 import { forwardRef, useEffect, useState } from 'react';
 import { Card, Table, TableRow, TableBody, TableCell, Container, Typography, TableContainer, Button } from '@mui/material';
-import Page from '../components/Page';
+// import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../components/_dashboard/user';
@@ -15,20 +15,12 @@ import DialogContent from '@mui/material/DialogContent';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import DialogTitle from '@mui/material/DialogTitle';
 import SelecetCompany from './SelecetCompany';
+import { useTranslation } from 'react-i18next';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-
-const TABLE_HEAD = [
-  { id: 'Id', label: 'ID', alignRight: false },
-  { id: 'siteurl', label: 'Site Url', alignRight: false },
-  { id: 'siteurls', label: 'Site Urls', alignRight: false },
-  { id: 'companyname', label: 'Company Name', alignRight: false },
-  { id: 'date', label: 'Date', alignRight: false },
-  { id: '' }
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -74,6 +66,17 @@ export default function SelectSite({ reload }) {
   const [AlertOpen, setAlertOpen] = useState(false);
   const [opensite, setopensite] = useState(false);
   const [opencompany, setopencompany] = useState(false);
+  const { t } = useTranslation();
+
+  const TABLE_HEAD = [
+    { id: 'Id', label: t('ID'), alignRight: false },
+    { id: 'siteurl', label: t('Site Url'), alignRight: false },
+    { id: 'siteurls', label: t('Site Urls'), alignRight: false },
+    { id: 'companyname', label: t('Company Name'), alignRight: false },
+    { id: 'date', label: t('Date'), alignRight: false },
+    { id: '' }
+  ];
+
   const handleOpenSelect = (params) => {
     setopensite(true);
   }
@@ -157,7 +160,7 @@ export default function SelectSite({ reload }) {
             }
           }
           if (res_data.length === 0) {
-            sessionStorage.CurrentSite = JSON.stringify({ id: "", name: "No Select" })
+            sessionStorage.CurrentSite = JSON.stringify({ id: "", name: t('No selected') })
             setAlertMessage("Please create New Company");
             setAlertType("info");
             setAlertOpen(true);
@@ -173,7 +176,7 @@ export default function SelectSite({ reload }) {
       reload();
     }
     else {
-      setAlertMessage("Please Select Company");
+      setAlertMessage(t("Please Select Company"));
       setAlertType("info");
       setAlertOpen(true);
     }
@@ -187,10 +190,10 @@ export default function SelectSite({ reload }) {
     <>
 
       <Typography variant="h7" gutterBottom>
-        Company : {sessionStorage.CurrentCompany ? JSON.parse(sessionStorage.CurrentCompany).name : "No selected"}
+        {t('Company')} : {sessionStorage.CurrentCompany ? JSON.parse(sessionStorage.CurrentCompany).name : t('No selected')}
       </Typography>
       <Typography variant="h7" gutterBottom>
-        Site : {sessionStorage.CurrentSite ? JSON.parse(sessionStorage.CurrentSite).name : "No selected"}
+        {t('Site')} : {sessionStorage.CurrentSite ? JSON.parse(sessionStorage.CurrentSite).name : t('No selected')}
       </Typography>
       <Button
         variant="contained"
@@ -198,11 +201,11 @@ export default function SelectSite({ reload }) {
         startIcon={<CheckBoxIcon />}
         color="secondary"
       >
-        Select Company
+        {t('Select Company')}
       </Button>
 
       <Dialog open={opencompany} onClose={handleClose} fullWidth={true} maxWidth="md">
-        <DialogTitle>Please select Company</DialogTitle>
+        <DialogTitle>{t('Please Select Company')}</DialogTitle>
         <DialogContent>
           <SelecetCompany handleOpenSelect={handleClose} load={loadData} />
         </DialogContent>
@@ -213,93 +216,88 @@ export default function SelectSite({ reload }) {
         startIcon={<CheckBoxIcon />}
         color="secondary"
       >
-        Select Site
+        {t('Select Site')}
       </Button>
-
-
-
       <Dialog open={opensite} onClose={handleClose} fullWidth={true} maxWidth="md">
-        <DialogTitle>Please select Site</DialogTitle>
+        <DialogTitle>{t('Please Select Site')}</DialogTitle>
         <DialogContent>
-          <Page title="Sites | Holest">
-            <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
-              <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
-                {AlertMessage}
-              </Alert>
-            </Snackbar>
-            <Container>
-              <Card style={{ boxShadow: "none" }}>
-                <UserListToolbar
-                  numSelected={selected.length}
-                  filterName={filterName}
-                  onFilterName={handleFilterByName}
-                />
+          <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
+            <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+              {AlertMessage}
+            </Alert>
+          </Snackbar>
+          <Container>
+            <Card style={{ boxShadow: "none" }}>
+              <UserListToolbar
+                numSelected={selected.length}
+                filterName={filterName}
+                onFilterName={handleFilterByName}
+              />
 
-                <Scrollbar>
-                  <TableContainer sx={{ minWidth: 800 }}>
-                    <Table>
-                      <UserListHead
-                        order={order}
-                        orderBy={orderBy}
-                        headLabel={TABLE_HEAD}
-                        rowCount={sites.length}
-                        numSelected={selected.length}
-                        onRequestSort={handleRequestSort}
-                        onSelectAllClick={handleSelectAllClick}
-                      />
-                      <TableBody>
-                        {filteredUsers
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((row, key) => {
-                            const { Id, siteurl, siteurls, companyname, date } = row;
-                            const isItemSelected = selected.indexOf(Id) !== -1;
+              <Scrollbar>
+                <TableContainer sx={{ minWidth: 800 }}>
+                  <Table>
+                    <UserListHead
+                      order={order}
+                      orderBy={orderBy}
+                      headLabel={TABLE_HEAD}
+                      rowCount={sites.length}
+                      numSelected={selected.length}
+                      onRequestSort={handleRequestSort}
+                      onSelectAllClick={handleSelectAllClick}
+                    />
+                    <TableBody>
+                      {filteredUsers
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row, key) => {
+                          const { Id, siteurl, siteurls, companyname, date } = row;
+                          const isItemSelected = selected.indexOf(Id) !== -1;
 
-                            return (
-                              <TableRow
-                                hover
-                                key={key}
-                                tabIndex={-1}
-                                role="checkbox"
-                                onClick={(e) => manage(Id)}
-                                selected={isItemSelected}
-                                aria-checked={isItemSelected}
-                              >
-                                <TableCell align="left">{Id}</TableCell>
-                                <TableCell component="th" scope="row" padding="none">
-                                  <Typography variant="subtitle2" noWrap>
-                                    {siteurl}
-                                  </Typography>
-                                </TableCell>
-                                <TableCell align="left">{siteurls}</TableCell>
-                                <TableCell align="left">{companyname}</TableCell>
-                                <TableCell align="left">{date}</TableCell>
-                                <TableCell align="right">
-                                  <UserMoreMenu />
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })}
-                        {emptyRows > 0 && (
-                          <TableRow style={{ height: 53 * emptyRows }}>
-                            <TableCell colSpan={6} />
-                          </TableRow>
-                        )}
-                      </TableBody>
-                      {isUserNotFound && (
-                        <TableBody>
-                          <TableRow>
-                            <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                              <SearchNotFound searchQuery={filterName} />
-                            </TableCell>
-                          </TableRow>
-                        </TableBody>
+                          return (
+                            <TableRow
+                              hover
+                              key={key}
+                              tabIndex={-1}
+                              role="checkbox"
+                              onClick={(e) => manage(Id)}
+                              selected={isItemSelected}
+                              aria-checked={isItemSelected}
+                            >
+                              <TableCell align="left">{Id}</TableCell>
+                              <TableCell component="th" scope="row" padding="none">
+                                <Typography variant="subtitle2" noWrap>
+                                  {siteurl}
+                                </Typography>
+                              </TableCell>
+                              <TableCell align="left">{siteurls}</TableCell>
+                              <TableCell align="left">{companyname}</TableCell>
+                              <TableCell align="left">{date}</TableCell>
+                              <TableCell align="right">
+                                <UserMoreMenu />
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell colSpan={6} />
+                        </TableRow>
                       )}
-                    </Table>
-                  </TableContainer>
-                </Scrollbar>
-              </Card>
-            </Container>
-          </Page>
+                    </TableBody>
+                    {isUserNotFound && (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <SearchNotFound searchQuery={filterName} />
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    )}
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
+            </Card>
+          </Container>
         </DialogContent>
       </Dialog>
 

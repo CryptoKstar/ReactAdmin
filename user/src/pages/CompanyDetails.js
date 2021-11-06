@@ -15,6 +15,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { useTranslation } from 'react-i18next';
 
 const Alert = forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -30,7 +31,7 @@ export default function CompanyDetails() {
     const [Address, setAddress] = useState("");
     const [Reg, setReg] = useState("");
     const [Tax, setTax] = useState("");
-
+    const { t } = useTranslation();
     const [AlertMessage, setAlertMessage] = useState("success");
     const [AlertType, setAlertType] = useState("success");
     const [AlertOpen, setAlertOpen] = useState(false);
@@ -74,7 +75,7 @@ export default function CompanyDetails() {
     const Update = (params) => {
         dataProvider.update('companies', { id: UpdateId, data: { Name: Name, Address: Address, Country: Country, RegNo: Reg, TaxNo: Tax } })
             .then(response => {
-                setAlertMessage("Selected Item was Updated!");
+                setAlertMessage(t("Selected Item was Updated!"));
                 setAlertType("success");
                 setAlertOpen(true);
             })
@@ -115,7 +116,7 @@ export default function CompanyDetails() {
             <Container>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        Company Details
+                        {t("Company Details")}
                     </Typography>
                     <Button
                         variant="contained"
@@ -123,7 +124,7 @@ export default function CompanyDetails() {
                         startIcon={<ExitToAppIcon />}
                         color="secondary"
                     >
-                        Go Company
+                        {t("Go Company")}
                     </Button>
                 </Stack>
             </Container>
@@ -133,7 +134,7 @@ export default function CompanyDetails() {
                         <CardActionArea>
                             <CardContent>
                                 <Typography variant="h5" gutterBottom>
-                                    Details
+                                    {t("Details")}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -143,20 +144,20 @@ export default function CompanyDetails() {
                             <Stack spacing={3}>
                                 <TextField
                                     fullWidth
-                                    label="Company Name"
+                                    label={t("Company Name")}
                                     value={Name}
                                     onChange={(e) => setName(e.target.value)}
                                 />
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}>
                                     <TextField
                                         fullWidth
-                                        label="Conutry"
+                                        label={t("Conutry")}
                                         value={Country}
                                         onChange={(e) => setCountry(e.target.value)}
                                     />
                                     <TextField
                                         fullWidth
-                                        label="Address"
+                                        label={t("Address")}
                                         value={Address}
                                         onChange={(e) => setAddress(e.target.value)}
                                     />
@@ -164,14 +165,14 @@ export default function CompanyDetails() {
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}>
                                     <TextField
                                         fullWidth
-                                        label="Reg Number"
+                                        label={t("ResNo")}
                                         value={Reg}
                                         onChange={(e) => setReg(e.target.value)}
                                     />
 
                                     <TextField
                                         fullWidth
-                                        label="Tax Number"
+                                        label={t("TaxNo")}
                                         value={Tax}
                                         onChange={(e) => setTax(e.target.value)}
                                     />
@@ -188,7 +189,7 @@ export default function CompanyDetails() {
                                         onClick={(e) => Update()}
                                         color="secondary"
                                     >
-                                        Update
+                                        {t("Update")}
                                     </LoadingButton>
                                     <LoadingButton
                                         fullWidth
@@ -199,13 +200,11 @@ export default function CompanyDetails() {
                                         variant="contained"
                                         onClick={(e) => ItemDelete()}
                                     >
-                                        Delete
+                                        {t("Delete")}
                                     </LoadingButton>
                                 </Stack>
 
                             </Stack>
-                            {/* </Form>
-                            </FormikProvider> */}
                         </CardContent>
                     </Card>
                 </Grid>

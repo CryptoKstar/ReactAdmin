@@ -12,17 +12,11 @@ import { useHistory } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import SelectSite from './SelectSite'
+import { useTranslation } from 'react-i18next';
 
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-const TABLE_HEAD = [
-  { id: 'paymentid', label: 'Payment MethodId', alignRight: false },
-  { id: 'Type', label: 'Type', alignRight: false },
-  { id: 'Status', label: 'Status', alignRight: false },
-  { id: 'UpdatedAt', label: 'Date', alignRight: false },
-  { id: 'actions', label: 'Actions' }
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -67,6 +61,16 @@ export default function User() {
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
+  const { t } = useTranslation();
+
+  const TABLE_HEAD = [
+    { id: 'paymentid', label: t('Payment Method'), alignRight: false },
+    { id: 'Type', label: t('Type'), alignRight: false },
+    { id: 'Status', label: t('Status'), alignRight: false },
+    { id: 'UpdatedAt', label: t('Date'), alignRight: false },
+    { id: 'actions', label: t('Action') }
+  ];
+
 
   const AlertClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -149,7 +153,7 @@ export default function User() {
         })
     }
     else {
-      setAlertMessage("Please Select Site. so you see it!");
+      setAlertMessage(t("Please Select Site. so you see it!"));
       setAlertType("info");
       setAlertOpen(true);
     }
@@ -169,7 +173,7 @@ export default function User() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Transactions
+            {t("Transactions")}
           </Typography>
           <SelectSite reload={loadData} />
 
@@ -230,7 +234,7 @@ export default function User() {
                                 JSON.parse(data).actions.map((item, subkey) => {
                                   const function_name = "window.func = " + item.Action;
                                   return (
-                                     // eslint-disable-next-line
+                                    // eslint-disable-next-line
                                     <Button key={subkey} onClick={window.eval(function_name)} variant="contained" >{item.Caption}</Button>
                                   )
                                 })
