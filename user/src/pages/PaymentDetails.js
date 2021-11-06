@@ -36,9 +36,9 @@ export default function PaymentDetails() {
     const [SitePayment, setSitePayment] = useState("123");
     const [Details, setDetails] = useState();
     const [ValueObject, setValueObject] = useState({});
-  // eslint-disable-next-line
+    // eslint-disable-next-line
     const [AlertMessage, setAlertMessage] = useState("success");
-  // eslint-disable-next-line
+    // eslint-disable-next-line
     const [AlertType, setAlertType] = useState("success");
     const [AlertOpen, setAlertOpen] = useState(false)
     const params = useParams();
@@ -211,7 +211,7 @@ export default function PaymentDetails() {
                                                     return (
                                                         <FormControl key={key}>
                                                             <label htmlFor="contained-button-file">
-                                                                <Input accept="image/*" id="contained-button-file" multiple type="file" style={{ display: "none" }} value={ValueObject[item.Name]} onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })} />
+                                                                <Input accept="image/*" id="contained-button-file" disabled={!item.Localizable} multiple type="file" style={{ display: "none" }} value={ValueObject[item.Name]} onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })} />
                                                                 <Button variant="contained" color="secondary" disabled={!item.Localizable} required={item.Required} component="span" size="large" fullWidth>
                                                                     {item.Name} Upload
                                                                 </Button>
