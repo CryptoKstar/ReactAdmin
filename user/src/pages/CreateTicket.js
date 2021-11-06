@@ -67,13 +67,6 @@ export default function CreateTicket({ TicketData , setTicketData}) {
     }, [TicketData])
     return (
         <Page title="Company | Holest">
-            {/* <Container>
-                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                    <Typography variant="h4" gutterBottom>
-                        New Company
-                    </Typography>
-                </Stack>
-            </Container> */}
             <Grid container justifyContent="center">
                 <Grid item xs={12}>
                     <Card>

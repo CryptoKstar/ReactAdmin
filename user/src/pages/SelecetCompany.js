@@ -64,14 +64,14 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function SelecetCompany({ handleOpenSelect, load }) {
-// eslint-disable-next-line
+  // eslint-disable-next-line
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('Name');
   const [filterName, setFilterName] = useState('');
   // eslint-disable-next-line
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(1000);
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
@@ -109,59 +109,19 @@ export default function SelecetCompany({ handleOpenSelect, load }) {
     setSelected([]);
   };
   const manage = (Id) => {
-    // if (selected.length > 1) {
-    //   setAlertMessage("Please select one company!");
-    //   setAlertType("error");
-    //   setAlertOpen(true);
-    // }
-    // else if (selected.length === 0) {
-    //   setAlertMessage("Please select one company!");
-    //   setAlertType("error");
-    //   setAlertOpen(true);
-    // }
-    // else {
-      setAlertMessage("Please select one company!");
-      setAlertType("success");
-      setAlertOpen(true);
-      let name = "";
-      for (let i = 0; i < Companydata.length; i++) {
-        if (Companydata[i].Id === Id) {
-          name = Companydata[i].Name;
-        }
+    setAlertMessage("Please select one company!");
+    setAlertType("success");
+    setAlertOpen(true);
+    let name = "";
+    for (let i = 0; i < Companydata.length; i++) {
+      if (Companydata[i].Id === Id) {
+        name = Companydata[i].Name;
       }
-      sessionStorage.CurrentCompany = JSON.stringify({ id: Id, name: name })
-      // sessionStorage.removeItem('CurrentSite');
-      load('default');
-      handleOpenSelect()
-    // }
+    }
+    sessionStorage.CurrentCompany = JSON.stringify({ id: Id, name: name })
+    load('default');
+    handleOpenSelect()
   }
-
-  // const handleClick = (event, name, Id) => {
-  //   const selectedIndex = selected.indexOf(Id);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, Id);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
-
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
@@ -214,7 +174,6 @@ export default function SelecetCompany({ handleOpenSelect, load }) {
   }, [])
 
   return (
-    // <Page title="User | Minimal-UI">
     <Container>
       <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
         <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
@@ -253,43 +212,21 @@ export default function SelecetCompany({ handleOpenSelect, load }) {
                         hover
                         key={Id}
                         tabIndex={-1}
-                        onClick = {(e) => manage(Id)}
+                        onClick={(e) => manage(Id)}
                         role="checkbox"
                         selected={isItemSelected}
                         aria-checked={isItemSelected}
-                        
+
                       >
-                        {/* <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={isItemSelected}
-                            onChange={(event) => handleClick(event, Name, Id)}
-                          />
-                        </TableCell> */}
                         <TableCell align="left">{Id}</TableCell>
                         <TableCell component="th" scope="row" padding="none">
-                          {/* <Stack direction="row" alignItems="center" spacing={2}> */}
-                          {/* <Avatar alt={Name} src={avatarUrl} /> */}
                           <Typography variant="subtitle2" noWrap>
                             {Name}
                           </Typography>
-                          {/* </Stack> */}
                         </TableCell>
                         <TableCell align="left">{RegNo}</TableCell>
                         <TableCell align="left">{TaxNo}</TableCell>
                         <TableCell align="left">{Address}</TableCell>
-                        {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-                          <TableCell align="left">
-                            <Label
-                              variant="ghost"
-                              color={(status === 'banned' && 'error') || 'success'}
-                            >
-                              {sentenceCase(status)}
-                            </Label>
-                          </TableCell>
-
-                          <TableCell align="right">
-                            <UserMoreMenu />
-                          </TableCell> */}
                       </TableRow>
                     );
                   })}
@@ -311,22 +248,7 @@ export default function SelecetCompany({ handleOpenSelect, load }) {
             </Table>
           </TableContainer>
         </Scrollbar>
-        {/* <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }} paddingLeft={4} style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Button size="small" color="primary" onClick={(e) => manage()}>
-            Manage
-          </Button>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={Companydata.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Stack> */}
       </Card>
     </Container>
-    // </Page>
   );
 }

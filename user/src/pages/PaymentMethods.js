@@ -63,26 +63,13 @@ export default function User() {
   const [filterName, setFilterName] = useState('');
   // eslint-disable-next-line
   const [sitepaymentmethods, setsitepaymentmethods] = useState([]);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  // const [sites, setsites] = useState([]);
-  // eslint-disable-next-line
-  const [isOpen, setIsOpen] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   // eslint-disable-next-line
   const history = useHistory();
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
-  // const [open, setOpen] = useState(false);
-  const [PaymentMethods, setPaymentMethods] = useState([]);
-  const [age, setAge] = useState({});
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
   const AlertClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -99,7 +86,6 @@ export default function User() {
     return fetchUtils.fetchJson(url, options);
   };
   const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
-  // const MainUserId = JSON.parse(sessionStorage.AccessToken).UserId
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -143,31 +129,6 @@ export default function User() {
     history.push('newpayment')
   }
 
-  const save = (params) => {
-    let flag = 0;
-    for (let i = 0; i < sitepaymentmethods.length; i++) {
-      if (age.id === sitepaymentmethods[i].PaymentMethodsId) {
-        flag++;
-      }
-    }
-    if (flag !== 0) {
-      setAlertMessage("The Payment Methods is exist in this site");
-      setAlertType("error");
-      setAlertOpen(true);
-    }
-    else {
-      dataProvider.create('company_site_payment_methods', { data: { PaymentMethodId: age.id, CompanySiteId: JSON.parse(sessionStorage.CurrentSite).id, Data: age.Data } })
-        .then(res => {
-          setAlertMessage("Selected Payment Methods is added correctly");
-          setAlertType("success");
-          setAlertOpen(true);
-          loadData();
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    }
-  }
 
   const paymentMethodsDelete = (id) => {
     dataProvider.delete('company_site_payment_methods', { id: id })
@@ -196,7 +157,6 @@ export default function User() {
               data: payment_methods[i],
             })
           }
-          setPaymentMethods(methods);
           dataProvider.getList('company_site_payment_methods', { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: {} })
             .then(res => {
               const data = res.data;
@@ -322,7 +282,7 @@ export default function User() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 25, 50]}
             component="div"
             count={sitepaymentmethods.length}
             rowsPerPage={rowsPerPage}

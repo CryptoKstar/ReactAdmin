@@ -59,7 +59,6 @@ export default function CreatePayment() {
     };
 
     const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
-    // const MainUserId = JSON.parse(sessionStorage.Acces   sToken).UserId
     const formik = useFormik({
     });
 

@@ -31,22 +31,14 @@ const Alert = forwardRef(function Alert(props, ref) {
 });
 export default function PaymentDetails() {
     const history = useHistory();
-    const [PaymentMethods, setPaymentMethods] = useState("");
     const [Currentdata, setCurrentdata] = useState("");
-    // const [sitepayment, setPaymentMethods] = useState("");
     const [SitePayment, setSitePayment] = useState("123");
     const [Details, setDetails] = useState();
     const [ValueObject, setValueObject] = useState({});
-    // const [sitepaymentmethods, setsitepaymentmethods] = useState([]);
     const [AlertMessage, setAlertMessage] = useState("success");
     const [AlertType, setAlertType] = useState("success");
     const [AlertOpen, setAlertOpen] = useState(false)
     const params = useParams();
-    // const handleChange = (event) => {
-    //     const data = event.target.value;
-    //     setDetails(JSON.parse(data.Data).parameters);
-    //     setSitePayment(data);
-    // };
 
     const AlertClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -65,23 +57,10 @@ export default function PaymentDetails() {
     };
 
     const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
-    const MainUserId = JSON.parse(sessionStorage.AccessToken).UserId
     const formik = useFormik({
     });
 
     const handleSubmit = (params, e) => {
-        let flag = 0;
-        // for (let i = 0; i < sitepaymentmethods.length; i++) {
-        //     if (SitePayment.id === sitepaymentmethods[i].PaymentMethodsId) {
-        //         flag++;
-        //     }
-        // }
-        // if (flag !== 0) {
-        //     setAlertMessage("The Payment Methods is exist in this site");
-        //     setAlertType("error");
-        //     setAlertOpen(true);
-        // }
-        // else {
         dataProvider.update('company_site_payment_methods', { id: Currentdata.id, data: { PaymentMethodId: Currentdata.PaymentMethodId, CompanySiteId: JSON.parse(sessionStorage.CurrentSite).id, Data: Currentdata.Data } })
             .then(res => {
                 setAlertMessage("Selected Payment Methods is added correctly");
@@ -92,7 +71,6 @@ export default function PaymentDetails() {
             .catch(error => {
                 console.log(error)
             })
-        // }
     }
 
     const gopayment = (params) => {
@@ -132,7 +110,6 @@ export default function PaymentDetails() {
                                 data: payment_methods[i],
                             })
                         }
-                        setPaymentMethods(methods);
                         setSitePayment(methods[data.PaymentMethodId - 1].label)
                     })
             })
@@ -176,26 +153,6 @@ export default function PaymentDetails() {
                             </CardContent>
                         </CardActionArea>
                         <CardContent>
-                            {/* <FormControl fullWidth style={{ marginBottom: "10px" }}>
-                                <InputLabel id="demo-simple-select-label">Payment Methods</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={SitePayment}
-                                    label="Payment Methods"
-                                    onChange={handleChange}
-                                >
-                                    {
-                                        PaymentMethods.map((item, key) => {
-                                            return (
-                                                <MenuItem key={key} value={item.data}>{item.label}</MenuItem>
-
-                                            )
-                                        })
-                                    }
-
-                                </Select>
-                            </FormControl> */}
                             <FormikProvider value={formik}>
                                 <Form autoComplete="off" action="/paymentmethods" noValidate onSubmit={handleSubmit}>
                                     <Stack spacing={3}>
@@ -208,6 +165,7 @@ export default function PaymentDetails() {
                                             />
                                         </FormControl>
                                         {
+                                            // eslint-disable-next-line
                                             Details ? Details.map((item, key) => {
                                                 console.log(item)
                                                 if (item.Type === "Text") {

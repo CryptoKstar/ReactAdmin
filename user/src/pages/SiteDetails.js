@@ -23,7 +23,6 @@ const Alert = forwardRef(function Alert(props, ref) {
 
 export default function SiteDetails() {
     const history = useHistory();
-    // eslint-disable-next-line
     const params = useParams();
     // eslint-disable-next-line
     const [details, setdetails] = useState([]);
@@ -173,8 +172,6 @@ export default function SiteDetails() {
                             </CardContent>
                         </CardActionArea>
                         <CardContent>
-                            {/* <FormikProvider value={formik}>
-                                <Form autoComplete="off" noValidate onSubmit={handleSubmit}> */}
                             <Stack spacing={3}>
                                 <TextField
                                     fullWidth

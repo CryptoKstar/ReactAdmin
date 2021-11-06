@@ -11,9 +11,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import { useHistory } from 'react-router-dom';
 export default function DashboardApp() {
   const [open, setOpen] = useState(false);
+  const history = useHistory();
   const handleClose = () => {
     setOpen(false);
   };
@@ -46,6 +47,10 @@ export default function DashboardApp() {
         console.log(error)
       });
   }
+  const gocreatecompany = (params) => {
+    history.push('/newcompany')
+  }
+
   useEffect(() => {
     loadData("defalut");
     // eslint-disable-next-line  
@@ -67,7 +72,7 @@ export default function DashboardApp() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus variant="contained" color="secondary" onClick={handleClose}>
+          <Button autoFocus variant="contained" color="secondary" onClick={(e) => gocreatecompany()}>
             Confirm
           </Button>
         </DialogActions>

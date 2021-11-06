@@ -1,8 +1,6 @@
 import { useFormik } from 'formik';
 import { useState } from 'react';
-// material
 import { Container, Stack, Typography } from '@mui/material';
-// components
 import Page from '../components/Page';
 import {
   ProductSort,
@@ -10,10 +8,7 @@ import {
   ProductCartWidget,
   ProductFilterSidebar
 } from '../components/_dashboard/products';
-//
 import PRODUCTS from '../_mocks_/products';
-
-// ----------------------------------------------------------------------
 
 export default function EcommerceShop() {
   const [openFilter, setOpenFilter] = useState(false);

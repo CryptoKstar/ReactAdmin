@@ -8,7 +8,6 @@ import { UserListHead, UserListToolbar } from '../components/_dashboard/user';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
-import { useHistory } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import SelectSite from './SelectSite'
@@ -57,12 +56,8 @@ export default function User() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('Link');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [helpdata, sethelpdata] = useState([]);
-  // eslint-disable-next-line
-  const [isOpen, setIsOpen] = useState(false);
-  // eslint-disable-next-line
-  const history = useHistory();
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
   const [AlertOpen, setAlertOpen] = useState(false);
@@ -100,25 +95,6 @@ export default function User() {
     }
     setSelected([]);
   };
-
-  // const handleClick = (event, Id) => {
-  //   const selectedIndex = selected.indexOf(Id);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, Id);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -169,7 +145,7 @@ export default function User() {
 
   return (
     <Page title="Help | Holest">
-      <Snackbar open={AlertOpen} autoHideDuration={6000}  anchorOrigin = {{vertical : "top", horizontal : "right"}} onClose={AlertClose}>
+      <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
         <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
           {AlertMessage}
         </Alert>
@@ -219,16 +195,8 @@ export default function User() {
                           aria-checked={isItemSelected}
 
                         >
-                          {/* <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, Id)}
-                            />
-                          </TableCell> */}
                           <TableCell component="th" scope="row">
                             <Typography variant="subtitle2" noWrap>
-                              {/* <Link to="123"></Link> */}
-
                               <a href={Link} rel="noreferrer" target="_blank">{Link} </a>
                             </Typography>
                           </TableCell>
@@ -256,7 +224,7 @@ export default function User() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 25, 50]}
             component="div"
             count={helpdata.length}
             rowsPerPage={rowsPerPage}

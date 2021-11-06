@@ -22,7 +22,6 @@ const TABLE_HEAD = [
   { id: 'amount', label: 'Amount', alignRight: false },
   { id: 'uid', label: 'UID', alignRight: false },
   { id: 'date', label: 'Date', alignRight: false },
-  // { id: '' }
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -60,7 +59,7 @@ export default function User() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [sites, setsites] = useState([]);
   // eslint-disable-next-line
   const [isOpen, setIsOpen] = useState(false);
@@ -85,8 +84,6 @@ export default function User() {
     return fetchUtils.fetchJson(url, options);
   };
   const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
-  // const MainUserId = JSON.parse(sessionStorage.AccessToken).UserId
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -101,24 +98,6 @@ export default function User() {
     }
     setSelected([]);
   };
-
-  // const handleClick = (event, siteurl) => {
-  //   const selectedIndex = selected.indexOf(siteurl);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, siteurl);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -227,12 +206,7 @@ export default function User() {
                           aria-checked={isItemSelected}
 
                         >
-                          {/* <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, Id)}
-                            />
-                          </TableCell> */}
+
                           <TableCell onClick={(e) => siteEdit(Id)} component="th" scope="row">
                             <Typography variant="subtitle2" noWrap>
                               {name}
@@ -247,7 +221,7 @@ export default function User() {
                                 JSON.parse(data).actions.map((item, subkey) => {
                                   const function_name = "window.func = " + item.Action;
                                   return (
-                                     // eslint-disable-next-line
+                                    // eslint-disable-next-line
                                     <Button key={subkey} onClick={window.eval(function_name)} variant="contained" >{item.Caption}</Button>
                                   )
                                 })
@@ -277,7 +251,7 @@ export default function User() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 25, 50]}
             component="div"
             count={sites.length}
             rowsPerPage={rowsPerPage}

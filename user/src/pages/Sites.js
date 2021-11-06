@@ -32,7 +32,6 @@ const TABLE_HEAD = [
   { id: 'siteurls', label: 'Site Urls', alignRight: false },
   { id: 'companyname', label: 'Company Name', alignRight: false },
   { id: 'date', label: 'Date', alignRight: false },
-  // { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
 
@@ -71,7 +70,7 @@ export default function User() {
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('siteurl');
   const [filterName, setFilterName] = useState('');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [open, setOpen] = useState(false);
   const [siteurl, setsiteurl] = useState("");
   const [siteurls, setsiteurls] = useState("");
@@ -98,7 +97,6 @@ export default function User() {
     return fetchUtils.fetchJson(url, options);
   };
   const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
-  // const MainUserId = JSON.parse(sessionStorage.AccessToken).UserId
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -121,24 +119,6 @@ export default function User() {
     }
     setSelected([]);
   };
-
-  // const handleClick = (event, siteurl) => {
-  //   const selectedIndex = selected.indexOf(siteurl);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, siteurl);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -194,7 +174,7 @@ export default function User() {
           .catch(err => {
 
           })
-        setAlertMessage("Site is added in the company");
+        setAlertMessage("New Site is added in the company");
         setAlertType("success");
         setAlertOpen(true);
       })
@@ -219,7 +199,7 @@ export default function User() {
           }
           if (res_data.length === 0) {
             sessionStorage.CurrentSite = JSON.stringify({ id: "", name: "No Select" })
-            setAlertMessage("Please create New Company");
+            setAlertMessage("Please create new Site.");
             setAlertType("info");
             setAlertOpen(true);
           }
@@ -338,12 +318,6 @@ export default function User() {
                           aria-checked={isItemSelected}
 
                         >
-                          {/* <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, siteurl)}
-                            />
-                          </TableCell> */}
                           <TableCell onClick={(e) => siteEdit(Id)} component="th" scope="row">
                             <Typography variant="subtitle2" noWrap>
                               {siteurl}
@@ -378,7 +352,7 @@ export default function User() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 25, 50]}
             component="div"
             count={sites.length}
             rowsPerPage={rowsPerPage}

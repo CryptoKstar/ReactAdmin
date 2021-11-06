@@ -84,8 +84,6 @@ export default function SubscriptionsDetails() {
                             </CardContent>
                         </CardActionArea>
                         <CardContent>
-                            {/* <FormikProvider value={formik}>
-                                <Form autoComplete="off" noValidate onSubmit={handleSubmit}> */}
                             <Stack spacing={3}>
                                 <TextField
                                     fullWidth
@@ -123,7 +121,7 @@ export default function SubscriptionsDetails() {
                                         actions === "" ? "" : (actions.map((item, key) => {
                                             const function_name = "window.func = " + item.Action;
                                             return (
-                                                 // eslint-disable-next-line
+                                                // eslint-disable-next-line
                                                 <Button key={key} onClick={window.eval(function_name)} variant="contained" >{item.Caption}</Button>
                                             )
                                         }))

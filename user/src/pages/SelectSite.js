@@ -1,17 +1,6 @@
 import { filter } from 'lodash';
 import { forwardRef, useEffect, useState } from 'react';
-// material
-import {
-  Card,
-  Table,
-  TableRow,
-  TableBody,
-  TableCell,
-  Container,
-  Typography,
-  TableContainer,
-  Button
-} from '@mui/material';
+import { Card, Table, TableRow, TableBody, TableCell, Container, Typography, TableContainer, Button } from '@mui/material';
 import Page from '../components/Page';
 import Scrollbar from '../components/Scrollbar';
 import SearchNotFound from '../components/SearchNotFound';
@@ -22,9 +11,7 @@ import jsonServerProvider from 'ra-data-json-server';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
-// import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import DialogTitle from '@mui/material/DialogTitle';
 import SelecetCompany from './SelecetCompany';
@@ -40,7 +27,6 @@ const TABLE_HEAD = [
   { id: 'siteurls', label: 'Site Urls', alignRight: false },
   { id: 'companyname', label: 'Company Name', alignRight: false },
   { id: 'date', label: 'Date', alignRight: false },
-  // { id: 'status', label: 'Status', alignRight: false },
   { id: '' }
 ];
 
@@ -81,7 +67,7 @@ export default function SelectSite({ reload }) {
   const [orderBy, setOrderBy] = useState('siteurl');
   const [filterName, setFilterName] = useState('');
   // eslint-disable-next-line
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(1000);
   const [sites, setsites] = useState([]);
   const [AlertMessage, setAlertMessage] = useState("success");
   const [AlertType, setAlertType] = useState("success");
@@ -105,7 +91,6 @@ export default function SelectSite({ reload }) {
   };
   const dialogCompany = (params) => {
     setopencompany(true);
-    // ()
   }
 
   const httpClient = (url, options = {}) => {
@@ -117,7 +102,6 @@ export default function SelectSite({ reload }) {
     return fetchUtils.fetchJson(url, options);
   };
   const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
-  // const MainUserId = JSON.parse(sessionStorage.AccessToken).UserId
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -144,34 +128,6 @@ export default function SelectSite({ reload }) {
     loadData()
     handleClose();
   }
-
-
-  // const handleClick = (event, Id) => {
-  //   const selectedIndex = selected.indexOf(Id);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, Id);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
-
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
@@ -214,7 +170,7 @@ export default function SelectSite({ reload }) {
           }
           setsites(res_data);
         })
-        reload();
+      reload();
     }
     else {
       setAlertMessage("Please Select Company");
@@ -229,7 +185,7 @@ export default function SelectSite({ reload }) {
 
   return (
     <>
-      
+
       <Typography variant="h7" gutterBottom>
         Company : {sessionStorage.CurrentCompany ? JSON.parse(sessionStorage.CurrentCompany).name : "No selected"}
       </Typography>
@@ -308,12 +264,6 @@ export default function SelectSite({ reload }) {
                                 selected={isItemSelected}
                                 aria-checked={isItemSelected}
                               >
-                                {/* <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={isItemSelected}
-                              onChange={(event) => handleClick(event, Id)}
-                            />
-                          </TableCell> */}
                                 <TableCell align="left">{Id}</TableCell>
                                 <TableCell component="th" scope="row" padding="none">
                                   <Typography variant="subtitle2" noWrap>
@@ -347,20 +297,6 @@ export default function SelectSite({ reload }) {
                     </Table>
                   </TableContainer>
                 </Scrollbar>
-                {/* <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }} paddingLeft={4} style={{ display: 'flex', justifyContent: 'space-between' }}>
-
-            <Button onClick={(e) => manage()}>Manage</Button>
-
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={sites.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Stack> */}
               </Card>
             </Container>
           </Page>

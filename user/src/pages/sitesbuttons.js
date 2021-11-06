@@ -4,10 +4,7 @@ import editFill from '@iconify/icons-eva/edit-fill';
 import { Link as RouterLink } from 'react-router-dom';
 import trash2Outline from '@iconify/icons-eva/trash-2-outline';
 import moreVerticalFill from '@iconify/icons-eva/more-vertical-fill';
-// material
 import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/material';
-
-// ----------------------------------------------------------------------
 
 export default function SiteMore({ Id, siteDelete, siteEdit }) {
     const ref = useRef(null);

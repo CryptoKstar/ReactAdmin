@@ -82,8 +82,6 @@ export default function SubscriptionsDetails() {
                             </CardContent>
                         </CardActionArea>
                         <CardContent>
-                            {/* <FormikProvider value={formik}>
-                                <Form autoComplete="off" noValidate onSubmit={handleSubmit}> */}
                             <Stack spacing={3}>
                                 <TextField
                                     fullWidth
