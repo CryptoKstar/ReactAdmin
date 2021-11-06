@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('Company', {
     id: {
       autoIncrement: true,
@@ -20,6 +20,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(256),
       allowNull: false,
       field: 'name'
+    },
+    File: {
+      type: DataTypes.STRING(256),
+      allowNull: false,
+      field: 'file'
     },
     Country: {
       type: DataTypes.STRING(256),

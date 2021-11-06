@@ -1,5 +1,5 @@
 import Page from '../components/Page';
-import { Container, Stack, Typography, CardActionArea, TextField } from '@mui/material';
+import { Container, Stack, Button, Typography, CardActionArea, TextField, FormControl, Input } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -13,11 +13,12 @@ import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 import { useTranslation } from 'react-i18next';
-
+import { useState } from 'react';
+import axios from 'axios';
 export default function CreateCompany() {
     const history = useHistory();
     const { t } = useTranslation();
-
+    const [files, setFiles] = useState("");
     const RegisterSchema = Yup.object().shape({
         name: Yup.string()
             .min(2, t('Too Short!'))
@@ -46,26 +47,39 @@ export default function CreateCompany() {
     const formik = useFormik({
         initialValues: {
             name: '',
+            file: '',
             taxnumber: '',
             address: '',
             regnumber: '',
-            country: ''
+            country: '',
         },
         validationSchema: RegisterSchema,
         onSubmit: async (values, e) => {
-            dataProvider.create('companies', { data: { Name: values.name, Address: values.address, Country: values.country, TaxNo: values.taxnumber, RegNo: values.regnumber, MainUserId: MainUserId } })
-                .then(response => {
-                    dataProvider.create('user_companies', { data: { UserId: MainUserId, CompanyId: response.data.id, Role: "admin" } })
-                        .then(response => {
-                            history.push('/company')
-                        })
-                        .catch(error => {
-                            console.log(error)
-                        });
-                })
-                .catch(error => {
-                    console.log(error)
-                });
+            if (files === "") {
+                alert("Please select Logo file.");
+                return;
+            }
+            else {
+                const data = new FormData();
+                data.append('file', files);
+                await axios.post(configData.API_URL + "upload", data, {})
+                    .then(res => {
+                        dataProvider.create('companies', { data: { Name: values.name, File: res.data.filename, Address: values.address, Country: values.country, TaxNo: values.taxnumber, RegNo: values.regnumber, MainUserId: MainUserId } })
+                            .then(response => {
+                                dataProvider.create('user_companies', { data: { UserId: MainUserId, CompanyId: response.data.id, Role: "admin" } })
+                                    .then(response => {
+                                        history.push('/company')
+                                    })
+                                    .catch(error => {
+                                        console.log(error)
+                                    });
+                            })
+                            .catch(error => {
+                                console.log(error)
+                            });
+                    })
+            }
+
         }
     });
 
@@ -100,6 +114,14 @@ export default function CreateCompany() {
                                             error={Boolean(touched.name && errors.name)}
                                             helperText={touched.name && errors.name}
                                         />
+                                        <FormControl >
+                                            <label htmlFor="contained-button-file">
+                                                <Input accept="image/*" id="contained-button-file" onChange={(e) => setFiles(e.target.files[0])} multiple type="file" style={{ display: "none" }} />
+                                                <Button variant="contained" color="secondary" component="span" size="large" fullWidth>
+                                                    {t("Logo Upload")}
+                                                </Button>
+                                            </label>
+                                        </FormControl>
                                         {/* <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}> */}
                                         <TextField
                                             fullWidth

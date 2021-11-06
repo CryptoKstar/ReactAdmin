@@ -120,6 +120,7 @@ i18n.use(LanguageDetector).init({
                 "First name" : "First name",
                 "Last name" : "Last name",
                 "Register" : "Register",
+                "Logo Upload": "Logo Upload"
             }
         },
         sb: {
@@ -238,6 +239,7 @@ i18n.use(LanguageDetector).init({
                 "First name" : "Име",
                 "Last name" : "Презиме",
                 "Register" : "Регистровати",
+                "Logo Upload" : "Лого Уплоад"
             }
         },
     },

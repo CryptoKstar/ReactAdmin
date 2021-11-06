@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useState } from 'react';
 import Page from '../components/Page';
-import { Container, Stack, Typography, CardActionArea, TextField, Button } from '@mui/material';
+import axios from 'axios';
+import { Container, Stack, Typography, CardActionArea, TextField, Button, FormControl, Input } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -27,6 +28,7 @@ export default function CompanyDetails() {
     const [details, setdetails] = useState([]);
     const [UpdateId, setUpdateId] = useState("");
     const [Name, setName] = useState("");
+    const [files, setFiles] = useState("");
     const [Country, setCountry] = useState("");
     const [Address, setAddress] = useState("");
     const [Reg, setReg] = useState("");
@@ -72,16 +74,34 @@ export default function CompanyDetails() {
             });
     }
 
-    const Update = (params) => {
-        dataProvider.update('companies', { id: UpdateId, data: { Name: Name, Address: Address, Country: Country, RegNo: Reg, TaxNo: Tax } })
-            .then(response => {
-                setAlertMessage(t("Selected Item was Updated!"));
-                setAlertType("success");
-                setAlertOpen(true);
-            })
-            .catch(error => {
-                console.log(error)
-            });
+    const Update = async (params) => {
+        if (files === "") {
+            dataProvider.update('companies', { id: UpdateId, data: { Name: Name, Address: Address, Country: Country, RegNo: Reg, TaxNo: Tax } })
+                .then(response => {
+                    setAlertMessage(t("Selected Item was Updated!"));
+                    setAlertType("success");
+                    setAlertOpen(true);
+                })
+                .catch(error => {
+                    console.log(error)
+                });
+        }
+        else {
+            const data = new FormData();
+            data.append('file', files);
+            await axios.post(configData.API_URL + "upload", data, {})
+                .then(res => {
+                    dataProvider.update('companies', { id: UpdateId, data: { Name: Name, File: res.data.filename, Address: Address, Country: Country, RegNo: Reg, TaxNo: Tax } })
+                        .then(response => {
+                            setAlertMessage(t("Selected Item was Updated!"));
+                            setAlertType("success");
+                            setAlertOpen(true);
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        });
+                })
+        }
     }
 
     const ItemDelete = () => {
@@ -148,6 +168,14 @@ export default function CompanyDetails() {
                                     value={Name}
                                     onChange={(e) => setName(e.target.value)}
                                 />
+                                <FormControl >
+                                    <label htmlFor="contained-button-file">
+                                        <Input accept="image/*" id="contained-button-file" onChange={(e) => setFiles(e.target.files[0])} multiple type="file" style={{ display: "none" }} />
+                                        <Button variant="contained" color="secondary" component="span" size="large" fullWidth>
+                                            {t("Logo Upload")}
+                                        </Button>
+                                    </label>
+                                </FormControl>
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={5}>
                                     <TextField
                                         fullWidth

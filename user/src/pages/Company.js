@@ -125,6 +125,7 @@ export default function EcommerceShop() {
           res_data.push({
             Id: data[i].id,
             Name: data[i].Name,
+            File : data[i].File,
             RegNo: data[i].RegNo,
             TaxNo: data[i].TaxNo,
             Address: data[i].Address
@@ -142,6 +143,7 @@ export default function EcommerceShop() {
         else if (res_data.length === 1) {
           sessionStorage.CurrentCompany = JSON.stringify({ id: res_data[0].Id, name: res_data[0].Name })
         }
+        console.log(res_data,123)
         setCompanydata(res_data)
       })
       .catch(error => {
@@ -213,7 +215,7 @@ export default function EcommerceShop() {
                     <CardMedia
                       component="img"
                       height="200"
-                      image="/static/default.png"
+                      image={subitem.File ? "http://localhost:4080/" + subitem.File : "/static/default.png"}
                       alt="Paella dish"
                       onClick={(e) => details(subitem)}
                     />
