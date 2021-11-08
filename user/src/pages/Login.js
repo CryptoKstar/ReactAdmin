@@ -41,6 +41,8 @@ export default function Login() {
   const load = async (params) => {
     await axios.get('https://apps.holest.com/iploc.php?ip=auto', {}).then(res => {
       const country_name = res.data.CountryName;
+      const language = res.data.CountryCode2;
+      sessionStorage.language = language;
       if (country_name === "Serbia" || country_name === "BiH" || country_name === "Montenegro") {
         i18n.changeLanguage('sb');
       }

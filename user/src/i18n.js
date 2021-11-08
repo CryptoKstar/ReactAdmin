@@ -6,7 +6,7 @@ i18n.use(LanguageDetector).init({
     resources: {
         en: {
             translations: {
-                Dashboard: "Dashboard",
+                "Dashboard": "Dashboard",
                 "Welcome!": "Welcome!",
                 "You have no company for now. So please create New Company!": "You have no company for now. So please create New Company!",
                 "Confirm": "Confirm",
@@ -125,7 +125,7 @@ i18n.use(LanguageDetector).init({
         },
         sb: {
             translations: {
-                Dashboard: "Командна табла",
+                "Dashboard": "Командна табла",
                 "Welcome!": "Добродошли!",
                 "You have no company for now. So please create New Company!": "Немате друштво за сада. Зато вас молимо да направите нову компанију!",
                 "Confirm": "Потврди",

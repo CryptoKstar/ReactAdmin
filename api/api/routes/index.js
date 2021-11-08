@@ -141,6 +141,28 @@ CompanySitePaymentMethod.addScope("userscope", function (user, sites) {
 	}
 });
 
+CompanySitePaymentMethodLocale.userscope = { sites: 1 };
+CompanySitePaymentMethodLocale.addScope("userscope", function (user, sites) {
+	if (!user) {
+		return {
+			where: {
+				id: -1
+			}
+		}
+	} else {
+		return {
+			// include: [
+			// 	{ model: CompanySitePaymentMethodLocale, as: "CompanySitePaymentMethodLocales" }
+			// ],
+			// where: {
+			// 	CompanySitePaymentMethodId: {
+			// 		[Op.in]: sites
+			// 	}
+			// }
+		}
+	}
+});
+
 CompanySiteSubscription.userscope = {};
 CompanySiteSubscription.addScope("userscope", function (user, sites) {
 	if (!user) {
@@ -155,7 +177,7 @@ CompanySiteSubscription.addScope("userscope", function (user, sites) {
 
 
 HpParameter.userscope = {};
-HpParameter.addScope("userscope", function (user,sites) {
+HpParameter.addScope("userscope", function (user, sites) {
 	console.log(sites)
 	if (!user) {
 		return {
@@ -288,6 +310,7 @@ router.uses = [
 	secure(crud('/api/companies', createCRUD(Company))),
 	secure(crud('/api/company_sites', createCRUD(CompanySite))),
 	secure(crud('/api/company_site_payment_methods', createCRUD(CompanySitePaymentMethod))),
+	secure(crud('/api/company_site_payment_methods_localize', createCRUD(CompanySitePaymentMethodLocale))),
 	secure(crud('/api/company_site_subscriptions', createCRUD(CompanySiteSubscription))),
 	secure(crud('/api/company_site_transactions', createCRUD(CompanySiteTransaction))),
 	secure(crud('/api/payment_methods', createCRUD(HpPaymentMethod, true))),

@@ -1,12 +1,11 @@
 import Page from '../components/Page';
-import { Container, Button, Stack, Typography, CardActionArea, TextField, FormControl, InputLabel, Select, MenuItem, Input, Checkbox } from '@mui/material';
+import { Container, Button, Stack, Typography, CardActionArea, TextField, FormControl, InputLabel, Select, MenuItem, Input, Checkbox, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { LoadingButton } from '@mui/lab';
-import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import SendIcon from '@mui/icons-material/Send';
 import configData from "../config.json";
 import { fetchUtils } from 'react-admin';
@@ -33,11 +32,17 @@ export default function CreatePayment() {
     const [SitePayment, setSitePayment] = useState({});
     const [Details, setDetails] = useState();
     const [ValueObject, setValueObject] = useState({});
+    const [ValueObjectLocalize, setValueObjectLocalize] = useState({});
     const [sitepaymentmethods, setsitepaymentmethods] = useState([]);
     const [AlertMessage, setAlertMessage] = useState("success");
     const [AlertType, setAlertType] = useState("success");
     const [AlertOpen, setAlertOpen] = useState(false);
     const { t } = useTranslation();
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const handleChange = (event) => {
         const data = event.target.value;
@@ -65,7 +70,18 @@ export default function CreatePayment() {
     const formik = useFormik({
     });
 
-    const handleSubmit = (params, e) => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const localizedata = JSON.parse(SitePayment.Data).parameters;
+        for (let i = 0; i < localizedata.length; i++) {
+            if (localizedata[i].Localizable === true) {
+                console.log(localizedata[i].Name);
+                if (ValueObjectLocalize[localizedata[i].Name]) {
+                    localizedata[i].Default = ValueObjectLocalize[localizedata[i].Name];
+                }
+            }
+        }
+        const local_data = JSON.stringify({ "parameters": localizedata })
         let flag = 0;
         for (let i = 0; i < sitepaymentmethods.length; i++) {
             if (SitePayment.id === sitepaymentmethods[i].PaymentMethodsId) {
@@ -80,10 +96,16 @@ export default function CreatePayment() {
         else {
             dataProvider.create('company_site_payment_methods', { data: { PaymentMethodId: SitePayment.id, CompanySiteId: JSON.parse(sessionStorage.CurrentSite).id, Data: SitePayment.Data } })
                 .then(res => {
-                    setAlertMessage(t("Selected Payment Methods is added correctly"));
-                    setAlertType("success");
-                    setAlertOpen(true);
-                    history.push('/paymentmethods')
+                    dataProvider.create('company_site_payment_methods_localize', { data: { CompanySitePaymentMethodId: res.data.id, Languange: sessionStorage.language, Data: local_data } })
+                        .then(res => {
+                            setAlertMessage(t("Selected Payment Methods is added correctly"));
+                            setAlertType("success");
+                            setAlertOpen(true);
+                            history.push('/paymentmethods')
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
                 })
                 .catch(error => {
                     console.log(error)
@@ -126,6 +148,10 @@ export default function CreatePayment() {
                         console.log(error)
                     })
             })
+    }
+
+    const confirm = (params) => {
+        setOpen(false)
     }
 
     useEffect(() => {
@@ -183,7 +209,7 @@ export default function CreatePayment() {
                                         {
                                             // eslint-disable-next-line
                                             Details ? Details.map((item, key) => {
-                                                console.log(item)
+                                                // console.log(item)
                                                 if (item.Type === "Text") {
                                                     return (
                                                         <FormControl key={key}>
@@ -307,12 +333,136 @@ export default function CreatePayment() {
                                                 fullWidth
                                                 color="secondary"
                                                 size="large"
-                                                endIcon={<RotateLeftIcon />}
-                                                type="reset"
+                                                endIcon={<SendIcon />}
+                                                type="button"
+                                                onClick={(e) => setOpen(true)}
                                                 variant="contained"
                                             >
-                                                {t("Reset")}
+                                                {t("Add Payment Method Localizations")}
                                             </LoadingButton>
+                                            <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
+                                                <DialogTitle>{t("PAYMENT METHOD LOCALIZATIONS")}</DialogTitle>
+                                                <DialogContent>
+                                                    <Stack spacing={3} paddingTop={2}>
+                                                        {
+                                                            // eslint-disable-next-line
+                                                            Details ? Details.map((item, key) => {
+                                                                if (item.Localizable === true) {
+
+                                                                    if (item.Type === "Text") {
+                                                                        return (
+                                                                            <FormControl key={key}>
+                                                                                <TextField
+                                                                                    disabled={!item.Localizable}
+                                                                                    fullWidth
+                                                                                    label={item.Name}
+                                                                                    defaultValue={item.Default}
+                                                                                    required={item.Required}
+                                                                                    value={ValueObjectLocalize[item.Name]}
+                                                                                    onChange={(e) => setValueObjectLocalize({ ...ValueObjectLocalize, [item.Name]: e.target.value })}
+                                                                                />
+                                                                            </FormControl>
+                                                                        )
+                                                                    }
+                                                                    else if (item.Type === "WYSIWYG") {
+                                                                        return (
+                                                                            <FormControl key={key}>
+                                                                                <Editor
+                                                                                    // toolbarOnFocus
+                                                                                    readOnly={!item.Localizable}
+                                                                                    wrapperClassName="wrapper-class"
+                                                                                    editorClassName="editor-class"
+                                                                                    toolbarClassName="toolbar-class"
+                                                                                    required={item.Required}
+                                                                                    editorState={EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML('<p>' + item.Default + '</p>')))}
+                                                                                    // contentState = {123}
+                                                                                    // ValueObjectLocalize[item.Editor] ? ValueObjectLocalize[item.Editor] :
+                                                                                    // value={ValueObjectLocalize[item.Editor]}
+                                                                                    onChange={(e) => setValueObjectLocalize({ ...ValueObjectLocalize, [item.Name]: e.blocks[0].text })}
+                                                                                    toolbar={{
+                                                                                        inline: { inDropdown: true },
+                                                                                        list: { inDropdown: true },
+                                                                                        textAlign: { inDropdown: true },
+                                                                                        link: { inDropdown: true },
+                                                                                        history: { inDropdown: true },
+                                                                                    }}
+                                                                                />
+                                                                            </FormControl>
+                                                                        )
+                                                                    }
+                                                                    else if (item.Type === "Upload") {
+                                                                        return (
+                                                                            <FormControl key={key}>
+                                                                                <label htmlFor="contained-button-file">
+                                                                                    <Input accept="image/*" id="contained-button-file" disabled={!item.Localizable} multiple type="file" style={{ display: "none" }} value={ValueObjectLocalize[item.Name]} onChange={(e) => setValueObjectLocalize({ ...ValueObjectLocalize, [item.Name]: e.target.value })} />
+                                                                                    <Button variant="contained" color="secondary" disabled={!item.Localizable} required={item.Required} component="span" size="large" fullWidth>
+                                                                                        {item.Name} Upload
+                                                                                    </Button>
+                                                                                </label>
+                                                                            </FormControl>
+                                                                        )
+                                                                    }
+                                                                    else if (item.Type === "RADIO") {
+                                                                        return (
+                                                                            <FormControl component="fieldset" key={key}>
+                                                                                <FormLabel component="legend" color="secondary">{item.Name}</FormLabel>
+                                                                                <RadioGroup row aria-label="gender" defaultValue={item.Default} name="row-radio-buttons-group" value={ValueObjectLocalize[item.Name]} onChange={(e) => setValueObjectLocalize({ ...ValueObjectLocalize, [item.Name]: e.target.value })}>
+                                                                                    {
+                                                                                        item.Options.map((sub_item, sub_key) => {
+                                                                                            return (
+                                                                                                <FormControlLabel value={Object.values(sub_item)[0]} required={item.Required} disabled={!item.Localizable} key={sub_key} control={<Radio color="secondary" />} label={Object.values(sub_item)[0]} />
+                                                                                            )
+                                                                                        })
+                                                                                    }
+                                                                                </RadioGroup>
+                                                                            </FormControl>
+                                                                        )
+                                                                    }
+                                                                    else if (item.Type === "Checkbox") {
+                                                                        return (
+                                                                            <FormControl component="fieldset" key={key}>
+                                                                                <FormControlLabel key={key} value={ValueObjectLocalize[item.Name]} disabled={!item.Localizable} onChange={(e) => setValueObjectLocalize({ ...ValueObjectLocalize, [item.Name]: e.target.value })} required={item.Required} control={<Checkbox color="secondary" defaultChecked={item.Default} />} label={item.Name} />
+                                                                            </FormControl>
+                                                                        )
+                                                                    }
+                                                                    else if (item.Type === "Select") {
+                                                                        return (
+                                                                            <FormControl key={key}>
+                                                                                <InputLabel id="demo-simple-select-label">{item.Name}</InputLabel>
+                                                                                <Select
+                                                                                    labelId="demo-simple-select-label"
+                                                                                    id="demo-simple-select"
+                                                                                    // value={SitePayment}
+                                                                                    label="Payment Methods"
+                                                                                    defaultValue="complited"
+                                                                                    disabled={!item.Localizable}
+                                                                                    required={item.Required}
+                                                                                    value={ValueObjectLocalize[item.Name]}
+                                                                                    onChange={(e) => setValueObjectLocalize({ ...ValueObjectLocalize, [item.Name]: e.target.value })}
+                                                                                >
+                                                                                    {
+                                                                                        item.Options.map((sub_item, sub_key) => {
+                                                                                            return (
+                                                                                                <MenuItem key={sub_key} value={Object.values(sub_item)[0]}>{Object.keys(sub_item)[0]}</MenuItem>
+
+                                                                                            )
+                                                                                        })
+                                                                                    }
+
+                                                                                </Select>
+                                                                            </FormControl>
+                                                                        )
+                                                                    }
+                                                                }
+                                                            }) : ""
+                                                        }
+                                                    </Stack>
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={(e) => confirm()}>{t("Ok")}</Button>
+                                                    <Button onClick={handleClose}>{t("Cancel")}</Button>
+                                                </DialogActions>
+                                            </Dialog>
                                         </Stack>
 
                                     </Stack>
