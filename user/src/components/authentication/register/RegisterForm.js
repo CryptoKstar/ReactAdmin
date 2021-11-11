@@ -67,7 +67,6 @@ export default function RegisterForm() {
               setOpen(true);
             }
             else {
-              // console.log(response)
               axios.post(configData.API_URL + 'login', {
                 Email: values.email,
                 Password: values.password

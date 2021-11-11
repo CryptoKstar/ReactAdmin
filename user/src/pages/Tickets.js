@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabPanel from '@mui/lab/TabPanel';
 import { useEffect, useState } from 'react';
+// eslint-disable-next-line
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import SpeedDial from '@mui/material/SpeedDial';
@@ -116,7 +117,7 @@ export default function EcommerceShop() {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <Tabs value={value} onChange={handleChange} aria-label="disabled tabs example">
                     <Tab icon={<AirplaneTicketIcon />} iconposition="start" style={{ width: "50%" }} label={t("New Ticket")} value="1" />
-                    <Tab icon={<FavoriteIcon />} iconposition="start" style={{ width: "50%" }} label={t("My Tickets")} value="2" />
+                    {/* <Tab icon={<FavoriteIcon />} iconposition="start" style={{ width: "50%" }} label={t("My Tickets")} value="2" /> */}
                   </Tabs>
                 </Box>
                 <TabPanel value="1">

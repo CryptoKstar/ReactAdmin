@@ -161,7 +161,7 @@ export default function SelectSite({ reload }) {
           }
           if (res_data.length === 0) {
             sessionStorage.CurrentSite = JSON.stringify({ id: "", name: t('No selected') })
-            setAlertMessage("Please create New Company");
+            setAlertMessage("Please create new Site.");
             setAlertType("info");
             setAlertOpen(true);
           }
@@ -188,7 +188,11 @@ export default function SelectSite({ reload }) {
 
   return (
     <>
-
+      <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
+        <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
+          {AlertMessage}
+        </Alert>
+      </Snackbar>
       <Typography variant="h7" gutterBottom>
         {t('Company')} : {sessionStorage.CurrentCompany ? JSON.parse(sessionStorage.CurrentCompany).name : t('No selected')}
       </Typography>
@@ -221,11 +225,6 @@ export default function SelectSite({ reload }) {
       <Dialog open={opensite} onClose={handleClose} fullWidth={true} maxWidth="md">
         <DialogTitle>{t('Please Select Site')}</DialogTitle>
         <DialogContent>
-          <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
-            <Alert onClose={AlertClose} severity={AlertType} sx={{ width: '100%' }}>
-              {AlertMessage}
-            </Alert>
-          </Snackbar>
           <Container>
             <Card style={{ boxShadow: "none" }}>
               <UserListToolbar
@@ -233,7 +232,6 @@ export default function SelectSite({ reload }) {
                 filterName={filterName}
                 onFilterName={handleFilterByName}
               />
-
               <Scrollbar>
                 <TableContainer sx={{ minWidth: 800 }}>
                   <Table>

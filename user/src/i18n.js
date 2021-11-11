@@ -120,7 +120,11 @@ i18n.use(LanguageDetector).init({
                 "First name" : "First name",
                 "Last name" : "Last name",
                 "Register" : "Register",
-                "Logo Upload": "Logo Upload"
+                "Logo Upload": "Logo Upload",
+                "Localizations" : "Localizations",
+                "PAYMENT METHOD LOCALIZATIONS" : "PAYMENT METHOD LOCALIZATIONS",
+                "Add Payment Method Localizations" : "Add Payment Method Localizations",
+                "Search data..." : "Search data..."
             }
         },
         sb: {
@@ -239,7 +243,11 @@ i18n.use(LanguageDetector).init({
                 "First name" : "Име",
                 "Last name" : "Презиме",
                 "Register" : "Регистровати",
-                "Logo Upload" : "Лого Уплоад"
+                "Logo Upload" : "Лого Уплоад",
+                "Localizations" : "Локализације",
+                "PAYMENT METHOD LOCALIZATIONS" : "ЛОКАЛИЗАЦИЈЕ НАЧИНА ПЛАЋАЊА",
+                "Add Payment Method Localizations" : "Додајте локализације начина плаћања",
+                "Search data..." : "Претражи податке..."
             }
         },
     },

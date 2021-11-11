@@ -8,6 +8,7 @@ import { MHidden } from '../components/@material-extend';
 import { RegisterForm } from '../components/authentication/register';
 import AuthSocialRegister from '../components/authentication/AuthSocialRegister';
 import { useTranslation } from 'react-i18next';
+import LanguageBar from "../layouts/dashboard/LanguagePopover"
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -40,6 +41,7 @@ export default function Register() {
   return (
     <RootStyle title="Register | Minimal-UI">
       <AuthLayout>
+        < LanguageBar />
         {t("Already have an account?")} &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to="/login">
           {t("Login")}

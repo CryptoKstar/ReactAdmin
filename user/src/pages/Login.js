@@ -10,7 +10,7 @@ import AuthSocialLogin from '../components/authentication/AuthSocialLogin';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import axios from 'axios'
-
+import LanguageBar from "../layouts/dashboard/LanguagePopover"
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex'
@@ -37,7 +37,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }));
 
 export default function Login() {
-  const { t , i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const load = async (params) => {
     await axios.get('https://apps.holest.com/iploc.php?ip=auto', {}).then(res => {
       const country_name = res.data.CountryName;
@@ -54,11 +54,12 @@ export default function Login() {
 
   useEffect(() => {
     load();
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [])
   return (
-    <RootStyle title="Login | Minimal-UI">
+    <RootStyle title="Login | Holest">
       <AuthLayout>
+        <LanguageBar />
         {t("Don’t have an account?")} &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
           {t("Get started")}
@@ -86,7 +87,7 @@ export default function Login() {
 
           <MHidden width="smUp">
             <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-              {t("Don’t have an account?")}&nbsp;
+              {t("Don’t have 222an account?")}&nbsp;
               <Link variant="subtitle2" component={RouterLink} to="register">
                 {t("Get started")}
               </Link>

@@ -73,7 +73,6 @@ export default function AuthSocialRegister() {
                 });
               // const user_data = response.data.user;
               // const authToken = response.data.authToken;
-              // console.log(response);
               // history.push('/app');
             }
           }
@@ -90,7 +89,6 @@ export default function AuthSocialRegister() {
   }
 
   const responseFacebook = (response) => {
-    console.log(response);
   }
 
   const Google_clientId = "180936120305-895qb9cp2p40thhjphk2jk2vs0rcj8hh.apps.googleusercontent.com";

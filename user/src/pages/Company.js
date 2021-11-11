@@ -143,7 +143,6 @@ export default function EcommerceShop() {
         else if (res_data.length === 1) {
           sessionStorage.CurrentCompany = JSON.stringify({ id: res_data[0].Id, name: res_data[0].Name })
         }
-        console.log(res_data,123)
         setCompanydata(res_data)
       })
       .catch(error => {

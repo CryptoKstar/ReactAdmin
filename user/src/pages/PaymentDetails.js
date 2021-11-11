@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
-import { useFormik, Form, FormikProvider } from 'formik';
 import { LoadingButton } from '@mui/lab';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import SendIcon from '@mui/icons-material/Send';
@@ -36,6 +35,8 @@ export default function PaymentDetails() {
     const [SitePayment, setSitePayment] = useState("123");
     const [Details, setDetails] = useState();
     const [LocalizeData, setLocalizeData] = useState();
+    const [LocalizeId, setLocalizeId] = useState();
+    const [localLanguage, setlocalLanguage] = useState();
     const [ValueObject, setValueObject] = useState({});
     // eslint-disable-next-line
     const [AlertMessage, setAlertMessage] = useState("success");
@@ -68,13 +69,39 @@ export default function PaymentDetails() {
     };
 
     const dataProvider = jsonServerProvider(configData.API_URL + 'api', httpClient);
-    const formik = useFormik({
-    });
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const maindata = Details;
+        for (let i = 0; i < maindata.length; i++) {
+            if (ValueObject[maindata[i].Name]) {
+                maindata[i].Default = ValueObject[maindata[i].Name];
+            }
+        }
+        const main_data = JSON.stringify({ "parameters": maindata })
 
-    const handleSubmit = (params, e) => {
-        dataProvider.update('company_site_payment_methods', { id: Currentdata.id, data: { PaymentMethodId: Currentdata.PaymentMethodId, CompanySiteId: JSON.parse(sessionStorage.CurrentSite).id, Data: Currentdata.Data } })
+        const localizedata = LocalizeData;
+        for (let i = 0; i < localizedata.length; i++) {
+            if (localizedata[i].Localizable === true) {
+                if (ValueObjectLocalize[localizedata[i].Name]) {
+                    localizedata[i].Default = ValueObjectLocalize[localizedata[i].Name];
+                }
+            }
+        }
+        const local_data = JSON.stringify({ "parameters": localizedata })
+
+        dataProvider.update('company_site_payment_methods', { id: Currentdata.id, data: { PaymentMethodId: Currentdata.PaymentMethodId, CompanySiteId: JSON.parse(sessionStorage.CurrentSite).id, Data: main_data } })
             .then(res => {
-                history.push('/paymentmethods')
+                dataProvider.update('company_site_payment_methods_localize', { id: LocalizeId, data: { CompanySitePaymentMethodId: res.data.id, Languange: ValueObjectLocalize.localize ? ValueObjectLocalize.localize : "en-US", Data: local_data } })
+                    .then(res => {
+                        setAlertMessage(t("Selected Payment Methods is added correctly"));
+                        setAlertType("success");
+                        setAlertOpen(true);
+                        // history.push('/paymentmethods')
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+                // history.push('/paymentmethods')
             })
             .catch(error => {
                 console.log(error)
@@ -122,6 +149,8 @@ export default function PaymentDetails() {
                                 for (let j = 0; j < data.length; j++) {
                                     if (data[j].CompanySitePaymentMethodId.toString() === Id.toString()) {
                                         setLocalizeData(JSON.parse(data[j].Data).parameters)
+                                        setLocalizeId(data[j].id);
+                                        setlocalLanguage(data[j].Languange);
                                     }
                                 }
                             })
@@ -135,7 +164,6 @@ export default function PaymentDetails() {
         load()
         // eslint-disable-next-line
     }, [])
-    const { isSubmitting } = formik;
     return (
         <Page title="Company | Holest">
             <Snackbar open={AlertOpen} autoHideDuration={6000} anchorOrigin={{ vertical: "top", horizontal: "right" }} onClose={AlertClose}>
@@ -169,169 +197,172 @@ export default function PaymentDetails() {
                             </CardContent>
                         </CardActionArea>
                         <CardContent>
-                            <FormikProvider value={formik}>
-                                <Form autoComplete="off" action="/paymentmethods" noValidate onSubmit={handleSubmit}>
-                                    <Stack spacing={3}>
-                                        <FormControl>
-                                            <TextField
-                                                fullWidth
-                                                label="Payment Methods"
-                                                value={SitePayment}
-                                                disabled={true}
-                                            />
-                                        </FormControl>
-                                        {
-                                            // eslint-disable-next-line
-                                            Details ? Details.map((item, key) => {
-                                                if (item.Type === "Text") {
-                                                    return (
-                                                        <FormControl key={key}>
-                                                            <TextField
-                                                                disabled={!item.Localizable}
-                                                                fullWidth
-                                                                label={item.Name}
-                                                                defaultValue={item.Default}
-                                                                required={item.Required}
-                                                                value={ValueObject[item.Name]}
-                                                                onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })}
-                                                            />
-                                                        </FormControl>
-                                                    )
-                                                }
-                                                else if (item.Type === "WYSIWYG") {
-                                                    return (
-                                                        <FormControl key={key}>
-                                                            <Editor
-                                                                // toolbarOnFocus
-                                                                readOnly={!item.Localizable}
-                                                                wrapperClassName="wrapper-class"
-                                                                editorClassName="editor-class"
-                                                                toolbarClassName="toolbar-class"
-                                                                required={item.Required}
-                                                                editorState={EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML('<p>' + item.Default + '</p>')))}
-                                                                // contentState = {123}
-                                                                // ValueObject[item.Editor] ? ValueObject[item.Editor] :
-                                                                // value={ValueObject[item.Editor]}
-                                                                onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.blocks[0].text })}
-                                                                toolbar={{
-                                                                    inline: { inDropdown: true },
-                                                                    list: { inDropdown: true },
-                                                                    textAlign: { inDropdown: true },
-                                                                    link: { inDropdown: true },
-                                                                    history: { inDropdown: true },
-                                                                }}
-                                                            />
-                                                        </FormControl>
-                                                    )
-                                                }
-                                                else if (item.Type === "Upload") {
-                                                    return (
-                                                        <FormControl key={key}>
-                                                            <label htmlFor="contained-button-file">
-                                                                <Input accept="image/*" id="contained-button-file" disabled={!item.Localizable} multiple type="file" style={{ display: "none" }} value={ValueObject[item.Name]} onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })} />
-                                                                <Button variant="contained" color="secondary" disabled={!item.Localizable} required={item.Required} component="span" size="large" fullWidth>
-                                                                    {item.Name} Upload
-                                                                </Button>
-                                                            </label>
-                                                        </FormControl>
-                                                    )
-                                                }
-                                                else if (item.Type === "RADIO") {
-                                                    return (
-                                                        <FormControl component="fieldset" key={key}>
-                                                            <FormLabel component="legend" color="secondary">{item.Name}</FormLabel>
-                                                            <RadioGroup row aria-label="gender" defaultValue={item.Default} name="row-radio-buttons-group" value={ValueObject[item.Name]} onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })}>
-                                                                {
-                                                                    item.Options.map((sub_item, sub_key) => {
-                                                                        return (
-                                                                            <FormControlLabel value={Object.values(sub_item)[0]} required={item.Required} disabled={!item.Localizable} key={sub_key} control={<Radio color="secondary" />} label={Object.values(sub_item)[0]} />
+                            <form action="/paymentmethods" onSubmit={handleSubmit}>
+                                <Stack spacing={3}>
+                                    <FormControl>
+                                        <TextField
+                                            fullWidth
+                                            label="Payment Methods"
+                                            value={SitePayment}
+                                            disabled={true}
+                                        />
+                                    </FormControl>
+                                    {
+                                        // eslint-disable-next-line
+                                        Details ? Details.map((item, key) => {
+                                            if (item.Type === "Text") {
+                                                return (
+                                                    <FormControl key={key}>
+                                                        <TextField
 
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </RadioGroup>
-                                                        </FormControl>
-                                                    )
-                                                }
-                                                else if (item.Type === "Checkbox") {
-                                                    return (
-                                                        <FormControl component="fieldset" key={key}>
-                                                            <FormControlLabel key={key} value={ValueObject[item.Name]} disabled={!item.Localizable} onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })} required={item.Required} control={<Checkbox color="secondary" defaultChecked={item.Default} />} label={item.Name} />
-                                                        </FormControl>
-                                                    )
-                                                }
-                                                else if (item.Type === "Select") {
-                                                    return (
-                                                        <FormControl key={key}>
-                                                            <InputLabel id="demo-simple-select-label">{item.Name}</InputLabel>
-                                                            <Select
-                                                                labelId="demo-simple-select-label"
-                                                                id="demo-simple-select"
-                                                                label="Payment Methods"
-                                                                defaultValue="complited"
-                                                                disabled={!item.Localizable}
-                                                                required={item.Required}
-                                                                value={ValueObject[item.Name]}
-                                                                onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })}
-                                                            >
-                                                                {
-                                                                    item.Options.map((sub_item, sub_key) => {
-                                                                        return (
-                                                                            <MenuItem key={sub_key} value={Object.values(sub_item)[0]}>{Object.keys(sub_item)[0]}</MenuItem>
+                                                            fullWidth
+                                                            label={item.Name}
+                                                            defaultValue={item.Default}
+                                                            required={item.Required}
+                                                            value={ValueObject[item.Name]}
+                                                            onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })}
+                                                        />
+                                                    </FormControl>
+                                                )
+                                            }
+                                            else if (item.Type === "WYSIWYG") {
+                                                return (
+                                                    <FormControl key={key}>
+                                                        <Editor
+                                                            wrapperClassName="wrapper-class"
+                                                            editorClassName="editor-class"
+                                                            toolbarClassName="toolbar-class"
+                                                            required={item.Required}
+                                                            defaultEditorState={EditorState.createWithContent(ContentState.createFromBlockArray(convertFromHTML('<p>' + item.Default + '</p>')))}
+                                                            onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.blocks[0].text })}
+                                                            toolbar={{
+                                                                inline: { inDropdown: true },
+                                                                list: { inDropdown: true },
+                                                                textAlign: { inDropdown: true },
+                                                                link: { inDropdown: true },
+                                                                history: { inDropdown: true },
+                                                            }}
+                                                        />
+                                                    </FormControl>
+                                                )
+                                            }
+                                            else if (item.Type === "Upload") {
+                                                return (
+                                                    <FormControl key={key}>
+                                                        <label htmlFor="contained-button-file">
+                                                            <Input accept="image/*" id="contained-button-file" multiple type="file" style={{ display: "none" }} value={ValueObject[item.Name]} onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })} />
+                                                            <Button variant="contained" color="secondary" required={item.Required} component="span" size="large" fullWidth>
+                                                                {item.Name} Upload
+                                                            </Button>
+                                                        </label>
+                                                    </FormControl>
+                                                )
+                                            }
+                                            else if (item.Type === "RADIO") {
+                                                return (
+                                                    <FormControl component="fieldset" key={key}>
+                                                        <FormLabel component="legend" color="secondary">{item.Name}</FormLabel>
+                                                        <RadioGroup row aria-label="gender" defaultValue={item.Default} name="row-radio-buttons-group" value={ValueObject[item.Name]} onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })}>
+                                                            {
+                                                                item.Options.map((sub_item, sub_key) => {
+                                                                    return (
+                                                                        <FormControlLabel value={Object.values(sub_item)[0]} required={item.Required} key={sub_key} control={<Radio color="secondary" />} label={Object.values(sub_item)[0]} />
 
-                                                                        )
-                                                                    })
-                                                                }
+                                                                    )
+                                                                })
+                                                            }
+                                                        </RadioGroup>
+                                                    </FormControl>
+                                                )
+                                            }
+                                            else if (item.Type === "Checkbox") {
+                                                return (
+                                                    <FormControl component="fieldset" key={key}>
+                                                        <FormControlLabel key={key} value={ValueObject[item.Name]} onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })} required={item.Required} control={<Checkbox color="secondary" defaultChecked={item.Default} />} label={item.Name} />
+                                                    </FormControl>
+                                                )
+                                            }
+                                            else if (item.Type === "Select") {
+                                                return (
+                                                    <FormControl key={key}>
+                                                        <InputLabel id="demo-simple-select-label">{item.Name}</InputLabel>
+                                                        <Select
+                                                            labelId="demo-simple-select-label"
+                                                            id="demo-simple-select"
+                                                            label="Payment Methods"
+                                                            defaultValue={item.Default}
+                                                            required={item.Required}
+                                                            value={ValueObject[item.Name]}
+                                                            onChange={(e) => setValueObject({ ...ValueObject, [item.Name]: e.target.value })}
+                                                        >
+                                                            {
+                                                                item.Options.map((sub_item, sub_key) => {
+                                                                    return (
+                                                                        <MenuItem key={sub_key} value={Object.values(sub_item)[0]}>{Object.keys(sub_item)[0]}</MenuItem>
 
-                                                            </Select>
-                                                        </FormControl>
-                                                    )
-                                                }
-                                            }) : ""
-                                        }
+                                                                    )
+                                                                })
+                                                            }
 
-                                        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={10}>
-                                            <LoadingButton
-                                                fullWidth
-                                                size="large"
-                                                type="submit"
-                                                color="secondary"
-                                                endIcon={<SendIcon />}
-                                                variant="contained"
-                                                loading={isSubmitting}
-                                            >
-                                                {t("Update")}
-                                            </LoadingButton>
-                                            <LoadingButton
-                                                fullWidth
-                                                color="secondary"
-                                                size="large"
-                                                endIcon={<RotateLeftIcon />}
-                                                type="reset"
-                                                variant="contained"
-                                                onClick={(e) => paymentMethodsDelete()}
-                                            >
-                                                {t("Delete")}
-                                            </LoadingButton>
-                                            <LoadingButton
-                                                fullWidth
-                                                color="secondary"
-                                                size="large"
-                                                endIcon={<RotateLeftIcon />}
-                                                type="reset"
-                                                variant="contained"
-                                                onClick={(e) => setOpen(true)}
-                                            >
-                                                {t("Localizations")}
-                                            </LoadingButton>
-                                            <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
-                                                <DialogTitle>{t("PAYMENT METHOD LOCALIZATIONS")}</DialogTitle>
-                                                <DialogContent>
-                                                    <Stack spacing={3} paddingTop={2}>
-                                                        {
+                                                        </Select>
+                                                    </FormControl>
+                                                )
+                                            }
+                                        }) : ""
+                                    }
+
+                                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} paddingTop={10}>
+                                        <LoadingButton
+                                            fullWidth
+                                            size="large"
+                                            type="submit"
+                                            color="secondary"
+                                            endIcon={<SendIcon />}
+                                            variant="contained"
+                                        >
+                                            {t("Update")}
+                                        </LoadingButton>
+                                        <LoadingButton
+                                            fullWidth
+                                            color="secondary"
+                                            size="large"
+                                            endIcon={<RotateLeftIcon />}
+                                            type="reset"
+                                            variant="contained"
+                                            onClick={(e) => paymentMethodsDelete()}
+                                        >
+                                            {t("Delete")}
+                                        </LoadingButton>
+                                        <LoadingButton
+                                            fullWidth
+                                            color="secondary"
+                                            size="large"
+                                            endIcon={<RotateLeftIcon />}
+                                            type="reset"
+                                            variant="contained"
+                                            onClick={(e) => setOpen(true)}
+                                        >
+                                            {t("Localizations")}
+                                        </LoadingButton>
+                                        <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
+                                            <DialogTitle>{t("PAYMENT METHOD LOCALIZATIONS")}</DialogTitle>
+                                            <DialogContent>
+                                                <Stack spacing={3} paddingTop={2}>
+                                                    <FormControl >
+                                                        <TextField
+                                                            fullWidth
+                                                            label="Localize"
+                                                            defaultValue={localLanguage}
+                                                            required={true}
+                                                            value={ValueObjectLocalize["localize"]}
                                                             // eslint-disable-next-line
-                                                            LocalizeData ? LocalizeData.map((item, key) => {
-
+                                                            onChange={(e) => setValueObjectLocalize({ ...ValueObjectLocalize, ["localize"]: e.target.value })}
+                                                        />
+                                                    </FormControl>
+                                                    {
+                                                        // eslint-disable-next-line
+                                                        LocalizeData ? LocalizeData.map((item, key) => {
+                                                            if (item.Localizable === true) {
                                                                 if (item.Type === "Text") {
                                                                     return (
                                                                         <FormControl key={key}>
@@ -417,7 +448,7 @@ export default function PaymentDetails() {
                                                                                 id="demo-simple-select"
                                                                                 // value={SitePayment}
                                                                                 label="Payment Methods"
-                                                                                defaultValue="complited"
+                                                                                defaultValue={item.Default}
                                                                                 disabled={!item.Localizable}
                                                                                 required={item.Required}
                                                                                 value={ValueObjectLocalize[item.Name]}
@@ -436,19 +467,19 @@ export default function PaymentDetails() {
                                                                         </FormControl>
                                                                     )
                                                                 }
-                                                            }) : ""
-                                                        }
-                                                    </Stack>
-                                                </DialogContent>
-                                                <DialogActions>
-                                                    <Button onClick={(e) => setOpen(false)}>{t("Ok")}</Button>
-                                                </DialogActions>
-                                            </Dialog>
-                                        </Stack>
-
+                                                            }
+                                                        }) : ""
+                                                    }
+                                                </Stack>
+                                            </DialogContent>
+                                            <DialogActions>
+                                                <Button onClick={(e) => setOpen(false)}>{t("Ok")}</Button>
+                                            </DialogActions>
+                                        </Dialog>
                                     </Stack>
-                                </Form>
-                            </FormikProvider>
+
+                                </Stack>
+                            </form>
                         </CardContent>
                     </Card>
                 </Grid>
