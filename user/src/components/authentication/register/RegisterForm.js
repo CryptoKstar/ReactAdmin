@@ -67,28 +67,31 @@ export default function RegisterForm() {
               setOpen(true);
             }
             else {
-              axios.post(configData.API_URL + 'login', {
-                Email: values.email,
-                Password: values.password
-              })
-                .then(response => {
-                  if (response.data.error) {
-                    setAlertMessage(response.data.error);
-                    setAlertType("error");
-                    setOpen(true);
+              setAlertMessage("Please check your Gamil.com. We alreay sent you.");
+              setAlertType("error");
+              setOpen(true);
+              // axios.post(configData.API_URL + 'login', {
+              //   Email: values.email,
+              //   Password: values.password
+              // })
+              //   .then(response => {
+              //     if (response.data.error) {
+              //       setAlertMessage(response.data.error);
+              //       setAlertType("error");
+              //       setOpen(true);
 
-                  }
-                  else {
-                    const user_data = response.data.user;
-                    const authToken = response.data.authToken;
-                    sessionStorage.UserData = JSON.stringify(user_data);
-                    sessionStorage.AccessToken = JSON.stringify(authToken);
-                    history.push('/app');
-                  }
-                })
-                .catch(error => {
-                  console.log('There was an error!', error);
-                });
+              //     }
+              //     else {
+              //       const user_data = response.data.user;
+              //       const authToken = response.data.authToken;
+              //       sessionStorage.UserData = JSON.stringify(user_data);
+              //       sessionStorage.AccessToken = JSON.stringify(authToken);
+              //       history.push('/app');
+              //     }
+              //   })
+              //   .catch(error => {
+              //     console.log('There was an error!', error);
+              //   });
             }
           }
         })

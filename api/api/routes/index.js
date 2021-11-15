@@ -15,7 +15,7 @@ router.delete('/logout', controllers.logout);
 router.post('/logout', controllers.logout);
 router.post('/register', controllers.register);
 router.get('/me', controllers.me);
-
+router.get('/confirm/:id',controllers.emailverify);
 
 /*
 	models.Company
@@ -178,7 +178,6 @@ CompanySiteSubscription.addScope("userscope", function (user, sites) {
 
 HpParameter.userscope = {};
 HpParameter.addScope("userscope", function (user, sites) {
-	console.log(sites)
 	if (!user) {
 		return {
 			where: {

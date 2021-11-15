@@ -1,14 +1,5 @@
 const nodemailer = require('nodemailer')
 
-// The credentials for the email account you want to send mail from. 
-// const credentials = {
-//   service:"gmail",
-//   auth: {
-//     // These environment variables will be pulled from the .env file
-//     user: "toppythondev13579@gmail.com",
-//     pass: "Kiranku123$"
-//   }
-// }
 var transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
@@ -16,8 +7,8 @@ var transporter = nodemailer.createTransport({
   requireTLS: true,
   service: 'gmail',
   auth: {
-    user: 'atomictasks@gmail.com',
-    pass: 'palomojado2040'
+    user: 'toppythondev13579@gmail.com',
+    pass: 'Kiranku123$'
   }
 });
 // Getting Nodemailer all setup with the credentials for when the 'sendEmail()'
@@ -30,7 +21,7 @@ module.exports = async (to, content) => {
 
   // The from and to addresses for the email that is about to be sent.
   const contacts = {  
-    from: "atomictasks@gmail.com",
+    from: "KingStar from Holest.",
     to
   }
 
@@ -48,7 +39,6 @@ module.exports = async (to, content) => {
   // If you are running into errors getting Nodemailer working, wrap the following 
   // line in a try/catch. Most likely is not loading the credentials properly in 
   // the .env file or failing to allow unsafe apps in your gmail settings.
-  console.log(email, 123)
   await transporter.sendMail(email, function (error, info) {
     if (error) {
       console.log(error);

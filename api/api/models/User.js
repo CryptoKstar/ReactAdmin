@@ -28,6 +28,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true,
       field: 'tel'
     },
+    EmailVerify: {
+      type: DataTypes.STRING(128),
+      allowNull: true,
+      field: 'email_verify'
+    },
     Data: {
       type: DataTypes.TEXT,
       allowNull: true,
