@@ -124,7 +124,11 @@ i18n.use(LanguageDetector).init({
                 "Localizations" : "Localizations",
                 "PAYMENT METHOD LOCALIZATIONS" : "PAYMENT METHOD LOCALIZATIONS",
                 "Add Payment Method Localizations" : "Add Payment Method Localizations",
-                "Search data..." : "Search data..."
+                "Search data..." : "Search data...",
+                "Localization" : "Localization",
+                "New Localization" : "New Localization",
+                "Go Localizations" : "Go Localizations",
+                "Localization Details" : "Localization Details",
             }
         },
         sb: {
@@ -247,7 +251,11 @@ i18n.use(LanguageDetector).init({
                 "Localizations" : "Локализације",
                 "PAYMENT METHOD LOCALIZATIONS" : "ЛОКАЛИЗАЦИЈЕ НАЧИНА ПЛАЋАЊА",
                 "Add Payment Method Localizations" : "Додајте локализације начина плаћања",
-                "Search data..." : "Претражи податке..."
+                "Search data..." : "Претражи податке...",
+                "Localization" : "Локализација",
+                "New Localization" : "Нова локализација",
+                "Go Localizations" : "Иди Локализације",
+                "Localization Details" : "Детаљи о локализацији",
             }
         },
     },

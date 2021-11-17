@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import eyeFill from '@iconify/icons-eva/eye-fill';
 import eyeOffFill from '@iconify/icons-eva/eye-off-fill';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import configData from "../../../config.json";
@@ -17,7 +17,7 @@ const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 export default function RegisterForm() {
-  const history = useHistory();
+  // const history = useHistory();
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showconfirmpassword, setshowconfirmpassword] = useState(false);

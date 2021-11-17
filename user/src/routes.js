@@ -24,8 +24,9 @@ import TransactionsDetails from './pages/TransactionsDetails';
 import PaymentMethods from './pages/PaymentMethods';
 import CreatePayment from './pages/CreatePayment';
 import PaymentDetails from './pages/PaymentDetails';
-
-// import NotFound from './pages/Page404';
+import Localization from './pages/Localization'
+import CreateLocalization from './pages/CreateLocalization'
+import LocalizationDetails from './pages/LocalizationDetails'
 
 export default function Router() {
   return (
@@ -53,6 +54,9 @@ export default function Router() {
         <Route path="/transactionsdetails/:id" component={TransactionsDetails} exact />
         <Route path="/newpayment" component={CreatePayment} exact />
         <Route path="/paymentdetails/:id" component={PaymentDetails} exact />
+        <Route path="/localization/:id" component={Localization} exact />
+        <Route path="/createLocalization/:id" component={CreateLocalization} exact />
+        <Route path="/localizationDetails/:id" component={LocalizationDetails} exact />
         {/* <Route path="*" component={NotFound} /> */}
 
       </DashboardLayout>

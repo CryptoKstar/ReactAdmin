@@ -1,5 +1,5 @@
 import Page from '../components/Page';
-import { Container, Button, Stack, Typography, CardActionArea, TextField, FormControl, InputLabel, Select, MenuItem, Input, Checkbox, Icon, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Container, Button, Stack, Typography, CardActionArea, TextField, FormControl, InputLabel, Select, MenuItem, Input, Checkbox, Icon} from '@mui/material';
 import { useHistory } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -34,9 +34,8 @@ export default function PaymentDetails() {
     const [Currentdata, setCurrentdata] = useState("");
     const [SitePayment, setSitePayment] = useState("123");
     const [Details, setDetails] = useState();
-    const [LocalizeData, setLocalizeData] = useState();
-    const [LocalizeId, setLocalizeId] = useState();
-    const [localLanguage, setlocalLanguage] = useState();
+    // const [LocalizeId, setLocalizeId] = useState();
+    // const [localLanguage, setlocalLanguage] = useState();
     const [ValueObject, setValueObject] = useState({});
     // eslint-disable-next-line
     const [AlertMessage, setAlertMessage] = useState("success");
@@ -45,12 +44,6 @@ export default function PaymentDetails() {
     const [AlertOpen, setAlertOpen] = useState(false)
     const params = useParams();
     const { t } = useTranslation();
-    const [open, setOpen] = useState(false);
-    const [ValueObjectLocalize, setValueObjectLocalize] = useState({});
-
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     const AlertClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -79,28 +72,19 @@ export default function PaymentDetails() {
         }
         const main_data = JSON.stringify({ "parameters": maindata })
 
-        const localizedata = LocalizeData;
-        for (let i = 0; i < localizedata.length; i++) {
-            if (localizedata[i].Localizable === true) {
-                if (ValueObjectLocalize[localizedata[i].Name]) {
-                    localizedata[i].Default = ValueObjectLocalize[localizedata[i].Name];
-                }
-            }
-        }
-        const local_data = JSON.stringify({ "parameters": localizedata })
+        // const localizedata = LocalizeData;
+        // for (let i = 0; i < localizedata.length; i++) {
+        //     if (localizedata[i].Localizable === true) {
+        //         if (ValueObjectLocalize[localizedata[i].Name]) {
+        //             localizedata[i].Default = ValueObjectLocalize[localizedata[i].Name];
+        //         }
+        //     }
+        // }
+        // const local_data = JSON.stringify({ "parameters": localizedata })
 
         dataProvider.update('company_site_payment_methods', { id: Currentdata.id, data: { PaymentMethodId: Currentdata.PaymentMethodId, CompanySiteId: JSON.parse(sessionStorage.CurrentSite).id, Data: main_data } })
             .then(res => {
-                dataProvider.update('company_site_payment_methods_localize', { id: LocalizeId, data: { CompanySitePaymentMethodId: res.data.id, Languange: ValueObjectLocalize.localize ? ValueObjectLocalize.localize : "en-US", Data: local_data } })
-                    .then(res => {
-                        setAlertMessage(t("Selected Payment Methods is added correctly"));
-                        setAlertType("success");
-                        setAlertOpen(true);
-                        // history.push('/paymentmethods')
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
+                
                 // history.push('/paymentmethods')
             })
             .catch(error => {
@@ -122,7 +106,12 @@ export default function PaymentDetails() {
             })
     }
 
-
+    const localization = () => {
+        const Id = params.id;
+        console.log(Id);
+        history.push(`/localization/${Id}`);
+    }
+    
     const load = async () => {
         let payment_methods = [];
         const Id = params.id;
@@ -143,17 +132,16 @@ export default function PaymentDetails() {
                             })
                         }
 
-                        await dataProvider.getList("company_site_payment_methods_localize", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: { CompanySitePaymentMethodId: Id } })
-                            .then(res => {
-                                const data = res.data;
-                                for (let j = 0; j < data.length; j++) {
-                                    if (data[j].CompanySitePaymentMethodId.toString() === Id.toString()) {
-                                        setLocalizeData(JSON.parse(data[j].Data).parameters)
-                                        setLocalizeId(data[j].id);
-                                        setlocalLanguage(data[j].Languange);
-                                    }
-                                }
-                            })
+                        // await dataProvider.getList("company_site_payment_methods_localize", { pagination: { page: 1, perPage: 10 }, sort: { field: 'id', order: 'ASC' }, filter: { CompanySitePaymentMethodId: Id } })
+                        //     .then(res => {
+                        //         const data = res.data;
+                        //         for (let j = 0; j < data.length; j++) {
+                        //             if (data[j].CompanySitePaymentMethodId.toString() === Id.toString()) {
+                        //                 setLocalizeId(data[j].id);
+                        //                 setlocalLanguage(data[j].Languange);
+                        //             }
+                        //         }
+                        //     })
 
                         setSitePayment(methods[data.PaymentMethodId - 1].label)
                     })
@@ -340,11 +328,11 @@ export default function PaymentDetails() {
                                             endIcon={<RotateLeftIcon />}
                                             type="reset"
                                             variant="contained"
-                                            onClick={(e) => setOpen(true)}
+                                            onClick={(e) => localization()}
                                         >
                                             {t("Localizations")}
                                         </LoadingButton>
-                                        <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
+                                        {/* <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="sm">
                                             <DialogTitle>{t("PAYMENT METHOD LOCALIZATIONS")}</DialogTitle>
                                             <DialogContent>
                                                 <Stack spacing={3} paddingTop={2}>
@@ -475,7 +463,7 @@ export default function PaymentDetails() {
                                             <DialogActions>
                                                 <Button onClick={(e) => setOpen(false)}>{t("Ok")}</Button>
                                             </DialogActions>
-                                        </Dialog>
+                                        </Dialog> */}
                                     </Stack>
 
                                 </Stack>
