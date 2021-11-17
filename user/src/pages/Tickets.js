@@ -5,16 +5,10 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabPanel from '@mui/lab/TabPanel';
 import { useEffect, useState } from 'react';
-// eslint-disable-next-line
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import PrintIcon from '@mui/icons-material/Print';
-import ShareIcon from '@mui/icons-material/Share';
 import EditIcon from '@mui/icons-material/Edit';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -28,15 +22,8 @@ import jsonServerProvider from 'ra-data-json-server';
 import configData from "../config.json";
 import CreateTicket from "./CreateTicket";
 import SelectSite from './SelectSite'
+import MyTicket from './MyTicket'
 import { useTranslation } from 'react-i18next';
-
-const actions = [
-  { icon: <FileCopyIcon />, name: 'New' },
-  { icon: <SaveIcon />, name: 'Save' },
-  { icon: <PrintIcon />, name: 'Print' },
-  { icon: <ShareIcon />, name: 'Share' },
-];
-
 export default function EcommerceShop() {
   const [value, setValue] = useState('1');
   const [open, setOpen] = useState(false);
@@ -117,7 +104,7 @@ export default function EcommerceShop() {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                   <Tabs value={value} onChange={handleChange} aria-label="disabled tabs example">
                     <Tab icon={<AirplaneTicketIcon />} iconposition="start" style={{ width: "50%" }} label={t("New Ticket")} value="1" />
-                    {/* <Tab icon={<FavoriteIcon />} iconposition="start" style={{ width: "50%" }} label={t("My Tickets")} value="2" /> */}
+                    <Tab icon={<FavoriteIcon />} iconposition="start" style={{ width: "50%" }} label={t("My Tickets")} value="2" />
                   </Tabs>
                 </Box>
                 <TabPanel value="1">
@@ -128,16 +115,8 @@ export default function EcommerceShop() {
                         color="secondary"
                         sx={{ position: 'absolute', bottom: 16, right: 16 }}
                         icon={<SpeedDialIcon openIcon={<EditIcon />} />}
+                        onClick={(e) => newticket()}
                       >
-                        {actions.map((action) => (
-                          <SpeedDialAction
-
-                            key={action.name}
-                            icon={action.icon}
-                            tooltipTitle={action.name}
-                            onClick={(e) => newticket()}
-                          />
-                        ))}
                       </SpeedDial>
                       <Dialog open={open} onClose={handleClose} >
                         <DialogTitle >New Ticket</DialogTitle>
@@ -155,7 +134,8 @@ export default function EcommerceShop() {
                     </Box>
                   }
                 </TabPanel>
-                <TabPanel value="2">Item Two</TabPanel>
+                <TabPanel value="2"><MyTicket /></TabPanel>
+
               </TabContext>
             </Box>
           </Grid>

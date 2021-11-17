@@ -27,7 +27,7 @@ import PaymentDetails from './pages/PaymentDetails';
 import Localization from './pages/Localization'
 import CreateLocalization from './pages/CreateLocalization'
 import LocalizationDetails from './pages/LocalizationDetails'
-
+import TicketDetails from './pages/TicketDetails'
 export default function Router() {
   return (
     <Switch>
@@ -57,6 +57,7 @@ export default function Router() {
         <Route path="/localization/:id" component={Localization} exact />
         <Route path="/createLocalization/:id" component={CreateLocalization} exact />
         <Route path="/localizationDetails/:id" component={LocalizationDetails} exact />
+        <Route path="/ticketdetails/:id" component={TicketDetails} exact />
         {/* <Route path="*" component={NotFound} /> */}
 
       </DashboardLayout>

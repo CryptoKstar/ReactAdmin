@@ -38,7 +38,7 @@ export default function AuthSocialLogin() {
       })
         .then(response => {
           if (response.data.error) {
-            setAlertMessage(response.data.status);
+            setAlertMessage("Please sign up.");
             setAlertType("error");
             setOpen(true);
           }
