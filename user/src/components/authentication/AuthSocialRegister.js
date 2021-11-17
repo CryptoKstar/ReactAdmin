@@ -39,7 +39,8 @@ export default function AuthSocialRegister() {
         Name: Name,
         Email: Email,
         Password: GoogleID,
-        Confirmpassword: GoogleID
+        Confirmpassword: GoogleID,
+        EmailVerify : "true"
       })
         .then(response => {
           if (response.statusText === "Created") {

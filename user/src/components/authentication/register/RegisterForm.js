@@ -57,7 +57,8 @@ export default function RegisterForm() {
         Name: values.firstName + values.lastName,
         Email: values.email,
         Password: values.password,
-        Confirmpassword: values.confirmpassword
+        Confirmpassword: values.confirmpassword,
+        EmailVerify : "false"
       })
         .then(response => {
           if (response.statusText === "Created") {
